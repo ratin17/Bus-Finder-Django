@@ -20,4 +20,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('bus/',include('Buses.urls')),
     path('',include('FindBus.urls')),
+    path('',include('Stands.urls')),
 ]

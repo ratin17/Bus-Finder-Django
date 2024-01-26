@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
-  <p>Add a new Stand</p>
+  <p>Add a new Area </p>
 
   {% if messages %}
   <ul class="messages">
@@ -12,7 +12,7 @@
 {% endif %}
 
     
-  <form action="{% url 'stands:new_stand' %}" method='post'>
+  <form action="{% url 'stands:new_area' %}" method='post'>
     {% csrf_token %}
     {{ form.as_p }}
     <button name="submit">Add Stand</button>

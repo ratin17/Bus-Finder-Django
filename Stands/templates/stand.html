@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block page_header %}
+  <h1>{{ stand.s_name }}</h1>
+{% endblock page_header %}
+
+{% block content %}
+  <ul>
+    {% for bus in buses %}
+      <li><h3>
+        <h5>{{ bus.b_name }}</h5>
+      </h3></li>
+    {% empty %}
+      <li><h3>No bus have been added yet for this Stand.</h3></li>
+    {% endfor %}
+  </ul>
+
+
+{% endblock content %}
