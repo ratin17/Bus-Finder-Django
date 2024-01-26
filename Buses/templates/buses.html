@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block page_header %}
+  <h1>Buses</h1>
+{% endblock page_header %}
+
+{% block content %}
+  <ul>
+    {% for bus in buses %}
+      <li><h3>
+        <a href="{% url 'bus' bus.id %}">{{ bus.b_name }}</a>
+      </h3></li>
+    {% empty %}
+      <li><h3>No bus have been added yet.</h3></li>
+    {% endfor %}
+  </ul>
+
+  <h3><a href="{% url 'new_bus' %}">Add a new bus</a></h3>
+
+{% endblock content %}

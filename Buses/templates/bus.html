@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block page_header %}
+  <h1>{{ bus.b_name }}</h1>
+{% endblock page_header %}
+
+{% block content %}
+  <ul>
+    {% for stand in stands %}
+      <li><h3>
+        <h5>
+          {{ stand.0 }} {{ stand.1.s_name }}
+          <a href="{% url 'edit_bus_stand' bus.id stand.2 %}">Edit</a>
+          <a href="{% url 'delete_bus_stand' bus.id stand.0 %}">Remove</a>
+        </h5>
+      </h3></li>
+    {% empty %}
+      <li><h3>No bus stand have been added yet for this bus.</h3></li>
+    {% endfor %}
+  </ul>
+
+  <h3><a href="{% url 'add_stand_for_bus' bus.id %}">Add a Bus Stand</a></h3>
+
+{% endblock content %}
