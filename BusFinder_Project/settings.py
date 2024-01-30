@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     'Buses',
     'Stands',
     'FindBus',
+    'ManageBusFinder',
     'bootstrap5',
     'django.contrib.admin',
     'django.contrib.auth',

@@ -20,5 +20,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('bus/',include('Buses.urls')),
     path('',include('FindBus.urls')),
-    path('',include('Stands.urls')),
+    path('stand/',include('Stands.urls')),
+    path('manage/',include('ManageBusFinder.urls')),
 ]

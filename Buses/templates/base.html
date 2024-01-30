@@ -6,6 +6,7 @@
 
   {% bootstrap_css %}
   {% bootstrap_javascript %}
+  
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1,
     shrink-to-fit=no">
@@ -14,59 +15,86 @@
 </head>
 <body>
 
-  <nav class="navbar navbar-expand-md navbar-light bg-light mb-4 border">
-
-    <a class="navbar-brand" href="{% url 'findBus' %}">Bus Finder</a>
-
-    <button class="navbar-toggler" type="button" data-toggle="collapse"
-        data-target="#navbarCollapse" aria-controls="navbarCollapse"
-        aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span></button>
-    <div class="collapse navbar-collapse" id="navbarCollapse">
-      <ul class="navbar-nav mr-auto">
-
-        <li class="nav-item">
-          <a class="nav-link" href="{% url 'findBus' %}">Find Bus</a>
-        </li>
-
-        <li class="nav-item">
-          <a class="nav-link" href="{% url 'buses' %}">Buses</a>
-        </li>
-
-
-        <li class="nav-item">
-          <a class="nav-link" href="{% url 'stands:stands' %}">Stands</a>
-        </li>
-
-      </ul>
-      <ul class="navbar-nav ml-auto">
-        {% if user.is_authenticated %}
+  <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #370b8a;"">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="{% url 'findBus' %}">Bus Finder</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           <li class="nav-item">
-            <span class="navbar-text">Hello, {{user.username}}</span>
+            <a class="nav-link active" aria-current="page" href="{% url 'findBus' %}">Find Bus</a>
           </li>
 
           <li class="nav-item">
-            <a class="nav-link" href="#">Log Out</a>
+            <a class="nav-link" href="{% url 'buses' %}">Buses</a>
           </li>
-        {% else %}
-        <li class="nav-item">
-          <a class="nav-link" href="#
-        <li class="nav-item">
-          <a class="nav-link" href="#">Register</a>
-        </li>
-        {% endif %}
-      </ul>
+
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'stands:stands' %}">Stands</a>
+          </li>
+
+
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Manage BusFinder
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <li><a class="dropdown-item" href="{% url 'manage:manage' %}">Manage</a>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item" href="#">Others</a></li>
+            </ul>
+          </li>
+
+
+        </ul>
+
+
+        <div class="d-flex">
+
+          <ul class="navbar-nav ml-auto">
+            {% if user.is_authenticated %}
+              <li class="nav-item">
+                <span class="nav-link">Hello, {{user.username}}</span>
+              </li>
+    
+              <li class="nav-item">
+                <a class="nav-link" href="#">Log Out</a>
+              </li>
+            {% else %}
+            <li class="nav-item">
+              <a class="nav-link" href="#
+            <li class="nav-item">
+              <a class="nav-link" href="#">Register</a>
+            </li>
+            {% endif %}
+          </ul>
+          
+        </div>
+
+
+      </div>
     </div>
-
   </nav>
 
+  
+
   <main role="main" class="container">
+
     <div class="pb-2 mb-2 border-bottom">
+
       {% block page_header %}{% endblock page_header %}
+
     </div>
+
+
     <div>
+
       {% block content %}{% endblock content %}
+
     </div>
+
   </main>
 
 </body>

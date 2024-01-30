@@ -10,9 +10,12 @@
 
   <ul>
     {% for stand in stands %}
-      <li><h3>
-        <a href="{% url 'stands:stand' stand.id %}">{{ stand.s_name }}</a>
-      </h3></li>
+      <li>
+        <h3>
+          <a href="{% url 'stands:stand' stand.id %}">{{ stand.s_name }}</a>
+          <a href="{% url 'stands:edit_stand' stand.id %}">Edit</a>
+        </h3>
+      </li>
     {% empty %}
       <li><h3>No Stand have been added yet.</h3></li>
     {% endfor %}

@@ -3,6 +3,7 @@ from .models import Bus,OrderingModel
 from .forms import BusForm,OrderingForm,EditBusStandForm
 
 from django.shortcuts import get_object_or_404
+from django.contrib import messages
 
 # Create your views here.
 def buses(request):
@@ -76,6 +77,7 @@ def add_stand_for_bus(request, bus_id):
             for ordering in orderings:
                 if ordering.stand==stand:
                     print("Already Exists")
+                    messages.error(request, 'f"{ordering.stand.s_name} Already Exists')
                     return redirect('bus',bus_id=bus_id)
                 
             if(order<qsetSize):

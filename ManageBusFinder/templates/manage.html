@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block page_header %}
+  <h1>Manage FindBus</h1>
+{% endblock page_header %}
+
+{% block content %}
+  
+  <div class="container mt-5 d-flex justify-content-center">
+    <a href="{% url 'manage:configure' %}">
+        <button type="button" class="btn btn-outline-danger">Re-Config The Database</button>
+    </a>
+</div>
+
+{% endblock content %}

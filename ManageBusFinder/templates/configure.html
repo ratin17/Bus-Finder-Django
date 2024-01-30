@@ -1,6 +1,12 @@
 {% extends "base.html" %}
 
+{% block page_header %}
+  <h1>Configure</h1>
+{% endblock page_header %}
+
 {% block content %}
+
+<h1>Configuring Database ... ... ...</h1>
 
 {% if messages %}
   <ul class="messages">
@@ -10,11 +16,6 @@
   </ul>
 {% endif %}
 
+<h1>Databases Configured !</h1>
 
-  <form action="{% url 'stands:new_stand' %}" method='post'>
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button name="submit">Add Stand</button>
-  </form>
-    
 {% endblock content %}

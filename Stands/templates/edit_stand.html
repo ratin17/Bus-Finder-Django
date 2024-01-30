@@ -10,11 +10,12 @@
   </ul>
 {% endif %}
 
+  <p>Edit {{stand.s_name}} </p>
 
-  <form action="{% url 'stands:new_stand' %}" method='post'>
+  <form action="{% url 'stands:edit_stand' stand.id %}" method='post'>
     {% csrf_token %}
     {{ form.as_p }}
-    <button name="submit">Add Stand</button>
+    <button name="submit">Submit</button>
   </form>
     
 {% endblock content %}

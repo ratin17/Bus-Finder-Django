@@ -1,20 +1,33 @@
 {% extends "base.html" %}
 
 {% block page_header %}
-  <h1>{{ dept.s_name }} to {{ dest.s_name }} </h1>
+  <h1>{{ dept.s_name }} <small style="color: blueviolet;">to</small> {{ dest.s_name }} </h1>
 {% endblock page_header %}
 
 {% block content %}
-  <ul>
+  <div class="list-group">
     {% for bus in buses %}
-      <li><h3>
-        <a href="#">{{ bus.b_name }}</a>
-      </h3></li>
+
+      <a href="#" class="list-group-item list-group-item-action flex-column align-items-start mb-3 border border-info">
+
+        <div class="d-flex w-100 justify-content-between">
+          <h5 class="mb-1">{{ bus.bus.b_name }}</h5>
+          <small>Distance: {{ bus.dist }} Km </small>
+        </div>
+
+        <div class="d-flex">
+          {% for stand in bus.route %}
+            <p class="mx-2">{{ stand.s_name }} <=></p>
+          {% endfor %}
+        </div>
+
+      </a>
+
     {% empty %}
       <li><h3>No bus Found ! </h3></li>
     {% endfor %}
-  </ul>
+    </div>
 
-  <h3><a href="{% url 'findBus' %}">make Another Search</a></h3>
+  <h3><a href="{% url 'findBus' %}">Make Another Search</a></h3>
 
 {% endblock content %}
