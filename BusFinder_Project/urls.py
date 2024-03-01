@@ -22,4 +22,5 @@ urlpatterns = [
     path('',include('FindBus.urls')),
     path('stand/',include('Stands.urls')),
     path('manage/',include('ManageBusFinder.urls')),
+    path('accounts/', include('accounts.urls')),
 ]

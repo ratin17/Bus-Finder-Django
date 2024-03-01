@@ -5,12 +5,23 @@ from .forms import BusForm,OrderingForm,EditBusStandForm
 from django.shortcuts import get_object_or_404
 from django.contrib import messages
 
+from django.contrib.auth.decorators import login_required
+
+
 # Create your views here.
 def buses(request):
     
     buses = Bus.objects.all()
+    data=[]
+    for bus in buses:
+        dict={'object':bus,
+              'from':bus.orderingmodel_set.order_by('order')[0].stand.s_name,
+              'to':bus.orderingmodel_set.order_by('order').all().last().stand.s_name,
+              'rating':bus.rating
+              }
+        data.append(dict)
     
-    context = {'buses': buses}
+    context = {'buses': data}
     return render(request, 'buses.html', context)
 
 
@@ -27,7 +38,7 @@ def bus(request, bus_id):
     stands=[]
 
     for b in bus_ordering:
-        info=(b.order,b.stand,b.id)
+        info=(b.order,b.stand)
         stands.append(info)
     
     # print(bus,stands)
@@ -36,7 +47,7 @@ def bus(request, bus_id):
     
     return render(request, 'bus.html', context)
 
-
+@login_required
 def new_bus(request):
     if request.method != 'POST':
         form = BusForm()
@@ -50,7 +61,10 @@ def new_bus(request):
     context = {'form': form}
     return render(request, 'new_bus.html', context)
 
+def edit_bus(request,bus_id):
+    return redirect('bus',bus_id=bus_id)
 
+@login_required
 def add_stand_for_bus(request, bus_id):
     
     bus = Bus.objects.get(id=bus_id)
@@ -67,12 +81,19 @@ def add_stand_for_bus(request, bus_id):
             stand=form.cleaned_data['stand']
             
             # print('======= === = ',order)
-            if order<0:
-                print("Order shouldnt be Negative")
+            if not stand:
                 return redirect('bus',bus_id=bus_id)
             
             orderings=bus.orderingmodel_set.order_by('order')
             qsetSize=len(orderings)
+            
+            if not order:
+                order=qsetSize
+            
+            if order<0:
+                print("Order shouldnt be Negative")
+                return redirect('bus',bus_id=bus_id)
+            
             
             for ordering in orderings:
                 if ordering.stand==stand:
@@ -102,7 +123,7 @@ def add_stand_for_bus(request, bus_id):
     return render(request, 'add_stand.html', context)
 
 
-
+@login_required
 def delete_bus_stand(request,bus_id,order):
     
     bus=Bus.objects.get(id=bus_id)
@@ -118,7 +139,7 @@ def delete_bus_stand(request,bus_id,order):
         
     return redirect('bus',bus_id=bus_id)
 
-
+@login_required
 def edit_bus_stand(request,bus_id,order):
     orderingIns=OrderingModel.objects.get(id=order)
     

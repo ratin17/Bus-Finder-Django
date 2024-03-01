@@ -3,7 +3,8 @@ from django.db import models
 # Create your models here.
 
 class Area(models.Model):
-    a_name=models.CharField(max_length=50)
+    a_no=models.PositiveIntegerField(unique=True)
+    a_name=models.CharField(max_length=100)
     
     class Meta:
         ordering=['a_name']
@@ -12,12 +13,12 @@ class Area(models.Model):
         return self.a_name
 
 
-
 class Stand(models.Model):
-    s_name=models.CharField(max_length=50)
+    s_no=models.PositiveIntegerField(unique=True)
+    s_name=models.CharField(max_length=100)
     lati = models.FloatField(blank=True,null=True)
     longi = models.FloatField(blank=True,null=True)
-    area=models.ForeignKey(Area,on_delete=models.CASCADE,blank=True,null=True)
+    area=models.ManyToManyField(Area)
     
     class Meta:
         ordering=['s_name']

@@ -1,20 +1,55 @@
 {% extends "base.html" %}
 
 {% block page_header %}
+
   <h1>Buses</h1>
+  {% if user.is_authenticated %}
+    <a class="btn bg-parent p-3 shadow border border-light text-nowrap" href="{% url 'new_bus' %}">Add a new Bus</a>
+  {% else %}
+    <a class="btn bg-parent p-3 shadow border border-light text-nowrap disabled" href="{% url 'new_bus' %}">Add a new Bus</a>
+  {% endif %}
 {% endblock page_header %}
 
-{% block content %}
-  <ul>
-    {% for bus in buses %}
-      <li><h3>
-        <a href="{% url 'bus' bus.id %}">{{ bus.b_name }}</a>
-      </h3></li>
-    {% empty %}
-      <li><h3>No bus have been added yet.</h3></li>
-    {% endfor %}
-  </ul>
 
-  <h3><a href="{% url 'new_bus' %}">Add a new bus</a></h3>
+{% block content %}
+
+  <table class="table table-success table-striped">
+    <thead>
+      <tr>
+        <th scope="col">Bus</th>
+        <th scope="col">From</th>
+        <th scope="col">To</th>
+        <th scope="col">Rating</th>
+        <th scope="col">Action</th>
+      </tr>
+      </tr>
+    </thead>
+    <tbody>
+      {% for bus in buses %}
+        <tr>
+          <td><a style="text-decoration: none !important;" href="{% url 'bus' bus.object.id %}"><b>{{ bus.object.b_name }}</b></a></td>
+          <td>{{ bus.from }}</td>
+          <td>{{ bus.to }}</td>
+          <td>{{ bus.object.rating }}</td>
+          {% if user.is_authenticated %}
+          <td>
+            <a class="btn btn-outline-primary mx-2" href="{% url 'bus' bus.object.id %}">Details</a>
+            <a class="btn btn-outline-dark mx-2" href="{% url 'edit_bus' bus.object.id %}">Edit</a>
+            <a class="btn btn-outline-danger mx-2" href="{% url 'edit_bus' bus.object.id %}">Delete</a>
+          </td>
+          {% else %}
+          <td>
+            <a class="btn btn-outline-primary mx-2" href="{% url 'bus' bus.object.id %}">Details</a>
+            <a class="btn btn-outline-dark mx-2 disabled"  href="{% url 'edit_bus' bus.object.id %}">Edit</a>
+            <a class="btn btn-outline-danger mx-2 disabled" href="{% url 'edit_bus' bus.object.id %}">Delete</a>
+          </td>
+            
+          {% endif %}
+        </tr>
+      {% endfor %}
+      
+    </tbody>
+  </table>
+
 
 {% endblock content %}

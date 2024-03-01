@@ -31,6 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'accounts',
     'Buses',
     'Stands',
     'FindBus',
@@ -103,6 +104,10 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
+LOGIN_REDIRECT_URL = 'manage:manage'
+LOGOUT_REDIRECT_URL = 'findBus'
+
 
 
 # Internationalization

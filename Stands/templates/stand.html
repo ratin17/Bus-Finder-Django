@@ -1,19 +1,31 @@
-{% extends "base.html" %}
+{% extends "base.html" %} {% block page_header %}
 
-{% block page_header %}
-  <h1>{{ stand.s_name }}</h1>
-{% endblock page_header %}
+<h2>{{ stand.s_name }}</h2>
 
-{% block content %}
-  <ul>
-    {% for bus in buses %}
-      <li><h3>
-        <h5>{{ bus.b_name }}</h5>
-      </h3></li>
-    {% empty %}
-      <li><h3>No bus have been added yet for this Stand.</h3></li>
-    {% endfor %}
-  </ul>
+{% if user.is_authenticated %}
+<a
+  class="btn bg-parent p-3 shadow border border-light text-nowrap"
+  href="{% url 'stands:edit_stand' stand.id %}"
+  >Edit</a
+>
+{% else %}
+<a
+  class="btn bg-parent p-3 shadow border border-light text-nowrap disabled"
+  href="{% url 'stands:edit_stand' stand.id %}"
+  >Edit</a
+>
+{% endif %} {% endblock page_header %} {% block content %}
+{% for bus in buses %}
 
+<div class="d-grid gap-2 col-sm-6 col-md-3 mx-auto">
+  <a
+    href="{% url 'bus' bus.id %}"
+    class="btn shadow p-2 mb-3 border border-3 text-black"
+    >{{ bus.b_name }}</a>
+</div>
+
+{% empty %}
+<h3>No Bus found !</h3>
+{% endfor %}
 
 {% endblock content %}

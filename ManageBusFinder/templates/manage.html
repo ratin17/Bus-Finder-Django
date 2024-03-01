@@ -6,10 +6,37 @@
 
 {% block content %}
   
-  <div class="container mt-5 d-flex justify-content-center">
-    <a href="{% url 'manage:configure' %}">
-        <button type="button" class="btn btn-outline-danger">Re-Config The Database</button>
+  <div class="container mt-5">
+
+    <a href="{% url 'manage:addAreas' %}">
+      <button type="button" class="btn btn-outline-danger">Add Areas</button>
     </a>
+
+    <a href="{% url 'manage:addStands' %}">
+      <button type="button" class="btn btn-outline-danger">Add Stands</button>
+    </a>
+
+    <a href="{% url 'manage:addBuses' %}">
+      <button type="button" class="btn btn-outline-danger">Add Buses</button>
+    </a>
+
+
+    <a href="{% url 'manage:addBusStands' %}">
+      <button type="button" class="btn btn-outline-danger">Add Bus-Stands</button>
+    </a>
+
+
+    <a href="{% url 'manage:remove' %}">
+        <button type="button" class="btn btn-outline-danger">Clean The Database</button>
+    </a>
+
+  
+
+    <a href="{% url 'manage:configure' %}">
+      <button type="button" class="btn btn-outline-danger">Re-Config The Database</button>
+    </a>
+
+
 </div>
 
 {% endblock content %}

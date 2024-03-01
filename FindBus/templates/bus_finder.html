@@ -1,14 +1,41 @@
-{% extends "base.html" %}
-
-{% block page_header %}
-  <h1>Find Bus</h1>
+{% extends "base.html" %} {% block page_header %}
+<h1>Find Bus</h1>
 {% endblock page_header %}
-
 {% block content %}
-  <form method="post" action="{% url 'findBus' %}">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Submit</button>
-  </form>
+
+  <div class="bg-gradient bg-white">
+
+    <form method="post"  action="{% url 'findBus' %}">
+
+      {% csrf_token %}
+
+      <div class="d-grid justify-content-center align-item-center">
+
+        <button class="btn btn-lg btn-outline-secondary mb-3 btn-block disabled">Select Bus Stands to FindBus</button>
+
+        <div data-mdb-input-init class="form-outline mb-4">
+          <label style="width: 50px;" class="form-label" for="{{ form.dept.id_for_label }}">{{ form.dept.label }}</label>
+          {{ form.dept }}
+        </div>
+      
+        <!-- Password input -->
+        <div data-mdb-input-init class="form-outline mb-4">
+          <label style="width: 50px;" class="form-label" for="{{ form.dest.id_for_label }}">{{ form.dest.label }}</label>
+          {{ form.dest }}
+          
+        </div>
+      
+        <!-- Submit button -->
+        <button style="background-color: rgb(11, 136, 167);" type="submit" class="btn btl-lg text-white btn-block"><b>Find Bus</b></button>
+      </div>
+      
+    </form>
+
+  </div>
+
+  
+
+
+
 
 {% endblock content %}

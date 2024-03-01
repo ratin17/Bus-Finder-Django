@@ -10,8 +10,10 @@ def distCalculator(route):
         # stand1_lati=route[i-1].
         if route[i-1].lati and route[i-1].longi and route[i].lati and route[i].longi:
             count+=haversine(route[i-1].lati,route[i-1].longi,route[i].lati,route[i].longi)
-        
+    count=count/1000
+    count=round(count,2)
     return count
+
 
 def busFinder(request):
     if request.method == 'POST':
