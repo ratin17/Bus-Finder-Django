@@ -35,15 +35,21 @@ def bus(request, bus_id):
     
     bus_ordering=bus.orderingmodel_set.order_by('order')
     
+    d={
+        'obj':bus,
+        'from':bus.orderingmodel_set.order_by('order')[0].stand.s_name,
+        'to':bus.orderingmodel_set.order_by('order').all().last().stand.s_name,
+        }
+    
     stands=[]
 
     for b in bus_ordering:
-        info=(b.order,b.stand)
+        info={'order':b.order,'obj':b.stand}
         stands.append(info)
     
     # print(bus,stands)
 
-    context = {'bus': bus, 'stands': stands}
+    context = {'bus': d, 'stands': stands}
     
     return render(request, 'bus.html', context)
 
@@ -141,7 +147,11 @@ def delete_bus_stand(request,bus_id,order):
 
 @login_required
 def edit_bus_stand(request,bus_id,order):
-    orderingIns=OrderingModel.objects.get(id=order)
+    
+    bus = Bus.objects.filter(id=bus_id).first()
+    orderingIns=OrderingModel.objects.filter(bus=bus,order=order).first()
+    
+    print(orderingIns)
     
     if request.method != 'POST':
         form = EditBusStandForm(instance=orderingIns)
@@ -157,3 +167,4 @@ def edit_bus_stand(request,bus_id,order):
     
     context = {'form': form,'bus_id':bus_id,'order_id':order}
     return render(request, 'edit_bus_stand.html', context)
+

@@ -4,5 +4,5 @@ from . import views
 
 urlpatterns = [
     path('', views.busFinder, name='findBus'),
-    path('result/', views.result, name='result'),
+    path('search/result/<int:id1>/<int:id2>/', views.result, name='result'),
 ]

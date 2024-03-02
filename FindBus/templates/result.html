@@ -1,7 +1,7 @@
-{% extends "base.html" %} {% block page_header %}
-<h1>
-  {{ dept.s_name }} <small style="color: blueviolet">to</small> {{ dest.s_name}}
-</h1>
+{% extends "base.html" %} 
+
+{% block page_header %}
+<h1>{{ dept.s_name }} <small style="color: blueviolet">to</small> {{ dest.s_name}}</h1>
 {% endblock page_header %}
 
 {% block content %}
@@ -9,9 +9,10 @@
 
     <div class="container overflow-wrap shadow p-3 mb-5 bg-body-tertiary rounded border border-info mb-3">
       <div class="row">
-        <div class="col-md-8">
+        <div class="col-md-4">
           <h4 class="text-right"><b>{{bus.bus.b_name}}</b></h4>
         </div>
+        <div class="col-md-4">Apprx. Time: <b>{{ bus.busTime }}</b></div>
         <div class="col-md-4">Apprx. Distance: <b>{{ bus.dist }}</b> KM</div>
       </div>
 
