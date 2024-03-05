@@ -1,6 +1,7 @@
 from django.shortcuts import render,redirect
+from .models import Suggestion
 from .forms import BusFinderForm
-from Buses.models import Bus
+from Buses.models import Bus,OrderingModel
 from Stands.models import Stand
 from django.contrib import messages
 from Stands.views import haversine
@@ -200,3 +201,89 @@ def result(request,id1,id2):
     context = {'buses': resBuses, 'dept':dept, 'dest':dest}
     
     return render(request,'result.html',context)
+
+
+
+def suggest_bus_stand(request,bus_id,stand_id):
+    
+    bus=Bus.objects.filter(id=bus_id).first()
+    stand=Stand.objects.filter(id=stand_id).first()
+    
+    if bus and stand:
+        order=OrderingModel.objects.filter(bus=bus,stand=stand).first().order
+        if order:
+            context={'bus':bus,'stand':stand,'order':order}
+            return render(request, 'suggest_bus_stand.html', context)
+        else:
+            context={'error':f"Order is not Found !"}
+    else:
+        context={'error':f"Bus or Stand is not Found !"}
+       
+    return render(request, 'error.html', context)
+
+def suggest_bus(request,bus_id):
+    
+    bus = Bus.objects.get(id=bus_id)
+    
+    if bus:
+    
+        bus_ordering=bus.orderingmodel_set.order_by('order')
+        
+        stands=[]
+
+        for b in bus_ordering:
+            stands.append(b.stand)
+        
+
+        context = {'bus': bus, 'stands': stands}
+        return render(request, 'suggest_bus.html', context)
+        
+    else:
+        context={'error':f"Bus is not Found !"}
+       
+    return render(request, 'error.html', context)
+
+
+def create_suggestion(request,switch,p1,p2,p3,p4):
+    
+    if switch==1:
+        bus=Bus.objects.filter(id=p1).first()
+        stand=Stand.objects.filter(id=p2).first()
+        
+        if bus and stand:
+            title=f"{bus.b_name} Doesn't Go through {stand.s_name} !"
+            Suggestion.objects.create(title=title,s_type='predefinned')
+            return redirect('success_suggestion','success')
+        else:
+            return redirect('success_suggestion','error')
+        
+    elif switch==2:
+        bus=Bus.objects.filter(id=p1).first()
+        stand=Stand.objects.filter(id=p2).first()
+        
+        if bus and stand:
+            title=f"{bus.b_name} Goes through {stand.s_name} but Order Should not be {p3} !"
+            Suggestion.objects.create(title=title,s_type='predefinned')
+            return redirect('success_suggestion','success')
+        else:
+            return redirect('success_suggestion','error')
+        
+    elif switch==3:
+        bus=Bus.objects.filter(id=p1).first()
+        
+        if bus:
+            title=f"Bus Name ( {bus.b_name} ) is Incorrect ! "
+            headline=f"Suggestion for {{ bus.b_name }} Submitted Successfully !"
+            Suggestion.objects.create(title=title,s_type='predefinned')
+            return redirect('feedback',headline,title,'success')
+        else:
+            return redirect('success_suggestion','error')
+    
+    return redirect('buses')
+
+
+def feedback(request,msg,suggest):
+    
+    if suggest=='success':
+        context={'suggestion':msg,'headline':"headline"}
+        return render(request,'suggestion_success.html',context)

@@ -10,4 +10,6 @@ urlpatterns = [
     path('add_stand_for_bus/<int:bus_id>/', views.add_stand_for_bus, name='add_stand_for_bus'),
     path('edit/<int:bus_id>/<int:order>/', views.edit_bus_stand, name='edit_bus_stand'),
     path('delete/<int:bus_id>/<int:order>/', views.delete_bus_stand, name='delete_bus_stand'),
+    
+    
 ]

@@ -126,3 +126,7 @@ def edit_stand(request,stand_id):
     
     context = {'form': form,'stand':stand}
     return render(request, 'edit_stand.html', context)
+
+
+
+    
