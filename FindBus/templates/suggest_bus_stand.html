@@ -17,7 +17,7 @@
   <div class="card text-center">
     <div class="card-header">Choose Suggestions from below or Send Custom Suggestion</div>
     <div class="card-body">
-      <a href="{% url 'bus' bus.id  %}" class="btn bg-parent btn-success border border-3 border-light shadow-lg">Cancel Suggestion</a>
+      <a style="background-color: rgb(9, 129, 119);" href="{% url 'suggest_custom' %}" class="btn border border-3 border-light text-white shadow-lg">Send Custom Suggestion</a>
     </div>
   </div>
 
@@ -28,14 +28,15 @@
     <div class="row gx-2">
         <button class="col gy-3 col-10 col-sm-10 btn shadow border text-black text-center">{{ bus.b_name}} Doesn't Go through {{ stand.s_name }} !</button>
         
-        <a href="{% url 'create_suggestion' 1 bus.id stand.id 0 0 %}" class="col gy-3 col-2 col-sm-2 btn shadow border text-black d-flex justify-content-center align-items-center">Send</a>
+        <a href="{% url 'feedback_success' bus.b_name|add:"Doesn't Go through "|add:stand.s_name|add:" !" bus.b_name  %}" class="col gy-3 col-2 col-sm-2 btn shadow border text-black d-flex justify-content-center align-items-center">Send</a>
     </div>
 
 
     <div class="row gx-2">
-        <button class="col gy-3 col-10 col-sm-10 btn shadow border text-black text-center">{{ bus.b_name}} Goes through {{ stand.s_name }}, but order({{order}}) is not correct !</button>
-        
-        <a href="{% url 'create_suggestion' 2 bus.id stand.id order 0 %}" class="col gy-3 col-2 col-sm-2 btn shadow border text-black d-flex justify-content-center align-items-center">Send</a>
+      <button class="col gy-3 col-10 col-sm-10 btn shadow border text-black text-center">{{ bus.b_name}} Goes through {{ stand.s_name }}, but order({{order}}) is not correct !</button>
+      {% with order=order|stringformat:"d" %}
+        <a href="{% url 'feedback_success' bus.b_name|add:" Goes through "|add:stand.s_name|add:", but order ( "|add:order|add:" ) is not correct !" bus.b_name %}" class="col gy-3 col-2 col-sm-2 btn shadow border text-black d-flex justify-content-center align-items-center">Send</a>
+      {% endwith %}
     </div>
 
   </div>

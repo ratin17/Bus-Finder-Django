@@ -5,41 +5,59 @@
 {% endblock page_header %}
 
 {% block content %}
+
   {% for bus in buses %}
 
-    <div class="container overflow-wrap shadow p-3 mb-5 bg-body-tertiary rounded border border-info mb-3">
+    <div class="container mb-3 col-12 shadow rounded border border-info">
+
       
-      <div class="row">
-        <div class="col-md-4">
-          <h4 class="text-right"><b>{{bus.bus.b_name}}</b></h4>
-        </div>
-        <div class="col-md-4">Apprx. Time: <b>{{ bus.busTime }}</b></div>
-        <div class="col-md-4">Apprx. Distance: <b>{{ bus.dist }}</b> KM</div>
+      <div class="row mb-3">
+
+        <a href="{% url 'bus' bus.obj.id %}" class="col gy-3 col-12 col-sm-12 col-md-3 col-lg-3 btn shadow border text-black d-flex justify-content-center align-items-center">{{ bus.obj.b_name }}</a>
+
+        <a class="col gy-3 col-6 col-sm-6 col-md-3 col-lg-3 btn text-black d-flex justify-content-center align-items-center">{{ bus.busTime }}</a>
+
+        <a class="col gy-3 col-6 col-sm-6 col-md-3 col-lg-3 btn text-black d-flex justify-content-center align-items-center">{{ bus.dist }}</a>
+
+        <a href="{% url 'suggest_result' dept.id dest.id bus.obj.id bus.dist|stringformat:"f" bus.busTime %}" class="col gy-3 col-12 col-sm-12 col-md-3 col-lg-3 btn shadow border text-black d-flex justify-content-center align-items-center">Suggest Correction</a>
+
+
       </div>
 
-      <div class="row">
-        <div class="col-sm-12 d-flex align-items-center flex-wrap">
-          {% for stand in bus.route %}
 
+
+
+      <div class="row">
+
+        <div class="col col-12 d-flex align-items-center flex-wrap">
+          {% for stand in bus.route %}
+          
             {% if forloop.first %}
               <p class="border border-primary rounded-pill p-2 text-nowrap text-white" style="background-color: #20b35d">{{ stand.s_name }}</p>
-              <p class="mx-2"><i class="fas fa-arrow-right"></i></p>
+              <p class="mx-1"><i class="fas fa-arrow-right"></i></p>
             {% elif forloop.last %}
-            <p class="border border-primary rounded-pill p-2 text-nowrap text-white" style="background-color: #20b35d">{{ stand.s_name }}</p>
+              <p class="border border-primary rounded-pill p-2 text-nowrap text-white" style="background-color: #20b35d">{{ stand.s_name }}</p>
             {% else %}
-            <p class="border border-primary rounded-pill p-2 text-nowrap">{{ stand.s_name }}</p>
-            <p class="mx-2"><i class="fas fa-arrow-right"></i></p>
+              <p class="border border-primary rounded-pill p-2 text-nowrap">{{ stand.s_name }}</p>
+              <p class="mx-1"><i class="fas fa-arrow-right"></i></p>
             {% endif %}
 
           {% endfor %}
-
+            
         </div>
+
       </div>
+
+
     </div>
 
     {% empty %}
-    <li><h3>No bus Found !</h3></li>
+      <li><h3>No bus Found !</h3></li>
+
 {% endfor %}
+
+
+
 <div class="container mt-5 d-flex justify-content-center">
     <a href="{% url 'findBus' %}">
       <button class="btn bg-gradient bg-primary text-white text-lg">Make Another Search</button>

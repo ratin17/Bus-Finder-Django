@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+
+{% block page_header %}
+
+  <h3>Suggestions for : From {{dept.s_name}} to {{dest.s_name}} by {{ bus.b_name }}  </h3>
+  
+  <a class="btn bg-parent p-3 shadow border border-light text-nowrap" href="{% url 'findBus' %}" >Cancel</a>
+  
+
+{% endblock page_header %}
+
+
+
+<!-- Block Section -->
+{% block content %}
+
+    <div class="card text-center">
+        <div class="card-header">Choose Suggestions from below or Send Custom Suggestion</div>
+        <div class="card-body">
+        <a style="background-color: rgb(9, 129, 119);"href="{% url 'suggest_custom' %}" class="btn border border-3 text-white border-light shadow-lg">Send Custom Suggestion</a>
+        </div>
+    </div>
+
+
+
+    <div class="container col-12 col-sm-10 col-md-10 col-lg-10 text-center">
+
+        <div class="row gx-2">
+            <button class="col gy-3 col-12 btn btn-secondary shadow border text-white text-center">Travel Time and Distance Related Suggestions</button>
+        </div>
+
+        <div class="row gx-2">
+            <button class="col gy-3 col-10 col-sm-10 btn shadow border text-black text-center">{{ bus.b_name }} takes more time than {{busTime}} to reach {{dest.s_name}} from {{dept.s_name}} </button>
+            <a href="{% url 'feedback_success' bus.b_name|add:' takes more time than '|add:busTime|add:' to reach '|add:dest.s_name|add:' from '|add:dept.s_name ' : From '|add:dept.s_name|add:' to '|add:dest.s_name|add:' by '|add:bus.b_name %}" class="col gy-3 col-2 col-sm-2 btn shadow border text-black d-flex justify-content-center align-items-center">Send</a>
+        </div>
+
+
+
+        <div class="row gx-2">
+            <button class="col gy-3 col-10 col-sm-10 btn shadow border text-black text-center">{{ bus.b_name }} takes less time than {{busTime}} to reach {{dest.s_name}} from {{dept.s_name}} </button>
+            <a href="{% url 'feedback_success' bus.b_name|add:' takes less time than '|add:busTime|add:' to reach '|add:dest.s_name|add:' from '|add:dept.s_name ' : From '|add:dept.s_name|add:' to '|add:dest.s_name|add:' by '|add:bus.b_name %}" class="col gy-3 col-2 col-sm-2 btn shadow border text-black d-flex justify-content-center align-items-center">Send</a>
+        </div>
+
+
+        <div class="row gx-2">
+            <button class="col gy-3 col-10 col-sm-10 btn shadow border text-black text-center">Distance between {{dept.s_name}} and {{dest.s_name}} is more than {{dist}} </button>
+            <a href="{% url 'feedback_success' 'Distance between '|add:dept.s_name|add:' and '|add:dest.s_name|add:' is more than '|add:dist ' : From '|add:dept.s_name|add:' to '|add:dest.s_name|add:' by '|add:bus.b_name %}" class="col gy-3 col-2 col-sm-2 btn shadow border text-black d-flex justify-content-center align-items-center">Send</a>
+        </div>
+
+
+        <div class="row gx-2">
+            <button class="col gy-3 col-10 col-sm-10 btn shadow border text-black text-center">Distance between {{dept.s_name}} and {{dest.s_name}} is less than {{dist}} </button>
+            <a href="{% url 'feedback_success' 'Distance between '|add:dept.s_name|add:' and '|add:dest.s_name|add:' is less than '|add:dist ' : From '|add:dept.s_name|add:' to '|add:dest.s_name|add:' by '|add:bus.b_name %}" class="col gy-3 col-2 col-sm-2 btn shadow border text-black d-flex justify-content-center align-items-center">Send</a>
+        </div>
+
+
+        <div class="row gx-2">
+            <button class="col gy-3 col-12 btn btn-secondary shadow border text-white text-center">Bus and Stands Related Suggestions</button>
+        </div>
+
+
+        {% for stand in stands %}
+      
+            <div class="row gx-2">
+                <button class="col gy-3 col-10 col-sm-10 btn shadow border text-black text-center">{{ bus.b_name }} doesn't go through {{stand.s_name }}</button>
+
+                <a href="{% url 'feedback_success' bus.b_name|add:"  doesn't go through "|add:stand.s_name ' : From '|add:dept.s_name|add:' to '|add:dest.s_name|add:' by '|add:bus.b_name %}" class="col gy-3 col-2 col-sm-2 btn shadow border text-black d-flex justify-content-center align-items-center">Send</a>
+
+            </div>
+
+        {% endfor %}
+
+
+        
+    </div>
+
+{% endblock content %}
+
+
+
+

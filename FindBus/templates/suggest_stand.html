@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+
+{% block page_header %}
+
+  <h3>Suggestions for {{ stand.s_name }}</h3>
+  
+  <a class="btn bg-parent p-3 shadow border border-light text-nowrap" href="{% url 'stands:stand' stand.id  %}" >Cancel</a>
+  
+
+{% endblock page_header %}
+
+
+
+<!-- Block Section -->
+{% block content %}
+
+  <div class="card text-center">
+    <div class="card-header">Choose Suggestions from below or Send Custom Suggestion</div>
+    <div class="card-body">
+      <a style="background-color: rgb(9, 129, 119);"href="{% url 'suggest_custom' %}" class="btn border border-3 text-white border-light shadow-lg">Send Custom Suggestion</a>
+    </div>
+  </div>
+
+
+
+  <div class="container col-12 col-sm-10 col-md-10 col-lg-10 text-center">
+
+    <div class="row gx-2">
+        <button class="col gy-3 col-12 btn btn-secondary shadow border text-white text-center">Stand info Related Suggestions</button>
+    </div>
+
+    <div class="row gx-2">
+        <button class="col gy-3 col-10 col-sm-10 btn shadow border text-black text-center">There is no bus stand named {{ stand.s_name }} !</button>
+        <a href="{% url 'feedback_success' 'There is no bus stand named '|add:stand.s_name|add:' ! ' stand.s_name %}" class="col gy-3 col-2 col-sm-2 btn shadow border text-black d-flex justify-content-center align-items-center">Send</a>
+    </div>
+
+
+    <div class="row gx-2">
+        <button class="col gy-3 col-10 col-sm-10 btn shadow border text-black text-center">Lattitude of {{ stand.s_name }} should not be {{ stand.lati }} !</button>
+        {% with lati=stand.lati|stringformat:"f" %}
+        <a href="{% url 'feedback_success' 'Lattitude of '|add:stand.s_name|add:' should not be '|add:lati|add:' ! ' stand.s_name %}" class="col gy-3 col-2 col-sm-2 btn shadow border text-black d-flex justify-content-center align-items-center">Send</a>
+        {% endwith %}
+    </div>
+
+    
+    <div class="row gx-2">
+        <button class="col gy-3 col-10 col-sm-10 btn shadow border text-black text-center">Longitude of {{ stand.s_name }} should not be {{ stand.longi }} !</button>
+        {% with longi=stand.longi|stringformat:"f" %}
+        <a href="{% url 'feedback_success' 'Longitude of '|add:stand.s_name|add:' should not be '|add:longi|add:' ! ' stand.s_name %}" class="col gy-3 col-2 col-sm-2 btn shadow border text-black d-flex justify-content-center align-items-center">Send</a>
+        {% endwith %}
+    </div>
+
+    <div class="row gx-2">
+        <button class="col gy-3 col-12 btn btn-secondary shadow border text-white text-center">Stand Area Related Suggestions</button>
+    </div>
+
+    {% for area in stand.area.all %}
+
+        <div class="row gx-2">
+            <button class="col gy-3 col-10 col-sm-10 btn shadow border text-black text-center">Stand: {{ stand.s_name }} should not be in Area: {{ area.a_name }} !</button>
+            <a href="{% url 'feedback_success' 'There is no bus stand named '|add:stand.s_name|add:' ! ' stand.s_name %}" class="col gy-3 col-2 col-sm-2 btn shadow border text-black d-flex justify-content-center align-items-center">Send</a>
+        </div>
+
+    {% endfor %}
+   
+    
+  </div>
+
+{% endblock content %}
+
+
+
+

@@ -27,7 +27,8 @@ def haversine(lat1, lon1, lat2, lon2):
 def stands(request):
     
     stands = Stand.objects.all()
-    print('##### ### ',stands)
+    # print('##### ### ',stands)
+    
     
     context = {'stands': stands}
     return render(request, 'stands.html', context)

@@ -4,60 +4,84 @@
 
   <h1>Stands</h1>
 
-  {% if user.is_authenticated %}
-    <a class="btn bg-parent p-3 shadow border border-light text-nowrap" href="{% url 'stands:new_stand' %}">Add a new Stand</a>
-  {% else %}
-    <a class="btn bg-parent p-3 shadow border border-light text-nowrap disabled" href="{% url 'stands:new_stand' %}">Add a new Stand</a>
-  {% endif %}
+  <a class="btn bg-parent p-3 shadow border border-light text-nowrap" href="{% url 'findBus' %}">Find Bus</a>
+
 
 {% endblock page_header %}
 
+<!-- Block Section -->
 {% block content %}
 
-{% for stand in stands %}
-
-<div class="d-grid gap-2 col-6 mx-auto">
-  <div d-flex>
-    <a
-      style="width: 150px"
-      href="{% url 'stands:stand' stand.id %}"
-      class="btn shadow p-2 mb-3 border border-3 text-black"
-      >{{ stand.s_name }}</a
-    >
-
-    {% if user.is_authenticated %}
-    <a
-      style="background-color: rgb(8, 124, 153)"
-      href="{% url 'stands:edit_stand' stand.id %}"
-      class="btn shadow p-2 mb-3 border rounded-pill border-3 text-white"
-      >Edit</a
-    >
-
-    <a
-      style="background-color: rgb(184, 16, 16)"
-      href="{% url 'stands:edit_stand' stand.id %}"
-      class="btn shadow p-2 mb-3 border rounded-pill border-3 text-white"
-      >Delete</a>
-
-    {% else %}
-    <a
-      style="background-color: rgb(8, 124, 153)"
-      href="{% url 'stands:edit_stand' stand.id %}"
-      class="btn shadow p-2 mb-3 border rounded-pill border-3 text-white disabled"
-      >Edit</a
-    >
-
-    <a
-      style="background-color: rgb(184, 16, 16)"
-      href="{% url 'stands:edit_stand' stand.id %}"
-      class="btn shadow p-2 mb-3 border rounded-pill border-3 text-white disabled"
-      >Delete</a
-    >
-
-    {% endif %}
+  <div class="card text-center">
+    <div class="card-header">Stands List</div>
+    <div class="card-body">
+      <h4 class="card-title">See Stands in the List and provide suggestions if found anything wrong</h4> 
+    </div>
   </div>
-</div>
 
-{% empty %}
-<li><h3>No Stand have been added yet.</h3></li>
-{% endfor %} {% endblock content %}
+  <div class="container col-12 col-sm-12 col-md-12 col-lg-10 text-center">
+    
+    <div class="row gx-3">
+
+      <a style="background-color: rgb(28, 8, 141);" class="col gy-3 col-12 col-sm-12 col-md-4 col-lg-4 btn shadow border text-white d-flex justify-content-center align-items-center"><b>Stand</b></a>
+
+
+      <a style="background-color: rgb(28, 8, 141);" class="col gy-3 col-12 col-sm-12 col-md-8 col-lg-8 btn shadow border text-white d-flex justify-content-center align-items-center"><b>Actions</b></a>
+
+    </div>
+
+    {% for stand in stands %}
+    <div class="row gx-3">
+
+      <a href="{% url 'stands:stand' stand.id %}" class="col gy-3 col-12 col-sm-12 col-md-4 col-lg-4 btn shadow border text-black d-flex justify-content-center align-items-center">{{ stand.s_name }}</a>  
+
+      {% if user.is_authenticated %}
+
+        <a href="{% url 'suggest_stand' stand.id %}" class="col gy-3 col-8 col-sm-8 col-md-4 col-lg-4 btn bg-warning text-white rounded-pill shadow d-flex justify-content-center align-items-center">Suggest Correction</a>
+
+        <a href="{% url 'stands:edit_stand' stand.id %}" class="col gy-3 col-2 col-sm-2 col-md-2 col-lg-2 btn bg-warning text-white rounded-pill shadow d-flex justify-content-center align-items-center">_Edit</a>
+
+        <a href="{% url 'stands:edit_stand' stand.id %}" class="col gy-3 col-2 col-sm-2 col-md-2 col-lg-2 btn bg-danger text-white rounded-pill shadow d-flex justify-content-center align-items-center">_Delete</a>
+
+      {% else %}
+        <a style="background-color: rgb(204, 174, 243);" href="{% url 'suggest_stand' stand.id %}" class="col gy-3 col-8 col-sm-8 col-md-4 col-lg-4 btn text-black rounded-pill shadow d-flex justify-content-center align-items-center">Suggest Correction</a>
+
+        <a style="background-color: rgba(198, 219, 6, 0.966);" class="col gy-3 col-2 col-sm-2 col-md-2 col-lg-2 btn text-white text-center rounded-pill shadow d-flex justify-content-center align-items-center" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="fas fa-edit text-center"></i></a>
+
+        <a style="background-color: rgba(241, 20, 131, 0.966);" class="col gy-3 col-2 col-sm-2 col-md-2 col-lg-2 btn text-white rounded-pill shadow d-flex justify-content-center align-items-center" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="fas fa-trash"></i></a>
+      
+      {% endif %}
+
+    </div>
+
+    {% empty %}
+      <h3>No Stand have been added yet !</h3>
+    {% endfor %}
+
+  </div>
+
+  <!-- Modal -->
+  <div
+    class="modal fade"
+    id="exampleModal"
+    tabindex="-1"
+    aria-labelledby="exampleModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel"><i class="fas fa-exclamation-triangle mx-2"></i>Login Required</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          You Must log in as an Admin to complete this Action !
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+{% endblock content %}

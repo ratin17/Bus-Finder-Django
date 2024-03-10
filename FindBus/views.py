@@ -1,6 +1,7 @@
 from django.shortcuts import render,redirect
+from django.shortcuts import get_object_or_404
 from .models import Suggestion
-from .forms import BusFinderForm
+from .forms import BusFinderForm,SuggestionForm
 from Buses.models import Bus,OrderingModel
 from Stands.models import Stand
 from django.contrib import messages
@@ -9,8 +10,10 @@ from Stands.views import haversine
 import math
 from django.utils import timezone
 
-MPK=5 # should not change
+MPK=5 # should not be changed
 BRC=5 # Can be changed if want to change bus rating priority
+
+
 
 Holiday=[
     #Index Escaper
@@ -56,6 +59,8 @@ Holiday=[
     
 ]
 
+
+
 timeMap=[
     
     # 0 Monday
@@ -83,6 +88,8 @@ timeMap=[
     {'0':0.6,'1':0.5,'2':0.5,'3':0.5,'4':0.5,'5':0.5,'6':0.6,'7':0.8,'8':0.8,'9':0.8,'10':0.8,'11':0.7,'12':0.7,'13':0.8,'14':0.8,'15':0.9,'16':1.0,'17':1.0,'18':1.1,'19':1.2,'20':1.2,'21':1.2,'22':1.1,'23':0.7},
 ]
 
+
+
 def distCalculator(route):
     count=0.0
     for i in range(1,len(route)):
@@ -92,6 +99,7 @@ def distCalculator(route):
     count=count/1000
     count=round(count,2)
     return count
+
 
 
 def getTimeCo():
@@ -113,6 +121,8 @@ def getTimeCo():
     
     # print("Time Co-efficient: ",timeCof)
     return timeCof
+
+
 
 def busFinder(request):
     if request.method == 'POST':
@@ -138,10 +148,11 @@ def busFinder(request):
     return render(request, 'bus_finder.html', {'form': form})
 
 
+
 def result(request,id1,id2):
     
-    dept=Stand.objects.filter(id=id1).first()
-    dest=Stand.objects.filter(id=id2).first()
+    dept=get_object_or_404(Stand,id=id1)
+    dest=get_object_or_404(Stand,id=id2)
     # print(dept)
     timeCof=getTimeCo()
             
@@ -162,7 +173,7 @@ def result(request,id1,id2):
         if (dept in stands) and (dest in stands):
             # print('// // // // ',bus.b_name)
             d={}
-            d['bus']=bus
+            d['obj']=bus
             
             
             dept_index=stands.index(dept)
@@ -203,11 +214,68 @@ def result(request,id1,id2):
     return render(request,'result.html',context)
 
 
-
-def suggest_bus_stand(request,bus_id,stand_id):
+def suggestResult(request,dept_id,dest_id,bus_id,dist,busTime):
     
-    bus=Bus.objects.filter(id=bus_id).first()
-    stand=Stand.objects.filter(id=stand_id).first()
+    dept = Stand.objects.get(id=dept_id)
+    dest = Stand.objects.get(id=dest_id)
+    bus = Bus.objects.get(id=bus_id)
+    
+    if bus and dept and dest:
+    
+        bus_ordering=bus.orderingmodel_set.order_by('order')
+        
+        stands=[]
+
+        for b in bus_ordering:
+            stands.append(b.stand)
+        
+
+        dept_index=stands.index(dept)
+        dest_index=stands.index(dest)
+        
+        if dept_index<dest_index:
+            stands=stands[dept_index:dest_index+1]
+        elif dest_index==0:
+            stands=stands[dept_index::-1]
+        else:
+            stands=stands[dept_index:dest_index-1:-1]
+        
+        context = {'bus': bus, 'stands': stands,'dept':dept,'dest':dest,'dist':dist,'busTime':busTime}
+        print(context)
+        return render(request, 'suggest_result.html', context)
+        
+    else:
+        context={'error':f"Bus or Stands are not Found !"}
+       
+    return render(request, 'error.html', context)
+
+
+
+def suggestCustom(request):
+    
+    if request.method=="POST":
+        form=SuggestionForm(data=request.POST)
+        if form.is_valid():
+            new_suggestion=form.save(commit=False)
+            new_suggestion.s_type='custom'
+            new_suggestion.save()
+            msg=new_suggestion.title
+            # print(msg)
+            return redirect('feedback_custom',msg)
+        else:
+            msg="Error during the submission of Custom-suggestion !"
+            return redirect('feedback_error',msg)
+    else:
+        form=SuggestionForm()
+        context={'form':form}
+    return render(request,'suggestion_custom.html',context)
+
+
+
+def suggestBusStand(request,bus_id,stand_id):
+    
+    bus=get_object_or_404(Bus,id=bus_id)
+    stand=get_object_or_404(Stand,id=stand_id)
     
     if bus and stand:
         order=OrderingModel.objects.filter(bus=bus,stand=stand).first().order
@@ -221,9 +289,11 @@ def suggest_bus_stand(request,bus_id,stand_id):
        
     return render(request, 'error.html', context)
 
-def suggest_bus(request,bus_id):
+
+
+def suggestBus(request,bus_id):
     
-    bus = Bus.objects.get(id=bus_id)
+    bus=get_object_or_404(Bus,id=bus_id)
     
     if bus:
     
@@ -244,46 +314,40 @@ def suggest_bus(request,bus_id):
     return render(request, 'error.html', context)
 
 
-def create_suggestion(request,switch,p1,p2,p3,p4):
+
+def suggestStand(request,stand_id):
     
-    if switch==1:
-        bus=Bus.objects.filter(id=p1).first()
-        stand=Stand.objects.filter(id=p2).first()
-        
-        if bus and stand:
-            title=f"{bus.b_name} Doesn't Go through {stand.s_name} !"
-            Suggestion.objects.create(title=title,s_type='predefinned')
-            return redirect('success_suggestion','success')
-        else:
-            return redirect('success_suggestion','error')
-        
-    elif switch==2:
-        bus=Bus.objects.filter(id=p1).first()
-        stand=Stand.objects.filter(id=p2).first()
-        
-        if bus and stand:
-            title=f"{bus.b_name} Goes through {stand.s_name} but Order Should not be {p3} !"
-            Suggestion.objects.create(title=title,s_type='predefinned')
-            return redirect('success_suggestion','success')
-        else:
-            return redirect('success_suggestion','error')
-        
-    elif switch==3:
-        bus=Bus.objects.filter(id=p1).first()
-        
-        if bus:
-            title=f"Bus Name ( {bus.b_name} ) is Incorrect ! "
-            headline=f"Suggestion for {{ bus.b_name }} Submitted Successfully !"
-            Suggestion.objects.create(title=title,s_type='predefinned')
-            return redirect('feedback',headline,title,'success')
-        else:
-            return redirect('success_suggestion','error')
+    stand = Stand.objects.get(id=stand_id)
     
-    return redirect('buses')
+    
+    if stand:
+        context = {'stand': stand}
+        return render(request, 'suggest_stand.html', context)
+        
+    else:
+        context={'error':f"Stand is not Found with id = {stand_id} !"}
+       
+    return render(request, 'error.html', context)
 
 
-def feedback(request,msg,suggest):
+
+def feedbackCustom(request,msg):
     
-    if suggest=='success':
-        context={'suggestion':msg,'headline':"headline"}
-        return render(request,'suggestion_success.html',context)
+    context={'suggestion':msg,'headline':"Custom Suggestion Submitted !"}
+    return render(request,'feedback_custom.html',context)
+
+
+
+def feedbackSuccess(request,msg,headline):
+
+    Suggestion.objects.create(title=msg,s_type='predefinned')
+    
+    context={'suggestion':msg,'headline':f"Suggestion Submitted for {headline} !"}
+    return render(request,'feedback_success.html',context)
+
+
+
+def feedbackError(request,msg):
+    
+    context={'suggestion':msg,'headline':"Error !"}
+    return render(request,'feedback_error.html',context)

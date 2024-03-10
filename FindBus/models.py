@@ -14,6 +14,8 @@ class Suggestion(models.Model):
     isRead=models.BooleanField(default=False)
     time=models.DateTimeField(auto_now=True)
     s_type=models.CharField(max_length=30, choices=CHOICES)
+    name=models.CharField(max_length=50,null=True,blank=True)
+    email=models.EmailField(null=True,blank=True)
     
     class Meta:
         ordering=['-time']

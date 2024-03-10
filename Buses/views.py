@@ -15,7 +15,7 @@ def buses(request):
     buses = Bus.objects.all()
     data=[]
     for bus in buses:
-        dict={'object':bus,
+        dict={'obj':bus,
               'from':bus.orderingmodel_set.order_by('order')[0].stand.s_name,
               'to':bus.orderingmodel_set.order_by('order').all().last().stand.s_name,
               'rating':bus.rating

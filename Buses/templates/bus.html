@@ -5,17 +5,17 @@
   <h1>{{ bus.obj.b_name }}</h1>
 
   {% if user.is_authenticated %}
-    <a class="btn bg-parent p-3 shadow border border-light text-nowrap" href="{% url 'edit_bus' bus.obj.id  %}" >Edit_Bus</a>
+    <a class="btn bg-parent p-3 shadow border border-light text-nowrap" href="{% url 'edit_bus' bus.obj.id  %}">Edit_Bus</a>
   {% else %}
     <a class="btn bg-parent p-3 shadow border border-light text-nowrap" data-bs-toggle="modal" data-bs-target="#exampleModal">Edit Bus</a>
   {% endif %}
 
-   <!-- Modal -->
-   <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">LogIn Required</h5>
+          <h5 class="modal-title" id="exampleModalLabel"><i class="fas fa-exclamation-triangle mx-2"></i>Login Required</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
@@ -30,77 +30,76 @@
 
 {% endblock page_header %}
 
-
-
 <!-- Block Section -->
 {% block content %}
 
-  <div class="card text-center">
-    <div class="card-header">Bus Details</div>
-    <div class="card-body">
-      <h4 class="card-title"><small>Bus Route : </small>{{ bus.from }} <small>to</small> {{ bus.to }} </h4>
-      <p class="card-text">Service : {{ bus.obj.service }}</p>
-      <p class="card-text">Rating : {{ bus.obj.rating }}</p>
-      <a href="{% url 'suggest_bus' bus.obj.id %}" class="btn bg-parent btn-success border border-3 border-light shadow-lg">Suggest Correction</a>
-    </div>
-    <div class="card-footer text-body-secondary"><b>Stands</b></div>
+<div class="card text-center">
+  <div class="card-header">Bus Details</div>
+  <div class="card-body">
+    <h4 class="card-title">
+      <small>Bus Route : </small>{{ bus.from }} <small>to</small> {{ bus.to }}
+    </h4>
+    <p class="card-text">Service : {{ bus.obj.service }}</p>
+    <p class="card-text">Rating : {{ bus.obj.rating }}</p>
+    <a style="background-color: rgb(9, 129, 119);" href="{% url 'suggest_bus' bus.obj.id %}" class="btn border border-3 text-white border-light shadow-lg">Suggest Correction for {{bus.obj.b_name}}</a>
+  </div>
+  <div class="card-footer text-body-secondary"><b>Stands</b></div>
+</div>
+
+<div class="container col-12 col-sm-12 col-md-12 col-lg-10 text-center">
+  {% for stand in stands %}
+  <div class="row gx-3">
+
+    <button class="col gy-3 col-3 col-sm-3 col-md-1 col-lg-1 btn shadow border text-black text-center">{{ stand.order}}</button>
+
+    <a href="{% url 'stands:stand' stand.obj.id %}" class="col gy-3 col-9 col-sm-9 col-md-4 col-lg-4 btn shadow border text-black d-flex justify-content-center align-items-center">{{ stand.obj.s_name }}</a>
+
+    {% if user.is_authenticated %}
+
+      <a href="{% url 'suggest_bus_stand' bus.obj.id stand.obj.id %}" class="col gy-3 col-6 col-sm-6 col-md-3 col-lg-3 btn bg-warning text-white rounded-pill shadow d-flex justify-content-center align-items-center">Suggest Correction</a>
+
+      <a href="{% url 'edit_bus_stand' bus.obj.id stand.order %}" class="col gy-3 col-3 col-sm-3 col-md-2 col-lg-2 btn bg-warning text-white rounded-pill shadow d-flex justify-content-center align-items-center">_Edit</a>
+
+      <a href="{% url 'edit_bus_stand' bus.obj.id stand.order %}" class="col gy-3 col-3 col-sm-3 col-md-2 col-lg-2 btn bg-danger text-white rounded-pill shadow d-flex justify-content-center align-items-center">_Delete</a>
+
+    {% else %}
+      <a style="background-color: rgb(204, 174, 243);" href="{% url 'suggest_bus_stand' bus.obj.id stand.obj.id %}" class="col gy-3 col-6 col-sm-6 col-md-5 col-lg-5 btn text-black rounded-pill shadow d-flex justify-content-center align-items-center">Suggest Correction</a>
+
+      <a style="background-color: rgb(198, 219, 6);" class="col gy-3 col-3 col-sm-3 col-md-1 col-lg-1 btn text-white text-center rounded-pill shadow d-flex justify-content-center align-items-center" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="fas fa-edit text-center"></i></a>
+
+      <a style="background-color: rgb(241, 20, 130);" class="col gy-3 col-3 col-sm-3 col-md-1 col-lg-1 btn text-white rounded-pill shadow d-flex justify-content-center align-items-center" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="fas fa-trash"></i></a>
+    
+    {% endif %}
+
   </div>
 
+  {% empty %}
+  <h3>No Stand have been added yet !</h3>
+  {% endfor %}
+</div>
 
-
-
-  <div class="container col-12 col-sm-10 col-md-12 col-lg-8 text-center">
-    {% for stand in stands %}
-      <div class="row gx-2 justify-content-center align-item-center">
-
-        <button class="col gy-3 col-3 col-sm-3 col-md-2 col-lg-2 btn shadow border text-black text-center">{{ stand.order}}</button>
-
-        <a href="{% url 'stands:stand' stand.obj.id %}" class="col gy-3 col-9 col-sm-9 col-md-4 col-lg-4 btn shadow border text-black d-flex justify-content-center align-items-center">{{ stand.obj.s_name }}</a>
-
-        {% if user.is_authenticated %}
-          <a href="{% url 'edit_bus_stand' bus.obj.id stand.order %}" class="col gy-3 col-6 col-sm-6 col-md-3 col-lg-3 btn bg-warning text-white rounded-pill shadow d-flex justify-content-center align-items-center">_Edit</a>
-
-          <a href="{% url 'edit_bus_stand' bus.obj.id stand.order %}" class="col gy-3 col-6 col-sm-6 col-md-3 col-lg-3 btn bg-danger text-white rounded-pill shadow d-flex justify-content-center align-items-center">_Delete</a>
-
-        {% else %}
-          <a href="{% url 'suggest_bus_stand' bus.obj.id stand.obj.id %}" class="col gy-3 col-6 col-sm-6 col-md-4 col-lg-4 btn bg-warning text-white text-center rounded-pill shadow" >Suggest Correction</a>
-
-          <a class="col gy-3 col-3 col-sm-3 col-md-1 col-lg-1 btn bg-danger text-white text-center rounded-pill shadow d-flex justify-content-center align-items-center" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="fas fa-edit text-center"></i></a>
-
-          <a class="col gy-3 col-3 col-sm-3 col-md-1 col-lg-1 btn bg-danger text-white rounded-pill shadow d-flex justify-content-center align-items-center" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="fas fa-trash"></i></a>
-        {% endif %}
-      
+<!-- Modal -->
+<div
+  class="modal fade"
+  id="exampleModal"
+  tabindex="-1"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel"><i class="fas fa-exclamation-triangle mx-2"></i>Login Required</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-
-    {% empty %}
-    <h3>No Stand have been added yet !</h3>
-    {% endfor %}
-  </div>
-
-
-
-
-  <!-- Modal -->
-  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">LogIn Required</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          You Must log in as an Admin to complete this Action !
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        </div>
+      <div class="modal-body">
+        You Must log in as an Admin to complete this Action !
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
       </div>
     </div>
   </div>
-
+</div>
 
 {% endblock content %}
-
-
-
-

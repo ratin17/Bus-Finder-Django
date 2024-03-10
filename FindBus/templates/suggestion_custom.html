@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block page_header %}
+
+  <h3>Custom Suggestion</h3>
+  
+  <a class="btn bg-parent p-3 shadow border border-light text-nowrap" href="{% url 'findBus'  %}" >Find Bus</a>
+  
+
+{% endblock page_header %}
+
+
+
+<!-- Block Section -->
+{% block content %}
+
+  <form method="POST" action="{% url 'suggest_custom' %}">
+    {% csrf_token %}
+
+    <div class="container col-9 text-center">
+
+        <div class="form-floating mb-3 shadow">
+            <textarea name="title" class="form-control" id="id_title" style="height: 75px"></textarea>
+            <label for="id_title" class="mb-2">Your Suggestion :</label>
+        </div>
+    
+        <div class="form-floating mb-3 shadow">
+            <input name="name" type="text" class="form-control" id="id_name">
+            <label for="id_name">Your name (Optional) :</label>
+        </div>
+    
+        <div class="form-floating mb-3 shadow">
+            <input name="email" type="email" class="form-control" id="id_email">
+            <label for="id_email">Your E-mail (Optional) :</label>
+        </div>
+    
+    
+        <button type="submit" class="btn btn-primary" style="background-color: rgb(12, 95, 143);">Send Suggestion</button>
+
+    </div>
+    
+
+  </form>
+
+
+
+{% endblock content %}
+
+
+
+
