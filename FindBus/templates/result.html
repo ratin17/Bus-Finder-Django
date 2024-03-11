@@ -1,25 +1,37 @@
 {% extends "base.html" %} 
 
 {% block page_header %}
-<h1>{{ dept.s_name }} <small style="color: blueviolet">to</small> {{ dest.s_name}}</h1>
+<h2>{{ dept.s_name }} <small class="mx-2 text-secondary fs-5"><i class="fas fa-arrow-right"></i></small> {{ dest.s_name}}</h2>
 {% endblock page_header %}
 
 {% block content %}
 
+  <div class="container mb-5 col-6 shadow rounded border border-info">
+    <div class="row justify-content-center">
+      {% if buses|length > 1 %}
+        <a href="#res" class="col col-12 py-2 btn text-black d-flex justify-content-center align-items-center"><h5>{{ buses|length }} Buses Found </h5></a>
+      {% elif buses|length == 1 %}
+        <a class="col col-12 py-2 btn text-black d-flex justify-content-center align-items-center"><h5>{{ buses|length }} Bus Found </h5></a>
+      {% else %}
+        <a class="col col-12 py-2 btn text-black d-flex justify-content-center align-items-center"><h5>No Bus Found ! </h5></a>
+      {% endif %}
+    </div>
+  </div>
+
   {% for bus in buses %}
 
-    <div class="container mb-3 col-12 shadow rounded border border-info">
+    <div id="res" class="container mb-5 col-12 shadow rounded border border-info text-center">
 
       
-      <div class="row mb-3">
+      <div class="row justify-content-center mb-3">
 
-        <a href="{% url 'bus' bus.obj.id %}" class="col gy-3 col-12 col-sm-12 col-md-3 col-lg-3 btn shadow border text-black d-flex justify-content-center align-items-center">{{ bus.obj.b_name }}</a>
+        <a style="background-color:rgb(59, 4, 122)" href="{% url 'bus' bus.obj.id %}" class="col gy-3 col-12 col-sm-12 col-md-3 col-lg-3 btn shadow shadow-lg border border-white text-white d-flex justify-content-center align-items-center"><i class="fas fa-shuttle-van px-2"></i><h5><b>{{ bus.obj.b_name }}</b></h5></a>
 
-        <a class="col gy-3 col-6 col-sm-6 col-md-3 col-lg-3 btn text-black d-flex justify-content-center align-items-center">{{ bus.busTime }}</a>
+        <a class="col gy-3 col-6 col-sm-6 col-md-3 col-lg-3 btn text-black d-flex justify-content-center align-items-center"><i class="far fa-clock px-2"></i>{{ bus.busTime }}</a>
 
-        <a class="col gy-3 col-6 col-sm-6 col-md-3 col-lg-3 btn text-black d-flex justify-content-center align-items-center">{{ bus.dist }}</a>
+        <a class="col gy-3 col-6 col-sm-6 col-md-3 col-lg-3 btn text-black d-flex justify-content-center align-items-center"><i class="fas fa-map px-2"></i>{{ bus.dist }} Km </a>
 
-        <a href="{% url 'suggest_result' dept.id dest.id bus.obj.id bus.dist|stringformat:"f" bus.busTime %}" class="col gy-3 col-12 col-sm-12 col-md-3 col-lg-3 btn shadow border text-black d-flex justify-content-center align-items-center">Suggest Correction</a>
+        <a href="{% url 'suggest_result' dept.id dest.id bus.obj.id bus.dist|stringformat:"0.2f" bus.busTime %}" class="col gy-3 col-12 col-sm-12 col-md-3 col-lg-3 btn btn-secondary shadow border text-white d-flex justify-content-center align-items-center"><i class="fas fa-edit px-2"></i> Suggest Correction</a>
 
 
       </div>
@@ -60,7 +72,7 @@
 
 <div class="container mt-5 d-flex justify-content-center">
     <a href="{% url 'findBus' %}">
-      <button class="btn bg-gradient bg-primary text-white text-lg">Make Another Search</button>
+      <button style="background-color: rgb(8, 71, 131);" class="btn btn-lg text-white text-lg">Make Another Search</button>
     </a>
 </div>
 

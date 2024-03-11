@@ -1,17 +1,38 @@
 
 {% extends "base.html" %}
 
+{% block page_header %}
+    <h3>Login as an ADMIN </h3>
+{% endblock page_header %}
+
 {% block content %}
 
     {% if form.errors %}
         <p> Wrong Username or Password !</p>
     {% endif %}
 
-    <form action="{% url 'accounts:login' %}" method="POST">
-        {% csrf_token %}
 
-        {{ form.as_p }}
-        <button name="submit">Log In</button>
-    </form>
+    <form method="POST" action="{% url 'accounts:login' %}">
+        {% csrf_token %}
+    
+        <div class="container col-9 text-center">
+        
+            <div class="form-floating mb-3 shadow">
+                <input name="username" type="text" class="form-control" id="id_username">
+                <label for="id_usernam">Username *</label>
+            </div>
+        
+            <div class="form-floating mb-3 shadow">
+                <input name="password" type="password" class="form-control" id="id_password">
+                <label for="id_password">Password *</label>
+            </div>
+        
+        
+            <button type="submit" class="btn btn-primary" style="background-color: rgb(12, 95, 143);">Login</button>
+    
+        </div>
+        
+    
+      </form>
 
 {% endblock content %}

@@ -4,7 +4,7 @@
 
   <h3>Suggestions for : From {{dept.s_name}} to {{dest.s_name}} by {{ bus.b_name }}  </h3>
   
-  <a class="btn bg-parent p-3 shadow border border-light text-nowrap" href="{% url 'findBus' %}" >Cancel</a>
+  <a class="btn bg-parent p-3 shadow border border-light text-nowrap" href="{% url 'result' dept.id dest.id %}" >Cancel</a>
   
 
 {% endblock page_header %}
@@ -43,14 +43,14 @@
 
 
         <div class="row gx-2">
-            <button class="col gy-3 col-10 col-sm-10 btn shadow border text-black text-center">Distance between {{dept.s_name}} and {{dest.s_name}} is more than {{dist}} </button>
-            <a href="{% url 'feedback_success' 'Distance between '|add:dept.s_name|add:' and '|add:dest.s_name|add:' is more than '|add:dist ' : From '|add:dept.s_name|add:' to '|add:dest.s_name|add:' by '|add:bus.b_name %}" class="col gy-3 col-2 col-sm-2 btn shadow border text-black d-flex justify-content-center align-items-center">Send</a>
+            <button class="col gy-3 col-10 col-sm-10 btn shadow border text-black text-center">Distance between {{dept.s_name}} and {{dest.s_name}} is more than {{dist}} Km. </button>
+            <a href="{% url 'feedback_success' 'Distance between '|add:dept.s_name|add:' and '|add:dest.s_name|add:' is more than '|add:dist|add:' Km. '   ' : From '|add:dept.s_name|add:' to '|add:dest.s_name|add:' by '|add:bus.b_name %}" class="col gy-3 col-2 col-sm-2 btn shadow border text-black d-flex justify-content-center align-items-center">Send</a>
         </div>
 
 
         <div class="row gx-2">
-            <button class="col gy-3 col-10 col-sm-10 btn shadow border text-black text-center">Distance between {{dept.s_name}} and {{dest.s_name}} is less than {{dist}} </button>
-            <a href="{% url 'feedback_success' 'Distance between '|add:dept.s_name|add:' and '|add:dest.s_name|add:' is less than '|add:dist ' : From '|add:dept.s_name|add:' to '|add:dest.s_name|add:' by '|add:bus.b_name %}" class="col gy-3 col-2 col-sm-2 btn shadow border text-black d-flex justify-content-center align-items-center">Send</a>
+            <button class="col gy-3 col-10 col-sm-10 btn shadow border text-black text-center">Distance between {{dept.s_name}} and {{dest.s_name}} is less than {{dist}} Km. </button>
+            <a href="{% url 'feedback_success' 'Distance between '|add:dept.s_name|add:' and '|add:dest.s_name|add:' is less than '|add:dist|add:' Km. '   ' : From '|add:dept.s_name|add:' to '|add:dest.s_name|add:' by '|add:bus.b_name %}" class="col gy-3 col-2 col-sm-2 btn shadow border text-black d-flex justify-content-center align-items-center">Send</a>
         </div>
 
 
