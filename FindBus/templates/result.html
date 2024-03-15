@@ -122,50 +122,7 @@
         <div class="row">
           <p class="p-2 text-black">Travel by {{ firstBus.bus.b_name }} from {{ dept.s_name }}  to {{ fracBus.inter.s_name }} , Then take {{ secondBus.bus.b_name }} from {{ fracBus.inter.s_name }} to reach {{ dest.s_name }} </p>
         </div>
-
-
-        <div class="row justify-content-center mb-2">
-
-          <div class="accordion" id="accordionSummary">
-
-
-            <div class="accordion-item">
-              <h2 class="accordion-header">
-                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                  <div class="col col-12 d-flex justify-content-center align-items-center flex-wrap">
-
-                    <p class="border border-primary rounded-pill p-2 text-nowrap text-white" style="background-color: #20b35d">{{ dept.s_name }}</p>
-                    <p class="mx-1"><i class="fas fa-arrow-right"></i></p>
         
-                    <p class="border border-primary p-2 text-nowrap"><i class="fas fa-shuttle-van px-2"></i>{{ firstBus.bus.b_name }}</p>
-                    <p class="mx-1"><i class="fas fa-arrow-right"></i></p>
-        
-                    <p class="border border-primary rounded-pill p-2 text-nowrap text-white" style="background-color: #7c0842">{{ fracBus.inter.s_name }}</p>
-                    <p class="mx-1"><i class="fas fa-arrow-right"></i></p>
-        
-                    <p class="border border-primary p-2 text-nowrap"><i class="fas fa-shuttle-van px-2"></i>{{ secondBus.bus.b_name }}</p>
-                    <p class="mx-1"><i class="fas fa-arrow-right"></i></p>
-        
-                    <p class="border border-primary rounded-pill p-2 text-nowrap text-white" style="background-color: #20b35d">{{ dest.s_name }}</p>
-        
-                  </div>
-                </button>
-              </h2>
-              <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#accordionExample">
-                <div class="accordion-body">
-                  <p class="p-2 text-black">Travel by {{ firstBus.bus.b_name }} from {{ dept.s_name }}  to {{ fracBus.inter.s_name }} , Then take {{ secondBus.bus.b_name }} from {{ fracBus.inter.s_name }} to reach {{ dest.s_name }} </p>
-                </div>
-              </div>
-            </div>
-  
-      
-  
-          </div>
-          
-        </div>
-
-
-
 
 
         <div class="row">
