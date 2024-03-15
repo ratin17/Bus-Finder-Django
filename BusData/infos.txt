@@ -1,0 +1,5 @@
+superuser info:
+
+username: ratin17
+email: ratin.cse@gmail.com
+pass: sumra1317
