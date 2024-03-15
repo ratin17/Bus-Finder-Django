@@ -5,7 +5,7 @@
   <h1>{{ stand.s_name }}</h1>
 
   {% if user.is_authenticated %}
-    <a class="btn bg-parent p-3 shadow border border-light text-nowrap" href="{% url 'edit_bus' bus.obj.id  %}">Edit_Stand</a>
+    <a class="btn bg-parent p-3 shadow border border-light text-nowrap" href="{% url 'stands:edit_stand' stand.id  %}">Edit_Stand</a>
   {% else %}
     <a class="btn bg-parent p-3 shadow border border-light text-nowrap" data-bs-toggle="modal" data-bs-target="#exampleModal">Edit Stand</a>
   {% endif %}
@@ -76,9 +76,9 @@
 
         <a href="{% url 'suggest_bus_stand' bus.id stand.id %}" class="col gy-3 col-6 col-sm-6 col-md-4 col-lg-4 btn bg-warning text-white rounded-pill shadow d-flex justify-content-center align-items-center">Suggest Correction</a>
 
-        <a href="{% url 'edit_bus' bus.obj.id %}" class="col gy-3 col-3 col-sm-3 col-md-2 col-lg-2 btn bg-warning text-white rounded-pill shadow d-flex justify-content-center align-items-center">_Edit</a>
+        <a href="{% url 'edit_bus' bus.id %}" class="col gy-3 col-3 col-sm-3 col-md-2 col-lg-2 btn bg-warning text-white rounded-pill shadow d-flex justify-content-center align-items-center">_Edit</a>
 
-        <a href="{% url 'edit_bus' bus.obj.id %}" class="col gy-3 col-3 col-sm-3 col-md-2 col-lg-2 btn bg-danger text-white rounded-pill shadow d-flex justify-content-center align-items-center">_Delete</a>
+        <a href="{% url 'edit_bus' bus.id %}" class="col gy-3 col-3 col-sm-3 col-md-2 col-lg-2 btn bg-danger text-white rounded-pill shadow d-flex justify-content-center align-items-center">_Delete</a>
 
       {% else %}
         <a style="background-color: rgb(204, 174, 243);" href="{% url 'suggest_bus_stand' bus.id stand.id %}" class="col gy-3 col-8 col-sm-8 col-md-4 col-lg-4 btn text-black rounded-pill shadow d-flex justify-content-center align-items-center">Suggest Correction</a>
@@ -119,11 +119,11 @@
 
       {% if user.is_authenticated %}
 
-        <a href="{% url 'sugges_stand' stand.id %}" class="col gy-3 col-6 col-sm-6 col-md-4 col-lg-4 btn bg-warning text-white rounded-pill shadow d-flex justify-content-center align-items-center">Suggest Correction</a>
+        <a href="{% url 'suggest_area' area.id %}" class="col gy-3 col-6 col-sm-6 col-md-4 col-lg-4 btn bg-warning text-white rounded-pill shadow d-flex justify-content-center align-items-center">Suggest Correction</a>
 
-        <a href="{% url 'edit_bus' bus.obj.id %}" class="col gy-3 col-3 col-sm-3 col-md-2 col-lg-2 btn bg-warning text-white rounded-pill shadow d-flex justify-content-center align-items-center">_Edit</a>
+        <a href="{% url 'stands:edit_area' area.id %}" class="col gy-3 col-3 col-sm-3 col-md-2 col-lg-2 btn bg-warning text-white rounded-pill shadow d-flex justify-content-center align-items-center">_Edit</a>
 
-        <a href="{% url 'edit_bus' bus.obj.id %}" class="col gy-3 col-3 col-sm-3 col-md-2 col-lg-2 btn bg-danger text-white rounded-pill shadow d-flex justify-content-center align-items-center">_Delete</a>
+        <a href="{% url 'stands:edit_area' area.id %}" class="col gy-3 col-3 col-sm-3 col-md-2 col-lg-2 btn bg-danger text-white rounded-pill shadow d-flex justify-content-center align-items-center">_Delete</a>
 
       {% else %}
         <a style="background-color: rgb(204, 174, 243);" href="{% url 'suggest_stand' stand.id %}" class="col gy-3 col-8 col-sm-8 col-md-4 col-lg-4 btn text-black rounded-pill shadow d-flex justify-content-center align-items-center">Suggest Correction</a>
@@ -137,7 +137,7 @@
     </div>
 
     {% empty %}
-        <h3>No Bus found at {{ stand.s_name }} !</h3>
+        <h3>No Area found for {{ stand.s_name }} !</h3>
 
   {% endfor %}
 

@@ -2,9 +2,10 @@
 
 {% block page_header %}
 
-  <h1>Stands</h1>
+  <h1>Areas</h1>
 
-  <a class="btn bg-parent p-3 shadow border border-light text-nowrap" href="{% url 'stands:new_stand' %}">Add a New Stand</a>
+  <a class="btn bg-parent p-3 shadow border border-light text-nowrap" href="{% url 'findBus' %}">Find Bus</a>
+
 
 {% endblock page_header %}
 
@@ -12,9 +13,9 @@
 {% block content %}
 
   <div class="card text-center">
-    <div class="card-header">Stands List</div>
+    <div class="card-header">Areas List</div>
     <div class="card-body">
-      <h4 class="card-title">See Stands in the List and provide suggestions if found anything wrong</h4>
+      <h4 class="card-title">See Areas in the List and provide suggestions if found anything wrong</h4> 
     </div>
   </div>
 
@@ -22,28 +23,29 @@
     
     <div class="row gx-3">
 
-      <a style="background-color: rgb(28, 8, 141);" class="col gy-3 col-12 col-sm-12 col-md-4 col-lg-4 btn shadow border text-white d-flex justify-content-center align-items-center"><b>Stand</b></a>
+      <a style="background-color: rgb(28, 8, 141);" class="col gy-3 col-12 col-sm-12 col-md-4 col-lg-4 btn shadow border text-white d-flex justify-content-center align-items-center"><b>Area</b></a>
 
 
       <a style="background-color: rgb(28, 8, 141);" class="col gy-3 col-12 col-sm-12 col-md-8 col-lg-8 btn shadow border text-white d-flex justify-content-center align-items-center"><b>Actions</b></a>
 
     </div>
 
-    {% for stand in stands %}
+
+    {% for area in areas %}
     <div class="row gx-3">
 
-      <a href="{% url 'stands:stand' stand.id %}" class="col gy-3 col-12 col-sm-12 col-md-4 col-lg-4 btn shadow border text-black d-flex justify-content-center align-items-center">{{ stand.s_name }}</a>  
+      <a href="{% url 'stands:area' area.id %}" class="col gy-3 col-12 col-sm-12 col-md-4 col-lg-4 btn shadow border text-black d-flex justify-content-center align-items-center">{{ area.a_name }}</a>  
 
       {% if user.is_authenticated %}
 
-        <a href="{% url 'suggest_stand' stand.id %}" class="col gy-3 col-8 col-sm-8 col-md-4 col-lg-4 btn bg-warning text-white rounded-pill shadow d-flex justify-content-center align-items-center">Suggest Correction</a>
+        <a href="{% url 'suggest_area' stand.id %}" class="col gy-3 col-8 col-sm-8 col-md-4 col-lg-4 btn bg-warning text-white rounded-pill shadow d-flex justify-content-center align-items-center">Suggest Correction</a>
 
-        <a href="{% url 'stands:edit_stand' stand.id %}" class="col gy-3 col-2 col-sm-2 col-md-2 col-lg-2 btn bg-warning text-white rounded-pill shadow d-flex justify-content-center align-items-center">_Edit</a>
+        <a href="{% url 'stands:edit_stand' stand.id %}" class="col gy-3 col-2 col-sm-2 col-md-2 col-lg-2 btn bg-warning text-white rounded-pill shadow d-flex justify-content-center align-items-center">!_Edit</a>
 
-        <a href="{% url 'stands:edit_stand' stand.id %}" class="col gy-3 col-2 col-sm-2 col-md-2 col-lg-2 btn bg-danger text-white rounded-pill shadow d-flex justify-content-center align-items-center">_Delete</a>
+        <a href="{% url 'stands:edit_stand' stand.id %}" class="col gy-3 col-2 col-sm-2 col-md-2 col-lg-2 btn bg-danger text-white rounded-pill shadow d-flex justify-content-center align-items-center">!_Delete</a>
 
       {% else %}
-        <a style="background-color: rgb(204, 174, 243);" href="{% url 'suggest_stand' stand.id %}" class="col gy-3 col-8 col-sm-8 col-md-4 col-lg-4 btn text-black rounded-pill shadow d-flex justify-content-center align-items-center">Suggest Correction</a>
+        <a style="background-color: rgb(204, 174, 243);" href="{% url 'suggest_area' area.id %}" class="col gy-3 col-8 col-sm-8 col-md-4 col-lg-4 btn text-black rounded-pill shadow d-flex justify-content-center align-items-center">Suggest Correction</a>
 
         <a style="background-color: rgba(198, 219, 6, 0.966);" class="col gy-3 col-2 col-sm-2 col-md-2 col-lg-2 btn text-white text-center rounded-pill shadow d-flex justify-content-center align-items-center" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="fas fa-edit text-center"></i></a>
 
@@ -54,7 +56,7 @@
     </div>
 
     {% empty %}
-      <h3>No Stand have been added yet !</h3>
+      <h3>No Area have been added yet !</h3>
     {% endfor %}
 
   </div>

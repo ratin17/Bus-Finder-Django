@@ -123,6 +123,66 @@ def getTimeCo():
     return timeCof
 
 
+def getEssence(packet,start,end):
+    start_index=packet.index(start)
+    end_index=packet.index(end)
+    
+    essence=[]
+    
+    if start_index<end_index:
+        essence=packet[start_index:end_index+1]
+    elif end_index==0:
+        essence=packet[start_index::-1]
+    else:
+        essence=packet[start_index:end_index-1:-1]
+
+    return essence
+
+
+def getBusTime(busRating,distance):
+    
+    timeCof=getTimeCo()
+    
+    revRat=100-busRating
+    busMpk=MPK+((revRat/100)*BRC)
+    minute=busMpk*distance*timeCof
+    
+    busHour=int(minute//60)
+    busMinute=math.ceil(minute-(busHour*60))
+    
+    if busHour==0:
+        return f'{busMinute} Minutes'
+    elif busHour==1:
+        return f'{busHour} Hour, {busMinute} Minutes'
+    else:
+        return f'{busHour} Hours, {busMinute} Minutes'
+
+
+def getBusMinute(busRating,distance):
+    
+    timeCof=getTimeCo()
+    
+    revRat=100-busRating
+    busMpk=MPK+((revRat/100)*BRC)
+    
+    busMinute=math.ceil(busMpk*distance*timeCof)
+    
+    return busMinute
+
+
+def MinuteToTime(minute):
+    
+    busHour=int(minute//60)
+    busMinute=minute-(busHour*60)
+    
+    if busHour==0:
+        return f'{busMinute} Minutes'
+    elif busHour==1:
+        return f'{busHour} Hour, {busMinute} Minutes'
+    else:
+        return f'{busHour} Hours, {busMinute} Minutes'
+    
+
 
 def busFinder(request):
     if request.method == 'POST':
@@ -154,9 +214,13 @@ def result(request,id1,id2):
     dept=get_object_or_404(Stand,id=id1)
     dest=get_object_or_404(Stand,id=id2)
     # print(dept)
-    timeCof=getTimeCo()
-            
+    context={}
+    
     resBuses=[]
+    
+    deptBuses=[]
+    destBuses=[]
+    
     buses=Bus.objects.all()
     for bus in buses:
         
@@ -170,48 +234,124 @@ def result(request,id1,id2):
         
                 
         # print(stands)
-        if (dept in stands) and (dest in stands):
-            # print('// // // // ',bus.b_name)
-            d={}
-            d['obj']=bus
+        if (dept in stands):
+            f={}
+            f['bus']=bus
+            f['stands']=stands
+            deptBuses.append(f)
             
-            
-            dept_index=stands.index(dept)
-            dest_index=stands.index(dest)
-            
-            if dept_index<dest_index:
-                d['route']=stands[dept_index:dest_index+1]
-            elif dest_index==0:
-                d['route']=stands[dept_index::-1]
-            else:
-                d['route']=stands[dept_index:dest_index-1:-1]
-            
-            d['dist']=distCalculator(d['route'])
-            
-            revRat=100-bus.rating
-            busMpk=MPK+((revRat/100)*BRC)
-            busTime=busMpk*d['dist']*timeCof
-            
-            if busTime>=60:   
-                busHour=int(busTime//60)
-            else:
-                busHour=0
+            if (dest in stands):
+                d={}
+                d['obj']=bus
+                d['route']=getEssence(stands,dept,dest)
+                d['dist']=distCalculator(d['route'])
+                d['busMinute']=getBusMinute(bus.rating,d['dist'])
+                d['busTime']=MinuteToTime(d['busMinute'])
                 
-            busMinute=math.ceil(busTime%60)
-            
-            if busHour>0 and busHour<2:
-                d['busTime']=f'{busHour} Hour, {busMinute} Minutes'
-            elif busHour and busHour>0:
-                d['busTime']=f'{busHour} Hours, {busMinute} Minutes'
-            else:
-                d['busTime']=f'{busMinute} Minutes'
-                
-            resBuses.append(d)
-            
-    # print(resBuses)            
-    context = {'buses': resBuses, 'dept':dept, 'dest':dest}
+                resBuses.append(d)
+        
+        if dest in stands:
+            g={}
+            g['bus']=bus
+            g['stands']=stands
+            destBuses.append(g)
+    
+    sortedResBuses=sorted(resBuses, key=lambda x: x['busMinute'])
+    
+    # print(resBuses)
+    context['buses']=sortedResBuses
+    context['dept']=dept
+    context['dest']=dest
+    
+    if len(resBuses)>0:
+        return render(request,'result.html',context)
+    
+    
+    TfirstBus={}
+    TsecondBus={}
+    TfracBus={}
+    
+    firstBus={}
+    secondBus={}
+    fracBus={}
+    
+    # already=[]
+    minMin=10000
+    count=0
+    # print(deptBuses)
+    # print(destBuses)
+    
+    for deptBus in deptBuses:
+        # if count>5:break
+        for destBus in destBuses:
+            # if count>5:break
+            for fracStand in deptBus['stands']:
+                # if count>5:break
+                if (fracStand in destBus['stands']) and (dest in destBus['stands']):
+                    
+                    count+=1
+                    
+                    TfirstBus['bus']=deptBus['bus']
+                    TsecondBus['bus']=destBus['bus']
+
+                    TfirstBus['route']=getEssence(deptBus['stands'],dept,fracStand)
+                    TfirstBus['dist']=distCalculator(TfirstBus['route'])
+                    TfirstBus['busTime']=getBusTime(deptBus['bus'].rating,TfirstBus['dist'])
+                    
+                    TsecondBus['route']=getEssence(destBus['stands'],fracStand,dest)
+                    TsecondBus['dist']=distCalculator(TsecondBus['route'])
+                    TsecondBus['busTime']=getBusTime(destBus['bus'].rating,TsecondBus['dist'])
+                    
+                    TfracBus['dist']=TfirstBus['dist']+TsecondBus['dist']
+                    cleanDist=round(getBusMinute(deptBus['bus'].rating,TfirstBus['dist'])+getBusMinute(destBus['bus'].rating,TsecondBus['dist']),2)
+                    TfracBus['busMinute']=cleanDist
+                    TfracBus['busTime']=MinuteToTime(TfracBus['busMinute'])
+                    TfracBus['inter']=TsecondBus['route'][0]
+                    
+                    # print('///////////////////')
+                    # print(count)
+                    # print(TfracBus['busMinute'])
+                    # print(TfirstBus['bus'].b_name,'--->',TsecondBus['bus'].b_name)
+                    # print(TfirstBus['route'])
+                    # print('...................')
+                    # print(TsecondBus['route'])
+                    # print('///////////////////')
+                    
+                    if TfracBus['busMinute']<minMin:
+                        print('updated')
+                        minMin=TfracBus['busMinute']
+                        
+                        firstBus['bus']=TfirstBus['bus']
+                        secondBus['bus']=TsecondBus['bus']
+
+                        firstBus['route']=TfirstBus['route']
+                        firstBus['dist']=TfirstBus['dist']
+                        firstBus['busTime']=TfirstBus['busTime']
+                        
+                        secondBus['route']=TsecondBus['route']
+                        secondBus['dist']=TsecondBus['dist']
+                        secondBus['busTime']=TsecondBus['busTime']
+                        
+                        fracBus['dist']=TfracBus['dist']
+                        fracBus['busMinute']=TfracBus['busMinute']
+                        fracBus['busTime']=TfracBus['busTime']
+                        fracBus['inter']=TfracBus['inter']
+                        
+                        
+                    break
+    
+    context['firstBus']=firstBus
+    context['secondBus']=secondBus
+    context['fracBus']=fracBus
     
     return render(request,'result.html',context)
+
+
+
+def about(request):
+    context={'name':'Mehrab Rabbi Ratin'}
+    return render(request,'about.html',context)
+
 
 
 def suggestResult(request,dept_id,dest_id,bus_id,dist,busTime):
@@ -292,6 +432,29 @@ def suggestBusStand(request,bus_id,stand_id):
 
 
 def suggestBus(request,bus_id):
+    
+    bus=get_object_or_404(Bus,id=bus_id)
+    
+    if bus:
+    
+        bus_ordering=bus.orderingmodel_set.order_by('order')
+        
+        stands=[]
+
+        for b in bus_ordering:
+            stands.append(b.stand)
+        
+
+        context = {'bus': bus, 'stands': stands}
+        return render(request, 'suggest_bus.html', context)
+        
+    else:
+        context={'error':f"Bus is not Found !"}
+       
+    return render(request, 'error.html', context)
+
+
+def suggestArea(request,bus_id):
     
     bus=get_object_or_404(Bus,id=bus_id)
     

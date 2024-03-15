@@ -43,6 +43,26 @@ def stand(request,stand_id):
     return render(request, 'stand.html', context)
 
 
+
+def areas(request):
+    
+    areas = Area.objects.all()
+    # print('##### ### ',stands)
+    
+    
+    context = {'areas': areas}
+    return render(request, 'areas.html', context)
+
+
+def area(request,area_id):
+    area= Area.objects.get(id=area_id)
+    stands=area.stand_set.all()
+    
+    context = {'area': area, 'stands': stands}
+    
+    return render(request, 'area.html', context)
+
+
 @login_required
 def new_stand(request):
     if request.method == 'POST':
@@ -112,6 +132,26 @@ def new_area(request):
 @login_required
 def edit_stand(request,stand_id):
     stand=Stand.objects.get(id=stand_id)
+    
+    if request.method != 'POST':
+        form = StandForm(instance=stand)
+    
+    else:
+        
+        # orderingIns=get_object_or_404(OrderingModel,id=orderingmodel_id)
+        
+        form = StandForm(instance=stand,data=request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('stands:stands')
+    
+    context = {'form': form,'stand':stand}
+    return render(request, 'edit_stand.html', context)
+
+
+@login_required
+def edit_area(request,area_id):
+    stand=Stand.objects.get(id=area_id)
     
     if request.method != 'POST':
         form = StandForm(instance=stand)
