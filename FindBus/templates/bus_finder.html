@@ -3,16 +3,17 @@
 {% endblock page_header %}
 {% block content %}
 
+
   <div class="bg-gradient bg-white">
 
     <form method="post"  action="{% url 'findBus' %}">
 
       {% csrf_token %}
 
-      <div class="d-grid justify-content-center align-item-center">
+      <div class="d-grid justify-content-center align-item-center text-center">
 
-        <button class="btn btn-lg btn-outline-secondary mb-3 btn-block disabled">
-          <span class="spinner-grow text-success spinner-grow-sm" aria-hidden="true"></span>
+        <button class="btn btn-lg btn-outline-secondary mb-3 btn-block disabled d-flex justify-content-center align-items-center">
+          <span class="spinner-grow text-success spinner-grow-sm mx-2" aria-hidden="true"></span>
           Select Bus Stands to FindBus
         </button>
 
@@ -28,7 +29,11 @@
         </div>
       
         <!-- Submit button -->
-        <button style="background-color: rgb(11, 136, 167);" type="submit" class="btn btl-lg text-white btn-block"><b>Find Bus</b></button>
+        <button style="background-image: linear-gradient(rgb(221, 50, 144),rgb(78, 94, 235));" type="submit" class="btn btl-lg text-white btn-block"><b>Find Bus</b></button>
+        
+        
+        <marquee style="background-image: linear-gradient(rgb(223, 96, 22),rgb(189, 69, 236));" class="my-2 bg-danger text-white" >Sometimes it might take a few seconds to provide search results</marquee>
+
       </div>
       
     </form>

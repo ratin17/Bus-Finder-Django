@@ -4,7 +4,7 @@
 
   <h3>Suggestions for : From {{dept.s_name}} to {{dest.s_name}} by {{ bus.b_name }}  </h3>
   
-  <a class="btn bg-parent p-3 shadow border border-light text-nowrap" href="{% url 'result' dept.id dest.id %}" >Cancel</a>
+  <a class="btn bg-parent p-3 shadow border border-light d-flex justify-content-center align-items-center" href="{% url 'result' dept.id dest.id %}" >Cancel</a>
   
 
 {% endblock page_header %}
@@ -17,7 +17,7 @@
     <div class="card text-center">
         <div class="card-header">Choose Suggestions from below or Send Custom Suggestion</div>
         <div class="card-body">
-        <a style="background-color: rgb(9, 129, 119);"href="{% url 'suggest_custom' %}" class="btn border border-3 text-white border-light shadow-lg">Send Custom Suggestion</a>
+        <a style="background-color: rgb(9, 129, 119);"href="{% url 'suggest_custom' %}" class="btn border border-3 text-white border-light shadow-lg d-flex justify-content-center align-items-center">Send Custom Suggestion</a>
         </div>
     </div>
 

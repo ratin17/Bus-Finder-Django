@@ -6,21 +6,21 @@
 
 {% block content %}
 
-  <div class="container mb-3 col-6 shadow rounded border border-info">
+  <div class="container mb-3 col-12">
     <div class="row justify-content-center">
       {% if buses|length > 1 %}
-        <a style="background-color:rgb(7, 160, 20)" href="#res" class="col col-12 py-2 btn text-white d-flex justify-content-center align-items-center"><b class="mx-2">{{ buses|length }} </b>Buses Found</a>
+        <a style="background-color:rgb(7, 160, 20)" href="#res" class="col col col-12 col-sm-12 col-md-9 col-lg-6 py-2 btn shadow text-white d-flex justify-content-center align-items-center"><b class="mx-2">{{ buses|length }} </b>Buses Found</a>
       {% elif buses|length == 1 %}
-      <a style="background-color:rgb(4, 107, 133)" href="#res" class="col col-12 py-2 btn text-white d-flex justify-content-center align-items-center"><b class="mx-2">{{ buses|length }} </b>Bus Found</a>
+      <a style="background-color:rgb(4, 107, 133)" href="#res" class="col col col-12 col-sm-12 col-md-9 col-lg-6 py-2 btn shadow text-white d-flex justify-content-center align-items-center"><b class="mx-2">{{ buses|length }} </b>Bus Found</a>
       {% else %}
-      <a style="background-color:rgb(238, 187, 20)" class="col col-12 py-2 btn text-white d-flex justify-content-center align-items-center">No Bus goes to {{dest.s_name}} from {{dept.s_name}} !</a>
+      <a style="background-color:rgb(238, 187, 20)" class="col col col-12 col-sm-12 col-md-9 col-lg-6 py-2 btn shadow text-white d-flex justify-content-center align-items-center">No Bus goes to {{dest.s_name}} from {{dept.s_name}} !</a>
       {% endif %}
     </div>
   </div>
 
   {% for bus in buses %}
 
-    <div id="res" class="container mb-5 col-12 shadow rounded border border-info text-center">
+    <div id="res" class="container mb-5 col-12 col-sm-12 col-md-11 col-lg-10 shadow rounded border border-info text-center">
 
       
       <div class="row justify-content-center mb-3">
@@ -66,154 +66,184 @@
 
   {% empty %}
 
-    {% if fracBus %}
+    {% if fracBusesCount > 0 %}
 
       <div class="container mb-4 col-12">
-
         <div class="row mb-2 justify-content-center">
-          <a style="background-color:rgb(5, 102, 81)" href="#res"  class="col col-9 py-2 btn text-white d-flex justify-content-center align-items-center">No Worries ! You can take Two Buses </a>
+          <a style="background-color:rgb(5, 102, 81)" href="#res"  class="col col-12 col-sm-12 col-md-9 col-lg-6 py-2 btn text-white d-flex justify-content-center align-items-center">But , No Worries ! You can take Two Buses </a>
         </div>
-
       </div>
 
-
-
-
-
-      <div id="res" class="container mb-5 col-12 shadow rounded border border-info text-center">
-
-
-
-        <div class="row justify-content-center mb-3">
-
-          <a style="background-color:#da3790" href=#" class="col gy-3 col-12 col-sm-12 col-md-3 col-lg-3 btn shadow shadow-lg border border-white text-white d-flex justify-content-center align-items-center"><h5><b>Journey Summary</b></h5></a>
-
-          <a class="col gy-3 col-6 col-sm-6 col-md-3 col-lg-3 btn text-black d-flex justify-content-center align-items-center"><i class="far fa-clock px-2"></i>{{ fracBus.busTime }}</a>
-
-          <a class="col gy-3 col-6 col-sm-6 col-md-3 col-lg-3 btn text-black d-flex justify-content-center align-items-center"><i class="fas fa-map-marker-alt px-2 text-danger"></i>{{ fracBus.dist }} Km </a>
-
-          <a href="#" class="col gy-3 col-12 col-sm-12 col-md-3 col-lg-3 btn btn-secondary shadow border text-white d-flex justify-content-center align-items-center"><i class="fas fa-edit px-2"></i> Suggest Correction</a>
-
-
-        </div>
-
-
-        <div class="row justify-content-center">
-          <div class="col col-12 d-flex justify-content-center align-items-center flex-wrap">
-
-            <p class="border border-primary rounded-pill p-2 text-nowrap text-white" style="background-color: #20b35d">{{ dept.s_name }}</p>
-            <p class="mx-1"><i class="fas fa-arrow-right"></i></p>
-
-            <p class="border border-primary p-2 text-nowrap"><i class="fas fa-shuttle-van px-2"></i>{{ firstBus.bus.b_name }}</p>
-            <p class="mx-1"><i class="fas fa-arrow-right"></i></p>
-
-            <p class="border border-primary rounded-pill p-2 text-nowrap text-white" style="background-color: #7c0842">{{ fracBus.inter.s_name }}</p>
-            <p class="mx-1"><i class="fas fa-arrow-right"></i></p>
-
-            <p class="border border-primary p-2 text-nowrap"><i class="fas fa-shuttle-van px-2"></i>{{ secondBus.bus.b_name }}</p>
-            <p class="mx-1"><i class="fas fa-arrow-right"></i></p>
-
-            <p class="border border-primary rounded-pill p-2 text-nowrap text-white" style="background-color: #20b35d">{{ dest.s_name }}</p>
-
+      {% if fracBusesCount > 5 %}
+        <div class="container mb-4 col-12">
+          <div class="row mb-2 justify-content-center">
+            <a style="background-color:rgb(5, 102, 81)" href="#res"  class="col col-12 col-sm-12 col-md-9 col-lg-6 py-2 btn text-white d-flex justify-content-center align-items-center">{{ fracBusesCount }} results found, Best 5 are shown below !</a>
           </div>
         </div>
-
-
-        <div class="row">
-          <p class="p-2 text-black">Travel by {{ firstBus.bus.b_name }} from {{ dept.s_name }}  to {{ fracBus.inter.s_name }} , Then take {{ secondBus.bus.b_name }} from {{ fracBus.inter.s_name }} to reach {{ dest.s_name }} </p>
+      {% else %}
+        <div class="container mb-4 col-12">
+          <div class="row mb-2 justify-content-center">
+            <a style="background-color:rgb(5, 102, 81)" href="#res"  class="col col-12 col-sm-12 col-md-9 col-lg-6 py-2 btn text-white d-flex justify-content-center align-items-center">{{ fracBusesCount }} results found !</a>
+          </div>
         </div>
-        
-
-
-        <div class="row">
-          <a class="btn shadow shadow-lg border border-primary rounded-pill p-2 text-nowrap text-white" style="background-color: #da3790"><h5><b>Journey Details</b></h5></a>
-        </div>
+      {% endif %}
 
 
 
+    
+      {% for f in fracBuses %}
+        <div id="res" class="container mb-5 col-12 shadow rounded border border-info text-center">
 
+          <div class="row justify-content-center mt-2">
+            <div class="col col-12 d-flex justify-content-center align-items-center flex-wrap">
+
+              <p class="border border-primary rounded-pill p-2 text-nowrap text-white" style="background-color: #20b35d">{{ dept.s_name }}</p>
+              <p class="mx-1"><i class="fas fa-arrow-right"></i></p>
+
+              <p href="{% url 'bus' f.firstBus.bus.id %}" class="border border-primary p-2 text-nowrap"><i class="fas fa-shuttle-van px-2"></i>{{ f.firstBus.bus.b_name }}</p>
+              <p class="mx-1"><i class="fas fa-arrow-right"></i></p>
+
+              <p class="border border-primary rounded-pill p-2 text-nowrap text-white" style="background-color: #7c0842">{{ f.fracBus.inter.s_name }}</p>
+              <p class="mx-1"><i class="fas fa-arrow-right"></i></p>
+
+              <p href="{% url 'bus' f.secondBus.bus.id %}" class="border border-primary p-2 text-nowrap"><i class="fas fa-shuttle-van px-2"></i>{{ f.secondBus.bus.b_name }}</p>
+              <p class="mx-1"><i class="fas fa-arrow-right"></i></p>
+
+              <p class="border border-primary rounded-pill p-2 text-nowrap text-white" style="background-color: #20b35d">{{ dest.s_name }}</p>
+
+            </div>
+          </div>
+
+
+          <div class="row">
+            <p class="px-2 text-black">Travel by <b>{{ f.firstBus.bus.b_name }}</b> from <b style="color: #0ac558;" >{{ dept.s_name }}</b>  to <b style="color: #b8105e;" >{{ f.fracBus.inter.s_name }}</b> , Then take <b>{{ f.secondBus.bus.b_name }}</b> from <b style="color: #b8105e;" >{{ f.fracBus.inter.s_name }}</b> to reach <b style="color: #0ac558;" >{{ dest.s_name }}</b> </p>
+          </div>
+
+
+
+          <div class="row justify-content-center mb-3">
+
+            <a style="background-color:#da3790" href=#" class="col gy-3 col-12 col-sm-12 col-md-3 col-lg-3 btn shadow shadow-lg border border-white text-white d-flex justify-content-center align-items-center"><h5>Journey Summary</h5></a>
+
+            <a class="col gy-3 col-6 col-sm-6 col-md-3 col-lg-3 btn text-black d-flex justify-content-center align-items-center"><i class="far fa-clock px-2"></i>{{ f.fracBus.busTime }}</a>
+
+            <a class="col gy-3 col-6 col-sm-6 col-md-3 col-lg-3 btn text-black d-flex justify-content-center align-items-center"><i class="fas fa-map-marker-alt px-2 text-danger"></i>{{ f.fracBus.dist }} Km </a>
+
+            <a href="{% url 'suggest_frac_result' dept.id  f.firstBus.bus.id f.fracBus.inter.id f.secondBus.bus.id dest.id f.firstBus.dist|stringformat:"0.2f" f.firstBus.busTime %}" class="col gy-3 col-12 col-sm-12 col-md-3 col-lg-3 btn btn-secondary shadow border text-white d-flex justify-content-center align-items-center"><i class="fas fa-edit px-2"></i> Suggest Correction</a>
+
+
+          </div>
+
+
+
+
+          <div class="accordion accordion-flush" id="accordion">
+
+            <div class="accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse{{ forloop.counter }}"aria-expanded="false" aria-controls="flush-collapse{{ forloop.counter }}">
+
+                  <div class="row">
+                    <a class="btn shadow shadow-lg border rounded-pill p-2 text-nowrap text-white" style="background-color: #da3790"><h5><b>Journey Details</b></h5></a>
+                  </div>
+
+                </button>
+              </h2>
+              <div id="flush-collapse{{ forloop.counter }}" class="accordion-collapse collapse" data-bs-parent="#accordion">
+                <div class="accordion-body">
+                  
+
+
+                  <div class="row justify-content-center mb-3">
+
+                    <a style="background-color:rgb(59, 4, 122)" href="{% url 'bus' f.firstBus.bus.id %}" class="col gy-3 col-12 col-sm-12 col-md-3 col-lg-3 btn shadow shadow-lg border border-white text-white d-flex justify-content-center align-items-center"><i class="fas fa-shuttle-van px-2"></i><h5><b>{{ f.firstBus.bus.b_name }}</b></h5></a>
           
-        <div class="row justify-content-center mb-3">
+                    <a class="col gy-3 col-6 col-sm-6 col-md-3 col-lg-3 btn text-black d-flex justify-content-center align-items-center"><i class="far fa-clock px-2"></i>{{ f.firstBus.busTime }}</a>
+          
+                    <a class="col gy-3 col-6 col-sm-6 col-md-3 col-lg-3 btn text-black d-flex justify-content-center align-items-center"><i class="fas fa-map-marker-alt px-2 text-danger"></i>{{ f.firstBus.dist }} Km </a>
+          
+                    <a href="{% url 'suggest_result' dept.id f.fracBus.inter.id f.firstBus.bus.id f.firstBus.dist|stringformat:"0.2f" f.firstBus.busTime %}" class="col gy-3 col-12 col-sm-12 col-md-3 col-lg-3 btn btn-secondary shadow border text-white d-flex justify-content-center align-items-center"><i class="fas fa-edit px-2"></i> Suggest Correction</a>
+          
+          
+                  </div>
+          
+          
+          
+          
+                  <div class="row">
+          
+                    <div class="col col-12 d-flex align-items-center flex-wrap">
+                      {% for stand in f.firstBus.route %}
+                      
+                        {% if forloop.first %}
+                          <p class="border border-primary rounded-pill p-2 text-nowrap text-white" style="background-color: #20b35d">{{ stand.s_name }}</p>
+                          <p class="mx-1"><i class="fas fa-arrow-right"></i></p>
+                        {% elif forloop.last %}
+                          <p class="border border-primary rounded-pill p-2 text-nowrap text-white" style="background-color: #7c0842">{{ stand.s_name }}</p>
+                        {% else %}
+                          <p class="border border-primary rounded-pill p-2 text-nowrap">{{ stand.s_name }}</p>
+                          <p class="mx-1"><i class="fas fa-arrow-right"></i></p>
+                        {% endif %}
+          
+                      {% endfor %}
+                        
+                    </div>
+          
+                  </div>
+          
+          
+          
+          
+                  <div class="row justify-content-center mb-3">
+          
+                    <a style="background-color:rgb(59, 4, 122)" href="{% url 'bus' f.secondBus.bus.id %}" class="col gy-3 col-12 col-sm-12 col-md-3 col-lg-3 btn shadow shadow-lg border border-white text-white d-flex justify-content-center align-items-center"><i class="fas fa-shuttle-van px-2"></i><h5><b>{{ f.secondBus.bus.b_name }}</b></h5></a>
+          
+                    <a class="col gy-3 col-6 col-sm-6 col-md-3 col-lg-3 btn text-black d-flex justify-content-center align-items-center"><i class="far fa-clock px-2"></i>{{ f.secondBus.busTime }}</a>
+          
+                    <a class="col gy-3 col-6 col-sm-6 col-md-3 col-lg-3 btn text-black d-flex justify-content-center align-items-center"><i class="fas fa-map-marker-alt px-2 text-danger"></i>{{ f.secondBus.dist }} Km </a>
+          
+                    <a href="{% url 'suggest_result' f.fracBus.inter.id dest.id f.secondBus.bus.id f.secondBus.dist|stringformat:"0.2f" f.secondBus.busTime %}" class="col gy-3 col-12 col-sm-12 col-md-3 col-lg-3 btn btn-secondary shadow border text-white d-flex justify-content-center align-items-center"><i class="fas fa-edit px-2"></i> Suggest Correction</a>
+          
+          
+                  </div>
+          
+          
+          
+          
+                  <div class="row">
+          
+                    <div class="col col-12 d-flex align-items-center flex-wrap">
+                      {% for stand in f.secondBus.route %}
+                      
+                        {% if forloop.first %}
+                          <p class="border border-primary rounded-pill p-2 text-nowrap text-white" style="background-color: #7c0842">{{ stand.s_name }}</p>
+                          <p class="mx-1"><i class="fas fa-arrow-right"></i></p>
+                        {% elif forloop.last %}
+                          <p class="border border-primary rounded-pill p-2 text-nowrap text-white" style="background-color: #20b35d">{{ stand.s_name }}</p>
+                        {% else %}
+                          <p class="border border-primary rounded-pill p-2 text-nowrap">{{ stand.s_name }}</p>
+                          <p class="mx-1"><i class="fas fa-arrow-right"></i></p>
+                        {% endif %}
+          
+                      {% endfor %}
+                        
+                    </div>
+          
+                  </div>
+          
 
-          <a style="background-color:rgb(59, 4, 122)" href="{% url 'bus' firstBus.bus.id %}" class="col gy-3 col-12 col-sm-12 col-md-3 col-lg-3 btn shadow shadow-lg border border-white text-white d-flex justify-content-center align-items-center"><i class="fas fa-shuttle-van px-2"></i><h5><b>{{ firstBus.bus.b_name }}</b></h5></a>
+                  
+                </div>
+              </div>
+            </div>
 
-          <a class="col gy-3 col-6 col-sm-6 col-md-3 col-lg-3 btn text-black d-flex justify-content-center align-items-center"><i class="far fa-clock px-2"></i>{{ firstBus.busTime }}</a>
-
-          <a class="col gy-3 col-6 col-sm-6 col-md-3 col-lg-3 btn text-black d-flex justify-content-center align-items-center"><i class="fas fa-map-marker-alt px-2 text-danger"></i>{{ firstBus.dist }} Km </a>
-
-          <a href="#" class="col gy-3 col-12 col-sm-12 col-md-3 col-lg-3 btn btn-secondary shadow border text-white d-flex justify-content-center align-items-center"><i class="fas fa-edit px-2"></i> Suggest Correction</a>
-
-
-        </div>
-
-
-
-
-        <div class="row">
-
-          <div class="col col-12 d-flex align-items-center flex-wrap">
-            {% for stand in firstBus.route %}
-            
-              {% if forloop.first %}
-                <p class="border border-primary rounded-pill p-2 text-nowrap text-white" style="background-color: #20b35d">{{ stand.s_name }}</p>
-                <p class="mx-1"><i class="fas fa-arrow-right"></i></p>
-              {% elif forloop.last %}
-                <p class="border border-primary rounded-pill p-2 text-nowrap text-white" style="background-color: #7c0842">{{ stand.s_name }}</p>
-              {% else %}
-                <p class="border border-primary rounded-pill p-2 text-nowrap">{{ stand.s_name }}</p>
-                <p class="mx-1"><i class="fas fa-arrow-right"></i></p>
-              {% endif %}
-
-            {% endfor %}
-              
           </div>
+          
+          
 
         </div>
-
-
-
-
-        <div class="row justify-content-center mb-3">
-
-          <a style="background-color:rgb(59, 4, 122)" href="{% url 'bus' secondBus.bus.id %}" class="col gy-3 col-12 col-sm-12 col-md-3 col-lg-3 btn shadow shadow-lg border border-white text-white d-flex justify-content-center align-items-center"><i class="fas fa-shuttle-van px-2"></i><h5><b>{{ secondBus.bus.b_name }}</b></h5></a>
-
-          <a class="col gy-3 col-6 col-sm-6 col-md-3 col-lg-3 btn text-black d-flex justify-content-center align-items-center"><i class="far fa-clock px-2"></i>{{ secondBus.busTime }}</a>
-
-          <a class="col gy-3 col-6 col-sm-6 col-md-3 col-lg-3 btn text-black d-flex justify-content-center align-items-center"><i class="fas fa-map-marker-alt px-2 text-danger"></i>{{ secondBus.dist }} Km </a>
-
-          <a href="#" class="col gy-3 col-12 col-sm-12 col-md-3 col-lg-3 btn btn-secondary shadow border text-white d-flex justify-content-center align-items-center"><i class="fas fa-edit px-2"></i> Suggest Correction</a>
-
-
-        </div>
-
-
-
-
-        <div class="row">
-
-          <div class="col col-12 d-flex align-items-center flex-wrap">
-            {% for stand in secondBus.route %}
-            
-              {% if forloop.first %}
-                <p class="border border-primary rounded-pill p-2 text-nowrap text-white" style="background-color: #7c0842">{{ stand.s_name }}</p>
-                <p class="mx-1"><i class="fas fa-arrow-right"></i></p>
-              {% elif forloop.last %}
-                <p class="border border-primary rounded-pill p-2 text-nowrap text-white" style="background-color: #20b35d">{{ stand.s_name }}</p>
-              {% else %}
-                <p class="border border-primary rounded-pill p-2 text-nowrap">{{ stand.s_name }}</p>
-                <p class="mx-1"><i class="fas fa-arrow-right"></i></p>
-              {% endif %}
-
-            {% endfor %}
-              
-          </div>
-
-        </div>
-
-        
-
-      </div>
-
+      {% endfor %}
+      
     {% else %}
 
       <div class="container mb-5 col-6 shadow rounded border border-info">

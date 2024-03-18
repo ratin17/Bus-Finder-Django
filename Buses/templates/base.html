@@ -11,14 +11,14 @@
   
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1,shrink-to-fit=no">
-  <title>Bus Finder</title>
+  <title>Dhakar Bus</title>
 
 </head>
 <body>
 
   <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #370b8a;"">
     <div class="container-fluid">
-      <a class="navbar-brand" href="{% url 'findBus' %}">Bus Finder</a>
+      <a class="navbar-brand" href="{% url 'findBus' %}">Dhakar Bus</a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -107,7 +107,7 @@
   </div>
 
 
-  <div class="m-4 shadow-lg p-3 mb-5 align-item-center justify-content-center bg-body-tertiary rounded">
+  <div class="m-sm-1 m-md-2 m-lg-3 p-sm-1 p-md-2 p-lg-3 shadow-lg p-2 mt-5 mb-5 align-item-center justify-content-center bg-body-tertiary rounded">
 
     {% block content %}{% endblock content %}
 
@@ -129,7 +129,7 @@
         Dhaka-Bus
       </h6>
       <p>
-        Here you can use Dahaka-Bus site to know about buses go through diffrent Bus-Stops at Dhaka City and nearby places.
+        Here you can use 'Dhakar Bus' site to find and know about buses go through diffrent Bus-Stops at Dhaka City and nearby places.
 
         You are welcome and requested to provide correction suggestion through the site if found anything wrong.
       </p>
@@ -145,13 +145,17 @@
         <a href={% url 'findBus' %} class="text-white">Find Bus</a>
       </p>
       <p>
-        <a href={% url 'findBus' %} class="text-white">Bus Stands</a>
+        <a href={% url 'buses' %} class="text-white">Buses</a>
       </p>
       <p>
-        <a href={% url 'findBus' %} class="text-white">Buses</a>
+        <a href={% url 'stands:stands' %} class="text-white">Bus Stands</a>
       </p>
       <p>
-        <a href={% url 'findBus' %} class="text-white">About Us</a>
+        <a href={% url 'stands:areas' %} class="text-white">Areas</a>
+      </p>
+      
+      <p>
+        <a href={% url 'about' %} class="text-white">About Us</a>
       </p>
     </div>
     <!-- Grid column -->
@@ -167,7 +171,7 @@
       <p><i class="fas fa-home mr-3"></i> Dhaka, Bangladesh</p>
       <p><i class="fas fa-envelope mr-3"></i> ratin.cse@gmail.com</p>
       <p><i class="fas fa-phone mr-3"></i> +880 1747264587</p>
-      <p><i class="fas fa-phone mr-3"></i> +880 15</p>
+      <p><i class="fas fa-phone mr-3"></i> +880 1540209460</p>
     </div>
     <!-- Grid column -->
 

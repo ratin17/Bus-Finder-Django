@@ -3,7 +3,7 @@ from django.shortcuts import get_object_or_404
 from .models import Suggestion
 from .forms import BusFinderForm,SuggestionForm
 from Buses.models import Bus,OrderingModel
-from Stands.models import Stand
+from Stands.models import Stand,Area
 from django.contrib import messages
 from Stands.views import haversine
 
@@ -167,6 +167,9 @@ def getBusMinute(busRating,distance):
     
     busMinute=math.ceil(busMpk*distance*timeCof)
     
+    if busMinute<5:
+        return 5
+    
     return busMinute
 
 
@@ -232,7 +235,7 @@ def result(request,id1,id2):
             
             stands.append(b.stand)
         
-                
+        
         # print(stands)
         if (dept in stands):
             f={}
@@ -257,7 +260,6 @@ def result(request,id1,id2):
             destBuses.append(g)
     
     sortedResBuses=sorted(resBuses, key=lambda x: x['busMinute'])
-    
     # print(resBuses)
     context['buses']=sortedResBuses
     context['dept']=dept
@@ -267,16 +269,14 @@ def result(request,id1,id2):
         return render(request,'result.html',context)
     
     
-    TfirstBus={}
-    TsecondBus={}
-    TfracBus={}
-    
     firstBus={}
     secondBus={}
     fracBus={}
     
+    fracBuses=[]
+    
     # already=[]
-    minMin=10000
+    # minMin=10000
     count=0
     # print(deptBuses)
     # print(destBuses)
@@ -290,23 +290,38 @@ def result(request,id1,id2):
                 if (fracStand in destBus['stands']) and (dest in destBus['stands']):
                     
                     count+=1
+                    # print(deptBus['bus'].b_name,'-->',destBus['bus'].b_name,'-->',fracStand.s_name)
+                    
+                    TfirstBus={}
+                    TsecondBus={}
+                    TfracBus={}
                     
                     TfirstBus['bus']=deptBus['bus']
                     TsecondBus['bus']=destBus['bus']
 
                     TfirstBus['route']=getEssence(deptBus['stands'],dept,fracStand)
                     TfirstBus['dist']=distCalculator(TfirstBus['route'])
-                    TfirstBus['busTime']=getBusTime(deptBus['bus'].rating,TfirstBus['dist'])
+                    TfirstBus['busMinute']=getBusMinute(deptBus['bus'].rating,TfirstBus['dist'])
+                    TfirstBus['busTime']=MinuteToTime(TfirstBus['busMinute'])
                     
                     TsecondBus['route']=getEssence(destBus['stands'],fracStand,dest)
                     TsecondBus['dist']=distCalculator(TsecondBus['route'])
-                    TsecondBus['busTime']=getBusTime(destBus['bus'].rating,TsecondBus['dist'])
+                    TsecondBus['busMinute']=getBusMinute(destBus['bus'].rating,TsecondBus['dist'])
+                    TsecondBus['busTime']=MinuteToTime(TsecondBus['busMinute'])
                     
-                    TfracBus['dist']=TfirstBus['dist']+TsecondBus['dist']
-                    cleanDist=round(getBusMinute(deptBus['bus'].rating,TfirstBus['dist'])+getBusMinute(destBus['bus'].rating,TsecondBus['dist']),2)
-                    TfracBus['busMinute']=cleanDist
+                    cleanMin=getBusMinute(deptBus['bus'].rating,TfirstBus['dist'])+getBusMinute(destBus['bus'].rating,TsecondBus['dist'])
+                    cleanDist=round(TfirstBus['dist']+TsecondBus['dist'],2)
+                    
+                    TfracBus['dist']=cleanDist
+                    TfracBus['busMinute']=cleanMin
                     TfracBus['busTime']=MinuteToTime(TfracBus['busMinute'])
                     TfracBus['inter']=TsecondBus['route'][0]
+                    
+                    temp={}
+                    temp['firstBus']=TfirstBus
+                    temp['secondBus']=TsecondBus
+                    temp['fracBus']=TfracBus
+                    fracBuses.append(temp)
                     
                     # print('///////////////////')
                     # print(count)
@@ -317,32 +332,35 @@ def result(request,id1,id2):
                     # print(TsecondBus['route'])
                     # print('///////////////////')
                     
-                    if TfracBus['busMinute']<minMin:
-                        print('updated')
-                        minMin=TfracBus['busMinute']
+                    # if TfracBus['busMinute']<minMin:
+                    #     print('updated')
+                    #     minMin=TfracBus['busMinute']
                         
-                        firstBus['bus']=TfirstBus['bus']
-                        secondBus['bus']=TsecondBus['bus']
+                    #     firstBus['bus']=TfirstBus['bus']
+                    #     secondBus['bus']=TsecondBus['bus']
 
-                        firstBus['route']=TfirstBus['route']
-                        firstBus['dist']=TfirstBus['dist']
-                        firstBus['busTime']=TfirstBus['busTime']
+                    #     firstBus['route']=TfirstBus['route']
+                    #     firstBus['dist']=TfirstBus['dist']
+                    #     firstBus['busTime']=TfirstBus['busTime']
                         
-                        secondBus['route']=TsecondBus['route']
-                        secondBus['dist']=TsecondBus['dist']
-                        secondBus['busTime']=TsecondBus['busTime']
+                    #     secondBus['route']=TsecondBus['route']
+                    #     secondBus['dist']=TsecondBus['dist']
+                    #     secondBus['busTime']=TsecondBus['busTime']
                         
-                        fracBus['dist']=TfracBus['dist']
-                        fracBus['busMinute']=TfracBus['busMinute']
-                        fracBus['busTime']=TfracBus['busTime']
-                        fracBus['inter']=TfracBus['inter']
+                    #     fracBus['dist']=TfracBus['dist']
+                    #     fracBus['busMinute']=TfracBus['busMinute']
+                    #     fracBus['busTime']=TfracBus['busTime']
+                    #     fracBus['inter']=TfracBus['inter']
                         
                         
                     break
     
-    context['firstBus']=firstBus
-    context['secondBus']=secondBus
-    context['fracBus']=fracBus
+    fracBusesCount=len(fracBuses)
+    fracBuses=sorted(fracBuses, key=lambda x: x['fracBus']['busMinute'])
+    if fracBusesCount > 5: fracBuses=fracBuses[0:6]
+    context['fracBuses']=fracBuses
+    # print(context['fracBuses'])
+    context['fracBusesCount']=fracBusesCount
     
     return render(request,'result.html',context)
 
@@ -381,13 +399,36 @@ def suggestResult(request,dept_id,dest_id,bus_id,dist,busTime):
             stands=stands[dept_index:dest_index-1:-1]
         
         context = {'bus': bus, 'stands': stands,'dept':dept,'dest':dest,'dist':dist,'busTime':busTime}
-        print(context)
+        
         return render(request, 'suggest_result.html', context)
         
     else:
         context={'error':f"Bus or Stands are not Found !"}
        
     return render(request, 'error.html', context)
+
+
+
+
+def suggestFracResult(request,dept_id,first_bus,inter_id,second_bus,dest_id,dist,busTime):
+    
+    dept = Stand.objects.get(id=dept_id)
+    dest = Stand.objects.get(id=dest_id)
+    firstBus = Bus.objects.get(id=first_bus)
+    secondBus = Bus.objects.get(id=second_bus)
+    inter=Stand.objects.get(id=inter_id)
+    
+    if firstBus and secondBus and inter and dept and dest:
+
+        context = {'firstBus': firstBus,'secondBus':secondBus,'inter':inter,'dept':dept,'dest':dest,'dist':dist,'busTime':busTime}
+        
+        return render(request, 'suggest_frac_result.html', context)
+        
+    else:
+        context={'error':f"Bus or Stands are not Found !"}
+       
+    return render(request, 'error.html', context)
+
 
 
 
@@ -454,22 +495,18 @@ def suggestBus(request,bus_id):
     return render(request, 'error.html', context)
 
 
-def suggestArea(request,bus_id):
-    
-    bus=get_object_or_404(Bus,id=bus_id)
-    
-    if bus:
-    
-        bus_ordering=bus.orderingmodel_set.order_by('order')
-        
-        stands=[]
 
-        for b in bus_ordering:
-            stands.append(b.stand)
+def suggestArea(request,area_id):
+    
+    area=get_object_or_404(Area,id=area_id)
+    
+    if area:
+    
+        stands=area.stand_set.all()
         
 
-        context = {'bus': bus, 'stands': stands}
-        return render(request, 'suggest_bus.html', context)
+        context = {'area': area, 'stands': stands}
+        return render(request, 'suggest_area.html', context)
         
     else:
         context={'error':f"Bus is not Found !"}

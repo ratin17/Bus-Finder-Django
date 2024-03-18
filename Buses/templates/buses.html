@@ -4,7 +4,7 @@
 
   <h1>Buses</h1>
 
-  <a class="btn bg-parent p-3 shadow border border-light text-nowrap" href="{% url 'findBus' %}">Find Bus</a>
+  <a class="btn bg-parent p-3 shadow border border-light d-flex justify-content-center align-items-center" href="{% url 'findBus' %}">Find Bus</a>
 
 
 {% endblock page_header %}
@@ -21,7 +21,7 @@
 
   <div class="container col-12 col-sm-12 col-md-12 col-lg-10 text-center">
     
-    <div class="row gx-3">
+    <div class="row">
 
       <a style="background-color: rgb(28, 8, 141);" class="col gy-3 col-5 col-sm-5 col-md-2 col-lg-2 btn shadow border text-white d-flex justify-content-center align-items-center"><b>Bus</b></a>
 
@@ -36,7 +36,7 @@
     </div>
 
     {% for bus in buses %}
-    <div class="row gx-3">
+    <div class="row">
 
       <a href="{% url 'bus' bus.obj.id %}" class="col gy-3 col-5 col-sm-5 col-md-2 col-lg-2 btn shadow border text-black d-flex justify-content-center align-items-center">{{ bus.obj.b_name }}</a>
 
@@ -44,7 +44,7 @@
 
       <a class="col gy-3 col-1 col-sm-1 col-md-1 col-lg-1 btn text-black d-flex justify-content-center align-items-center"><i class="fas fa-arrow-left"></i><i class="fas fa-arrow-right"></i></a>
 
-      <a href="{% url 'bus' bus.obj.id %}" class="col gy-3 col-3 col-sm-3 col-md-2 col-lg-2 btn shadow border text-black d-flex justify-content-center align-items-center">{{ bus.to }}</a>    
+      <a href="{% url 'bus' bus.obj.id %}" class="col gy-3 col-3 col-sm-3 col-md-2 col-lg-2 btn shadow border text-black d-flex justify-content-center align-items-center">{{ bus.to }}</a>  
 
       {% if user.is_authenticated %}
 

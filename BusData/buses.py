@@ -107,7 +107,7 @@ BusData={
     "106":{"stands":[157,153,158,234,152,148,260,202,34,36,12,255,69],"name":"Mohona Bus","Rating":40,"isActive":True,"service":"Semi-Sitting"},
     "107":{"stands":[164,216,58,105,49,213,33,214,146,90,189,184,72,81,165,10],"name":"Moitri Bus","Rating":40,"isActive":True,"service":"Semi-Sitting"},
     "108":{"stands":[46,222,97,231,147,200,227,104,211,81,45,21,15,176,174,49,131,60,59,11,50,224,230,113,52,244,73,8,89,209,19,256,170,44],"name":"Moumita Bus","Rating":40,"isActive":True,"service":"Semi-Sitting"},
-    "109":{"stands":[164,11,59,60,229,131,49,213,33,214,146,90,189,184,72,81,165,10,69],"name":"MTCL-2 Bus","Rating":40,"isActive":True,"service":"Semi-Sitting"},
+    "109":{"stands":[164,11,59,60,229,131,49,213,33,214,146,90,189,184,72,81,165,10],"name":"MTCL-2 Bus","Rating":40,"isActive":True,"service":"Semi-Sitting"},
     "110":{"stands":[47,234,158,153,154,191,114,66,136,218,134,99,32,169,180,31,215,248,17,138,149,197,196,88,141],"name":"Nur-E-Makka","Rating":65,"isActive":True,"service":"Semi-Sitting"},
     "111":{"stands":[47,152,9,244,113,230,224,50,11,59,229,60,131,213,121,214,90,71,173,16,125],"name":"Nabakali Bus","Rating":40,"isActive":True,"service":"Semi-Sitting"},
     "112":{"stands":[47,152,9,244,113,230,224,50,11,126,70,122,26,214,90,189,184,51,165],"name":"New Vision Bus","Rating":35,"isActive":True,"service":"Semi-Sitting"},

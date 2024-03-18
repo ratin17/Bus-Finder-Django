@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+
+{% block page_header %}
+
+  <h3>Suggestions for : From {{dept.s_name}} to {{dest.s_name}} through {{inter.s_name}} by {{ firstBus.b_name }} and {{ secondBus.b_name }} </h3>
+  
+  <a class="btn bg-parent p-3 shadow border border-light d-flex justify-content-center align-items-center" href="{% url 'result' dept.id dest.id %}" >Cancel</a>
+  
+
+{% endblock page_header %}
+
+
+
+<!-- Block Section -->
+{% block content %}
+
+    <div class="card text-center">
+        <div class="card-header">Choose Suggestions from below or Send Custom Suggestion</div>
+        <div class="card-body">
+        <a style="background-color: rgb(9, 129, 119);"href="{% url 'suggest_custom' %}" class="btn border border-3 text-white border-light shadow-lg d-flex justify-content-center align-items-center">Send Custom Suggestion</a>
+        </div>
+    </div>
+
+
+
+    <div class="container col-12 col-sm-10 col-md-10 col-lg-10 text-center">
+
+        <div class="row gx-2">
+            <button class="col gy-3 col-12 btn btn-secondary shadow border text-white text-center">Journey Summary Related Suggestions</button>
+        </div>
+
+        <div class="row gx-2">
+            <button class="col gy-3 col-10 col-sm-10 btn shadow border text-black text-center">There is a direct bus from {{dept.s_name}} to {{dest.s_name}}</button>
+            <a href="{% url 'feedback_success' 'There is a direct bus from '|add:dept.s_name|add:' to '|add:dest.s_name ' : From '|add:dept.s_name|add:' to '|add:dest.s_name %}" class="col gy-3 col-2 col-sm-2 btn shadow border text-black d-flex justify-content-center align-items-center">Send</a>
+        </div>
+
+
+        <div class="row gx-2">
+            <button class="col gy-3 col-10 col-sm-10 btn shadow border text-black text-center"> {{firstBus.b_name}} does not go through {{dept.s_name}} </button>
+            <a href="{% url 'feedback_success' firstBus.b_name|add:' does not go through '|add:dept.s_name ' : From '|add:dept.s_name|add:' to '|add:dest.s_name %}" class="col gy-3 col-2 col-sm-2 btn shadow border text-black d-flex justify-content-center align-items-center">Send</a>
+        </div>
+
+
+        <div class="row gx-2">
+            <button class="col gy-3 col-10 col-sm-10 btn shadow border text-black text-center"> {{firstBus.b_name}} does not go through {{inter.s_name}} </button>
+            <a href="{% url 'feedback_success' firstBus.b_name|add:' does not go through '|add:inter.s_name ' : From '|add:dept.s_name|add:' to '|add:dest.s_name %}" class="col gy-3 col-2 col-sm-2 btn shadow border text-black d-flex justify-content-center align-items-center">Send</a>
+        </div>
+
+
+
+
+        <div class="row gx-2">
+            <button class="col gy-3 col-10 col-sm-10 btn shadow border text-black text-center"> {{secondBus.b_name}} does not go through {{inter.s_name}} </button>
+            <a href="{% url 'feedback_success' secondBus.b_name|add:' does not go through '|add:inter.s_name ' : From '|add:dept.s_name|add:' to '|add:dest.s_name %}" class="col gy-3 col-2 col-sm-2 btn shadow border text-black d-flex justify-content-center align-items-center">Send</a>
+        </div>
+
+
+        <div class="row gx-2">
+            <button class="col gy-3 col-10 col-sm-10 btn shadow border text-black text-center"> {{secondBus.b_name}} does not go through {{dest.s_name}} </button>
+            <a href="{% url 'feedback_success' secondBus.b_name|add:' does not go through '|add:dest.s_name ' : From '|add:dept.s_name|add:' to '|add:dest.s_name %}" class="col gy-3 col-2 col-sm-2 btn shadow border text-black d-flex justify-content-center align-items-center">Send</a>
+        </div>
+
+
+        <div class="row gx-2">
+            <button class="col gy-3 col-10 col-sm-10 btn shadow border text-black text-center"> Travel time of {{busTime}} from {{dept.s_name}} to {{dest.s_name}} through {{inter.s_name}} is irrelevant ! </button>
+            <a href="{% url 'feedback_success' 'Travel time of '|add:busTime|add:' from '|add:dept.s_name|add:' to '|add:dest.s_name|add:' through '|add:inter.s_name|add:' is irrelevant' ' : From '|add:dept.s_name|add:' to '|add:dest.s_name %}" class="col gy-3 col-2 col-sm-2 btn shadow border text-black d-flex justify-content-center align-items-center">Send</a>
+        </div>
+
+
+
+        <div class="row gx-2">
+            <button class="col gy-3 col-10 col-sm-10 btn shadow border text-black text-center"> Distance of {{dist}} Km from {{dept.s_name}} to {{dest.s_name}} through {{inter.s_name}} is irrelevant ! </button>
+            <a href="{% url 'feedback_success' 'Distance of '|add:dist|add:' Km from '|add:dept.s_name|add:' to '|add:dest.s_name|add:' through '|add:inter.s_name|add:' is irrelevant' ' : From '|add:dept.s_name|add:' to '|add:dest.s_name %}" class="col gy-3 col-2 col-sm-2 btn shadow border text-black d-flex justify-content-center align-items-center">Send</a>
+        </div>
+
+
+        
+    </div>
+
+{% endblock content %}
+
+
+
+

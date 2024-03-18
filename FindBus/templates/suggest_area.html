@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block page_header %}
+
+  <h3>Suggestions for {{ area.a_name }}</h3>
+  
+  <a class="btn bg-parent p-3 shadow border border-light d-flex justify-content-center align-items-center" href="{% url 'stands:area' area.id  %}" >Cancel</a>
+  
+
+{% endblock page_header %}
+
+
+
+<!-- Block Section -->
+{% block content %}
+
+  <div class="card text-center">
+    <div class="card-header">Choose Suggestions from below or Send Custom Suggestion</div>
+    <div class="card-body">
+      <a style="background-image: linear-gradient(rgb(120, 231, 222),rgb(240, 81, 134));" href="{% url 'suggest_custom' %}" class="btn border border-3 text-white border-light shadow-lg">Send Custom Suggestion</a>
+    </div>
+  </div>
+
+
+
+  <div class="container col-12 col-sm-10 col-md-10 col-lg-10 text-center">
+
+
+    {% for stand in stands %}
+      
+      <div class="row gx-2">
+        <button class="col gy-3 col-10 col-sm-10 btn shadow border text-black text-center">{{ stand.s_name }} Should not be in Area : {{area.a_name }} !</button>
+        <a href="{% url 'feedback_success' stand.s_name|add:" Should not be in Area : "|add:area.a_name|add:" !" area.a_name %}" class="col gy-3 col-2 col-sm-2 btn shadow border text-black d-flex justify-content-center align-items-center">Send</a>
+      </div>
+
+    {% endfor %}
+
+
+    
+  </div>
+
+{% endblock content %}
+
+
+
+

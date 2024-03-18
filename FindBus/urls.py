@@ -12,6 +12,7 @@ urlpatterns = [
     
     
     path('suggest-result/<int:dept_id>/<int:dest_id>/<int:bus_id>/<str:dist>/<str:busTime>/', views.suggestResult, name='suggest_result'),
+    path('suggest-frac-result/<int:dept_id>/<int:first_bus>/<int:inter_id>/<int:second_bus>/<int:dest_id>/<str:dist>/<str:busTime>/', views.suggestFracResult, name='suggest_frac_result'),
     path('suggest-custom/', views.suggestCustom, name='suggest_custom'),
     path('suggest-bus/<int:bus_id>/', views.suggestBus, name='suggest_bus'),
     path('suggest-bus-stand/<int:bus_id>/<int:stand_id>/', views.suggestBusStand, name='suggest_bus_stand'),

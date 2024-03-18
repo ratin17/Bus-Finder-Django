@@ -14,17 +14,33 @@
 <!-- Block Section -->
 {% block content %}
 
-    <div class="card text-center">
-      <div class="card-header">{{ name }}</div>
-      <div class="card-body">
-          <h2>
-              <button class="btn btn-danger text-red"> Hello </button>
-          </h2>
-          <p></p>
-          <a href="{% url 'findBus'  %}" class="btn bg-parent btn-success border border-3 border-light shadow-lg">Find Bus</a>
-      </div>
-    </div>
+  <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#aboutdb" aria-controls="aboutdb">About Dhakar Bus</button>
 
+  <div class="offcanvas offcanvas-start" data-bs-scroll="true" tabindex="-1" id="aboutdb" aria-labelledby="aboutdbLabel">
+    <div class="offcanvas-header">
+      <h5 class="offcanvas-title" id="aboutdbLabel">About Dhakar Bus</h5>
+      <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body">
+      <p>
+        Here you can use 'Dhakar Bus' site to find and know about buses go through diffrent Bus-Stops at Dhaka City and nearby    places.You are welcome and requested to provide correction suggestion through the site if found anything wrong.
+      </p>
+    </div>
+  </div>
+
+  <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#aboutme" aria-controls="aboutme">About Me</button>
+
+  <div class="offcanvas offcanvas-start" data-bs-scroll="true" tabindex="-1" id="aboutme" aria-labelledby="aboutmeLabel">
+    <div class="offcanvas-header">
+      <h5 class="offcanvas-title" id="aboutmeLabel">About Me</h5>
+      <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body">
+      <p>
+        Hello, I am Mehrab Rabbi Ratin !
+      </p>
+    </div>
+  </div>
 
 {% endblock content %}
 
