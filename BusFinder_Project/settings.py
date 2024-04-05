@@ -111,6 +111,7 @@ AUTH_PASSWORD_VALIDATORS = [
 LOGIN_REDIRECT_URL = 'manage:manage'
 LOGOUT_REDIRECT_URL = 'findBus'
 
+STATIC_URL = '/static/'
 
 
 # Internationalization

@@ -123,6 +123,19 @@ def getTimeCo():
     return timeCof
 
 
+
+def getHour():
+    
+    UtcTime = timezone.now()
+    currentTime = UtcTime.astimezone(timezone.get_current_timezone())
+    
+    hour=currentTime.hour
+    
+    
+    return hour
+
+
+
 def getEssence(packet,start,end):
     start_index=packet.index(start)
     end_index=packet.index(end)
@@ -219,12 +232,29 @@ def result(request,id1,id2):
     # print(dept)
     context={}
     
+    currentHour=getHour()
+    
+    
+    if dept.lati>dest.lati:
+        if currentHour<13:
+            position='Right'
+        else:
+                position='Left'
+    else:
+        if currentHour<13:
+            position='Left'
+        else:
+            position='Right'
+        
+    context['seat']=position
+    
     resBuses=[]
     
     deptBuses=[]
     destBuses=[]
     
     buses=Bus.objects.all()
+    
     for bus in buses:
         
         bus_ordering=bus.orderingmodel_set.order_by('order')
@@ -266,6 +296,7 @@ def result(request,id1,id2):
     context['dest']=dest
     
     if len(resBuses)>0:
+        
         return render(request,'result.html',context)
     
     
