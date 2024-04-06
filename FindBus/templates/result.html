@@ -20,14 +20,15 @@
 
 
 
-  <div class="container mb-3 col-12">
-    <div class="row justify-content-center">
-      {% if buses|length > 0 %}
-        <a style="background-color:rgb(228, 26, 60)" href="#res" class="col col col-12 col-sm-12 col-md-9 col-lg-6 py-2 btn shadow text-white d-flex justify-content-center align-items-center"><b class="mx-2">Take seat in the {{seat}} Side to avoid annoying sunshine <i class="fas fa-sun mx-2"></i> </a>
-      
-      {% endif %}
+  {% if seat and buses|length > 0 %}
+    <div class="container col-12">
+      <div class="row justify-content-center">
+
+          <a style="background-color:rgb(228, 26, 60)" href="#res" class="col col col-12 col-sm-12 col-md-9 col-lg-6 py-2 btn shadow text-white d-flex justify-content-center align-items-center"><b class="mx-2">Take seat in the {{seat}} Side to avoid annoying sunshine <i class="fas fa-sun mx-2"></i> </a>
+        
+      </div>
     </div>
-  </div>
+  {% endif %}
 
 
 
@@ -104,14 +105,15 @@
       {% endif %}
 
 
+      {% if seat %}
+        <div class="container col-12">
+          <div class="row justify-content-center">
 
-      <div class="container col-12">
-        <div class="row justify-content-center">
-
-            <a style="background-color:rgb(228, 26, 60)" href="#res" class="col col col-12 col-sm-12 col-md-9 col-lg-6 py-2 btn shadow text-white d-flex justify-content-center align-items-center"><b class="mx-2">Take seat in the {{seat}} Side to avoid annoying sunshine <i class="fas fa-sun mx-2"></i> </a>
-          
+              <a style="background-color:rgb(228, 26, 60)" href="#res" class="col col col-12 col-sm-12 col-md-9 col-lg-6 py-2 btn shadow text-white d-flex justify-content-center align-items-center"><b class="mx-2">Take seat in the {{seat}} Side to avoid annoying sunshine <i class="fas fa-sun mx-2"></i> </a>
+            
+          </div>
         </div>
-      </div>
+      {% endif %}
 
 
 

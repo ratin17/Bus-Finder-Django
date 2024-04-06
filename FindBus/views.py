@@ -234,19 +234,19 @@ def result(request,id1,id2):
     
     currentHour=getHour()
     
-    
-    if dept.lati>dest.lati:
-        if currentHour<13:
-            position='Right'
+    if currentHour>6 and currentHour<18:
+        if dept.lati>dest.lati:
+            if currentHour<12:
+                position='Right'
+            else:
+                    position='Left'
         else:
+            if currentHour<12:
                 position='Left'
-    else:
-        if currentHour<13:
-            position='Left'
-        else:
-            position='Right'
-        
-    context['seat']=position
+            else:
+                position='Right'
+            
+        context['seat']=position
     
     resBuses=[]
     
