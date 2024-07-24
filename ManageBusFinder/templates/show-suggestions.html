@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+
+{% block page_header %}
+
+  <h1>Suggestions</h1>
+
+  <a class="btn bg-parent p-3 shadow border border-light d-flex justify-content-center align-items-center" href="{% url 'findBus' %}">Find Bus</a>
+
+
+{% endblock page_header %}
+
+<!-- Block Section -->
+{% block content %}
+
+
+<div class="container mt-5">
+
+    <a href="{% url 'manage:all-suggestions' %}">
+      <button type="button" class="btn btn-outline-danger">All Suggestions</button>
+    </a>
+
+    <a href="{% url 'manage:read-suggestions' %}">
+      <button type="button" class="btn btn-outline-danger">Read Suggestion</button>
+    </a>
+
+    <a href="{% url 'manage:unread-suggestions' %}">
+      <button type="button" class="btn btn-outline-danger">Unread Suggestions</button>
+    </a>
+
+
+  </div>
+
+  
+
+  <div class="container col-12 col-sm-12 col-md-12 col-lg-10 text-center">
+    
+
+    {% for s in suggestions %}
+    <div class="row">
+
+      <a class="col gy-3 col-9 col-sm-9 col-md-6  btn shadow border text-black d-flex justify-content-center align-items-center">{{ s.title }} </a>
+
+
+      {% if s.name %}
+      <a  class="col gy-3 col-3 col-sm-3 col-md-2 btn shadow border text-black d-flex justify-content-center align-items-center">{{ s.name }}</a>
+      {% endif %}
+
+
+
+      <a href="{% url 'manage:delete-suggestion' s.id %}" class="col gy-3 col-4 col-sm-4 col-md-2 btn bg-danger text-white rounded-pill shadow d-flex justify-content-center align-items-center">Delete</a>
+
+        
+      {% if not s.isRead %}
+        <a href="{% url 'manage:read-suggestion' s.id %}" class="col gy-3 col-8 col-sm-8 col-md-2 btn bg-danger text-white rounded-pill shadow d-flex justify-content-center align-items-center">Mark Read</a>
+      {% endif %}
+      
+
+    </div>
+
+    {% empty %}
+      <h3>No Suggestions Found !</h3>
+    {% endfor %}
+
+  </div>
+
+
+{% endblock content %}

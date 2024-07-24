@@ -11,4 +11,15 @@ urlpatterns = [
     path('addStands/', views.addStands, name='addStands'),
     path('addBuses/', views.addBuses, name='addBuses'),
     path('addBusStands/', views.addBusStands, name='addBusStands'),
+    
+    
+    path('suggestions/', views.suggestions, name='suggestions'),
+    path('all/suggestions/', views.allSuggestions, name='all-suggestions'),
+    path('read/suggestions/', views.readSuggestions, name='read-suggestions'),
+    path('unread/suggestions/', views.unreadSuggestions, name='unread-suggestions'),
+    
+    path('suggestion/delete/<int:id>/', views.deleteSuggestion, name='delete-suggestion'),
+    path('suggestion/read/<int:id>/', views.readSuggestion, name='read-suggestion'),
+    
+    
 ]

@@ -18,6 +18,7 @@ class Stand(models.Model):
     s_name=models.CharField(max_length=100)
     lati = models.FloatField(blank=True,null=True)
     longi = models.FloatField(blank=True,null=True)
+    trafficCof=models.PositiveIntegerField(default=50)
     area=models.ManyToManyField(Area)
     
     class Meta:

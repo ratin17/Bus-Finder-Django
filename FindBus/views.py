@@ -10,9 +10,9 @@ from Stands.views import haversine
 import math
 from django.utils import timezone
 
-MPK=5 # should not be changed
-BRC=5 # Can be changed if want to change bus rating priority
 
+BRC=2 # Can be changed if want to change bus rating priority
+TCC=2 # Can be changed if want to change traffic co-efficient priority
 
 
 Holiday=[
@@ -79,7 +79,7 @@ timeMap=[
     {'0':0.6,'1':0.5,'2':0.5,'3':0.5,'4':0.5,'5':0.5,'6':0.6,'7':0.8,'8':0.8,'9':0.8,'10':0.8,'11':0.7,'12':0.7,'13':0.8,'14':0.8,'15':0.9,'16':1.0,'17':1.0,'18':1.1,'19':1.2,'20':1.2,'21':1.2,'22':1.1,'23':0.7},
     
     # 5 Saturday
-    {'0':0.6,'1':0.5,'2':0.5,'3':0.5,'4':0.5,'5':0.5,'6':0.6,'7':0.8,'8':0.9,'9':1.0,'10':0.9,'11':0.7,'12':0.7,'13':0.8,'14':0.8,'15':0.9,'16':1.0,'17':1.0,'18':1.1,'19':1.2,'20':1.2,'21':1.2,'22':1.1,'23':0.7},
+    {'0':0.6,'1':0.5,'2':0.5,'3':0.5,'4':0.5,'5':0.5,'6':0.6,'7':0.8,'8':0.9,'9':1.0,'10':0.9,'11':0.7,'12':0.7,'13':0.8,'14':0.8,'15':0.9,'16':1.1,'17':1.2,'18':1.3,'19':1.2,'20':1.2,'21':1.2,'22':1.1,'23':0.7},
     
     # 6 Sunday
     {'0':0.6,'1':0.5,'2':0.5,'3':0.5,'4':0.5,'5':0.5,'6':0.6,'7':0.8,'8':1.3,'9':1.3,'10':1.2,'11':1.2,'12':1.2,'13':1.1,'14':1.2,'15':1.3,'16':1.4,'17':1.4,'18':1.5,'19':1.6,'20':1.6,'21':1.4,'22':1.2,'23':0.7},
@@ -90,15 +90,35 @@ timeMap=[
 
 
 
+
 def distCalculator(route):
     count=0.0
     for i in range(1,len(route)):
         # stand1_lati=route[i-1].
         if route[i-1].lati and route[i-1].longi and route[i].lati and route[i].longi:
             count+=haversine(route[i-1].lati,route[i-1].longi,route[i].lati,route[i].longi)
+        
     count=count/1000
     count=round(count,2)
     return count
+
+
+
+
+
+
+def getAvgTrafficCof(route):
+    avgTrafficCof=0.0
+    routeLen=len(route)
+    for i in range(routeLen):
+        avgTrafficCof+=route[i].trafficCof
+
+    avgTrafficCof=avgTrafficCof/routeLen
+    
+    return avgTrafficCof
+
+
+
 
 
 
@@ -152,12 +172,30 @@ def getEssence(packet,start,end):
     return essence
 
 
+
+def getMPK(distance):
+    
+    if distance<30:
+        return 2
+    elif distance<40:
+        return 1.5
+    elif distance<50:
+        return 1
+    else:
+        return 0.5
+    
+
+
+
+# in no use currently, using -> getBusMinute
 def getBusTime(busRating,distance):
     
     timeCof=getTimeCo()
     
     revRat=100-busRating
+    MPK=getMPK(distance)
     busMpk=MPK+((revRat/100)*BRC)
+    print(f'{busMpk} for {busRating}')
     minute=busMpk*distance*timeCof
     
     busHour=int(minute//60)
@@ -171,13 +209,14 @@ def getBusTime(busRating,distance):
         return f'{busHour} Hours, {busMinute} Minutes'
 
 
-def getBusMinute(busRating,distance):
+def getBusMinute(busRating,distance,avgTrafficCof):
     
     timeCof=getTimeCo()
     
     revRat=100-busRating
-    busMpk=MPK+((revRat/100)*BRC)
-    
+    MPK=getMPK(distance)
+    busMpk=MPK+((revRat/100)*BRC)+((avgTrafficCof/100)*TCC)
+    print(f'getBusMinute : {round(busMpk,3)} for bus : {busRating} in roads : {round(avgTrafficCof,2)}')
     busMinute=math.ceil(busMpk*distance*timeCof)
     
     if busMinute<5:
@@ -268,6 +307,8 @@ def result(request,id1,id2):
         
         # print(stands)
         if (dept in stands):
+            
+            
             f={}
             f['bus']=bus
             f['stands']=stands
@@ -278,7 +319,8 @@ def result(request,id1,id2):
                 d['obj']=bus
                 d['route']=getEssence(stands,dept,dest)
                 d['dist']=distCalculator(d['route'])
-                d['busMinute']=getBusMinute(bus.rating,d['dist'])
+                traffic=getAvgTrafficCof(d['route'])
+                d['busMinute']=getBusMinute(bus.rating,d['dist'],traffic)
                 d['busTime']=MinuteToTime(d['busMinute'])
                 
                 resBuses.append(d)
@@ -300,26 +342,27 @@ def result(request,id1,id2):
         return render(request,'result.html',context)
     
     
-    firstBus={}
-    secondBus={}
-    fracBus={}
+    print("frac")
     
     fracBuses=[]
     
     # already=[]
     # minMin=10000
     count=0
+    # used=False
     # print(deptBuses)
     # print(destBuses)
     
     for deptBus in deptBuses:
         # if count>5:break
         for destBus in destBuses:
+            # if(used):
+            #     used=False
+            #     break
             # if count>5:break
             for fracStand in deptBus['stands']:
                 # if count>5:break
                 if (fracStand in destBus['stands']) and (dest in destBus['stands']):
-                    
                     count+=1
                     # print(deptBus['bus'].b_name,'-->',destBus['bus'].b_name,'-->',fracStand.s_name)
                     
@@ -332,15 +375,23 @@ def result(request,id1,id2):
 
                     TfirstBus['route']=getEssence(deptBus['stands'],dept,fracStand)
                     TfirstBus['dist']=distCalculator(TfirstBus['route'])
-                    TfirstBus['busMinute']=getBusMinute(deptBus['bus'].rating,TfirstBus['dist'])
+                    traffic=getAvgTrafficCof(TfirstBus['route'])
+                    TfirstBus['busMinute']=getBusMinute(deptBus['bus'].rating,TfirstBus['dist'],traffic)
                     TfirstBus['busTime']=MinuteToTime(TfirstBus['busMinute'])
+                    
+                    
+                    # print(f'firstbus: {TfirstBus}')
                     
                     TsecondBus['route']=getEssence(destBus['stands'],fracStand,dest)
                     TsecondBus['dist']=distCalculator(TsecondBus['route'])
-                    TsecondBus['busMinute']=getBusMinute(destBus['bus'].rating,TsecondBus['dist'])
+                    traffic=getAvgTrafficCof(TsecondBus['route'])
+                    TsecondBus['busMinute']=getBusMinute(destBus['bus'].rating,TsecondBus['dist'],traffic)
                     TsecondBus['busTime']=MinuteToTime(TsecondBus['busMinute'])
                     
-                    cleanMin=getBusMinute(deptBus['bus'].rating,TfirstBus['dist'])+getBusMinute(destBus['bus'].rating,TsecondBus['dist'])
+                    
+                    # print(f'second: {TsecondBus}')
+                    
+                    cleanMin=TfirstBus['busMinute']+TsecondBus['busMinute']
                     cleanDist=round(TfirstBus['dist']+TsecondBus['dist'],2)
                     
                     TfracBus['dist']=cleanDist
@@ -348,42 +399,16 @@ def result(request,id1,id2):
                     TfracBus['busTime']=MinuteToTime(TfracBus['busMinute'])
                     TfracBus['inter']=TsecondBus['route'][0]
                     
+                    # print(f'frac: {TfracBus}')
+                    
                     temp={}
                     temp['firstBus']=TfirstBus
                     temp['secondBus']=TsecondBus
                     temp['fracBus']=TfracBus
                     fracBuses.append(temp)
                     
-                    # print('///////////////////')
-                    # print(count)
-                    # print(TfracBus['busMinute'])
-                    # print(TfirstBus['bus'].b_name,'--->',TsecondBus['bus'].b_name)
-                    # print(TfirstBus['route'])
-                    # print('...................')
-                    # print(TsecondBus['route'])
-                    # print('///////////////////')
-                    
-                    # if TfracBus['busMinute']<minMin:
-                    #     print('updated')
-                    #     minMin=TfracBus['busMinute']
                         
-                    #     firstBus['bus']=TfirstBus['bus']
-                    #     secondBus['bus']=TsecondBus['bus']
-
-                    #     firstBus['route']=TfirstBus['route']
-                    #     firstBus['dist']=TfirstBus['dist']
-                    #     firstBus['busTime']=TfirstBus['busTime']
-                        
-                    #     secondBus['route']=TsecondBus['route']
-                    #     secondBus['dist']=TsecondBus['dist']
-                    #     secondBus['busTime']=TsecondBus['busTime']
-                        
-                    #     fracBus['dist']=TfracBus['dist']
-                    #     fracBus['busMinute']=TfracBus['busMinute']
-                    #     fracBus['busTime']=TfracBus['busTime']
-                    #     fracBus['inter']=TfracBus['inter']
-                        
-                        
+                    # used=True  
                     break
     
     fracBusesCount=len(fracBuses)
@@ -565,6 +590,7 @@ def suggestStand(request,stand_id):
 def feedbackCustom(request,msg):
     
     context={'suggestion':msg,'headline':"Custom Suggestion Submitted !"}
+    
     return render(request,'feedback_custom.html',context)
 
 

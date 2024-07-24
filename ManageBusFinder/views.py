@@ -1,18 +1,70 @@
-from django.shortcuts import render
+from django.shortcuts import render,redirect
 from django.contrib import messages
 
 from Buses.models import OrderingModel,Bus
 from Stands.models import Stand,Area
+from FindBus.models import Suggestion
 
 from BusData.areas import AreaData
 from BusData.stands import StandData
 from BusData.buses import BusData
 
 
+
 from django.contrib.auth.decorators import login_required
 
 
 # Create your views here.
+
+
+
+@login_required
+def suggestions(request):
+    return render(request,'suggestions.html')
+    
+
+
+@login_required
+def allSuggestions(request):
+    suggestions=Suggestion.objects.all()
+    print(suggestions)
+    context = {'suggestions': suggestions}
+    return render(request, 'show-suggestions.html', context)
+
+
+@login_required
+def readSuggestions(request):
+    suggestions=Suggestion.objects.filter(isRead=True)
+    context = {'suggestions': suggestions}
+    return render(request, 'show-suggestions.html', context)
+
+
+
+
+@login_required
+def unreadSuggestions(request):
+    suggestions=Suggestion.objects.filter(isRead=False)
+    context = {'suggestions': suggestions}
+    return render(request, 'show-suggestions.html', context)
+
+
+@login_required
+def readSuggestion(request,id):
+    suggestion=Suggestion.objects.get(id=id)
+    if suggestion:
+        suggestion.isRead=True
+        suggestion.save()
+    return redirect('manage:all-suggestions')
+
+
+@login_required
+def deleteSuggestion(request,id):
+    suggestion=Suggestion.objects.get(id=id)
+    if suggestion:
+        suggestion.delete()
+    return redirect('manage:all-suggestions')
+
+
 @login_required
 def manage(request):
     return render(request,'manage.html')
@@ -76,7 +128,7 @@ def addStands(request):
     
     areas=Area.objects.all()
     for key,stand in StandData.items():
-        s=Stand.objects.create(s_no=int(key),s_name=stand["standName"],lati=stand["lati"],longi=stand["longi"])
+        s=Stand.objects.create(s_no=int(key),s_name=stand["standName"],lati=stand["lati"],longi=stand["longi"],trafficCof=stand["traffic"])
         
         if(s):
             count=count+1

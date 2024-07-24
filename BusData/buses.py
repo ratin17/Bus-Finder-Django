@@ -146,7 +146,7 @@ BusData={
     "145":{"stands":[155,182,191,154,153,123,219,242,6,35,70,122,26,214,146,90,189,184,72,81,100,104],"name":"Shikhor Paribahan-1","Rating":50,"isActive":True,"service":"Semi-Sitting"},
     "146":{"stands":[104,211,81,72,184,189,90,146,214,26,122,70,35,6,93,242,219,123,153,154,182,191,155],"name":"Shikhor Paribahan-2","Rating":50,"isActive":True,"service":"Semi-Sitting"},
     "147":{"stands":[48,231,147,200,227,104,211,81,45,21,56,15,176,174,49,131,60,59,11,50,224,230,113,52,244,73,8,89,209,178,19,256,170,44],"name":"Shuveccha Bus","Rating":40,"isActive":True,"service":"Semi-Sitting"},
-    "148":{"stands":[71,79,72,184,189,90,146,214,33,213,131,60,59,11,224,230,113,52,244,73,8,89,144],"name":"Shuvojatri","Rating":50,"isActive":True,"service":"Semi-Sitting"},
+    "148":{"stands":[71,79,72,184,189,90,146,214,33,213,131,60,59,11,224,230,113,52,244,73,8,89,144],"name":"Shuvojatra","Rating":50,"isActive":True,"service":"Semi-Sitting"},
     "149":{"stands":[24,197,149,17,215,31,180,169,32,99,134,130,7,103,195,14,91,2,116,62,34,12,255,69,98,223,19,183,210,178],"name":"Siam Transport","Rating":55,"isActive":True,"service":"Semi-Sitting"},
     "150":{"stands":[203,198,173,79,72,184,111,217,140,166,168,163,42,204,23,110,237,136,218,134,130,7,103,195,14,91,2,247,238,151,37,77],"name":"Skyline","Rating":55,"isActive":True,"service":"Semi-Sitting"},
     "151":{"stands":[48,231,147,200,227,104,211,81,45,21,56,15,176,174,49,131,60,59,11,50,224,230,113,52,244,9,152,192,47],"name":"Shomota Paribahan","Rating":35,"isActive":True,"service":"Semi-Sitting"},

@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block page_header %}
+  <h1>Suggestions</h1>
+{% endblock page_header %}
+
+{% block content %}
+  
+  <div class="container mt-5">
+
+    <a href="{% url 'manage:all-suggestions' %}">
+      <button type="button" class="btn btn-outline-danger">All Suggestions</button>
+    </a>
+
+    <a href="{% url 'manage:read-suggestions' %}">
+      <button type="button" class="btn btn-outline-danger">Read Suggestion</button>
+    </a>
+
+    <a href="{% url 'manage:unread-suggestions' %}">
+      <button type="button" class="btn btn-outline-danger">Unread Suggestions</button>
+    </a>
+
+
+  </div>
+
+{% endblock content %}
