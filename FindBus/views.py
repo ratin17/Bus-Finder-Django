@@ -6,7 +6,7 @@ from Buses.models import Bus,OrderingModel
 from Stands.models import Stand,Area
 from django.contrib import messages
 from Stands.views import haversine
-
+from ManageBusFinder.models import Log
 import math
 from django.utils import timezone
 
@@ -64,28 +64,28 @@ Holiday=[
 timeMap=[
     
     # 0 Monday
-    {'0':0.6,'1':0.5,'2':0.5,'3':0.5,'4':0.5,'5':0.5,'6':0.6,'7':0.8,'8':1.3,'9':1.3,'10':1.2,'11':1.2,'12':1.2,'13':1.1,'14':1.2,'15':1.3,'16':1.4,'17':1.4,'18':1.5,'19':1.6,'20':1.6,'21':1.4,'22':1.2,'23':0.7},
+    {'0':0.7,'1':0.7,'2':0.7,'3':0.7,'4':0.7,'5':0.7,'6':0.7,'7':0.8,'8':1.3,'9':1.3,'10':1.2,'11':1.2,'12':1.2,'13':1.1,'14':1.2,'15':1.3,'16':1.4,'17':1.4,'18':1.5,'19':1.6,'20':1.6,'21':1.4,'22':1.2,'23':0.7},
     
     # 1 Tuesday
-    {'0':0.6,'1':0.5,'2':0.5,'3':0.5,'4':0.5,'5':0.5,'6':0.6,'7':0.8,'8':1.3,'9':1.3,'10':1.2,'11':1.2,'12':1.2,'13':1.1,'14':1.2,'15':1.3,'16':1.4,'17':1.4,'18':1.5,'19':1.6,'20':1.6,'21':1.4,'22':1.2,'23':0.7},
+    {'0':0.7,'1':0.7,'2':0.7,'3':0.7,'4':0.7,'5':0.7,'6':0.7,'7':0.8,'8':1.3,'9':1.3,'10':1.2,'11':1.2,'12':1.2,'13':1.1,'14':1.2,'15':1.3,'16':1.4,'17':1.4,'18':1.5,'19':1.6,'20':1.6,'21':1.4,'22':1.2,'23':0.7},
     
     # 2 Wednesday
-    {'0':0.6,'1':0.5,'2':0.5,'3':0.5,'4':0.5,'5':0.5,'6':0.6,'7':0.8,'8':1.3,'9':1.3,'10':1.2,'11':1.2,'12':1.2,'13':1.1,'14':1.2,'15':1.3,'16':1.4,'17':1.4,'18':1.5,'19':1.6,'20':1.6,'21':1.4,'22':1.2,'23':0.7},
+    {'0':0.7,'1':0.7,'2':0.7,'3':0.7,'4':0.7,'5':0.7,'6':0.7,'7':0.8,'8':1.3,'9':1.3,'10':1.2,'11':1.2,'12':1.2,'13':1.1,'14':1.2,'15':1.3,'16':1.4,'17':1.4,'18':1.5,'19':1.6,'20':1.6,'21':1.4,'22':1.2,'23':0.7},
     
     # 3 Thursday
-    {'0':0.6,'1':0.5,'2':0.5,'3':0.5,'4':0.5,'5':0.5,'6':0.6,'7':0.8,'8':1.3,'9':1.3,'10':1.2,'11':1.2,'12':1.2,'13':1.1,'14':1.2,'15':1.3,'16':1.4,'17':1.4,'18':1.5,'19':1.6,'20':1.6,'21':1.4,'22':1.2,'23':0.7},
+    {'0':0.7,'1':0.7,'2':0.7,'3':0.7,'4':0.7,'5':0.7,'6':0.7,'7':0.8,'8':1.3,'9':1.3,'10':1.2,'11':1.2,'12':1.2,'13':1.1,'14':1.2,'15':1.3,'16':1.4,'17':1.4,'18':1.5,'19':1.6,'20':1.6,'21':1.4,'22':1.2,'23':0.7},
     
     # 4 Friday
-    {'0':0.6,'1':0.5,'2':0.5,'3':0.5,'4':0.5,'5':0.5,'6':0.6,'7':0.8,'8':0.8,'9':0.8,'10':0.8,'11':0.7,'12':0.7,'13':0.8,'14':0.8,'15':0.9,'16':1.0,'17':1.0,'18':1.1,'19':1.2,'20':1.2,'21':1.2,'22':1.1,'23':0.7},
+    {'0':0.7,'1':0.7,'2':0.7,'3':0.7,'4':0.7,'5':0.7,'6':0.7,'7':0.8,'8':0.8,'9':0.8,'10':0.8,'11':0.7,'12':0.7,'13':0.8,'14':0.8,'15':0.9,'16':1.0,'17':1.0,'18':1.1,'19':1.2,'20':1.2,'21':1.2,'22':1.1,'23':0.7},
     
     # 5 Saturday
-    {'0':0.6,'1':0.5,'2':0.5,'3':0.5,'4':0.5,'5':0.5,'6':0.6,'7':0.8,'8':0.9,'9':1.0,'10':0.9,'11':0.7,'12':0.7,'13':0.8,'14':0.8,'15':0.9,'16':1.1,'17':1.2,'18':1.3,'19':1.2,'20':1.2,'21':1.2,'22':1.1,'23':0.7},
+    {'0':0.7,'1':0.7,'2':0.7,'3':0.7,'4':0.7,'5':0.7,'6':0.7,'7':0.8,'8':0.9,'9':1.0,'10':0.9,'11':0.7,'12':0.7,'13':0.8,'14':0.8,'15':0.9,'16':1.1,'17':1.2,'18':1.3,'19':1.2,'20':1.2,'21':1.2,'22':1.1,'23':0.7},
     
     # 6 Sunday
-    {'0':0.6,'1':0.5,'2':0.5,'3':0.5,'4':0.5,'5':0.5,'6':0.6,'7':0.8,'8':1.3,'9':1.3,'10':1.2,'11':1.2,'12':1.2,'13':1.1,'14':1.2,'15':1.3,'16':1.4,'17':1.4,'18':1.5,'19':1.6,'20':1.6,'21':1.4,'22':1.2,'23':0.7},
+    {'0':0.7,'1':0.7,'2':0.7,'3':0.7,'4':0.7,'5':0.7,'6':0.7,'7':0.8,'8':1.3,'9':1.3,'10':1.2,'11':1.2,'12':1.2,'13':1.1,'14':1.2,'15':1.3,'16':1.4,'17':1.4,'18':1.5,'19':1.6,'20':1.6,'21':1.4,'22':1.2,'23':0.7},
     
     # 7 Holiday
-    {'0':0.6,'1':0.5,'2':0.5,'3':0.5,'4':0.5,'5':0.5,'6':0.6,'7':0.8,'8':0.8,'9':0.8,'10':0.8,'11':0.7,'12':0.7,'13':0.8,'14':0.8,'15':0.9,'16':1.0,'17':1.0,'18':1.1,'19':1.2,'20':1.2,'21':1.2,'22':1.1,'23':0.7},
+    {'0':0.7,'1':0.7,'2':0.7,'3':0.7,'4':0.7,'5':0.7,'6':0.7,'7':0.8,'8':0.8,'9':0.8,'10':0.8,'11':0.7,'12':0.7,'13':0.8,'14':0.8,'15':0.9,'16':1.0,'17':1.0,'18':1.1,'19':1.2,'20':1.2,'21':1.2,'22':1.1,'23':0.7},
 ]
 
 
@@ -182,7 +182,7 @@ def getMPK(distance):
     elif distance<50:
         return 1
     else:
-        return 0.5
+        return 1
     
 
 
@@ -195,7 +195,7 @@ def getBusTime(busRating,distance):
     revRat=100-busRating
     MPK=getMPK(distance)
     busMpk=MPK+((revRat/100)*BRC)
-    print(f'{busMpk} for {busRating}')
+    # print(f'{busMpk} for {busRating}')
     minute=busMpk*distance*timeCof
     
     busHour=int(minute//60)
@@ -216,7 +216,7 @@ def getBusMinute(busRating,distance,avgTrafficCof):
     revRat=100-busRating
     MPK=getMPK(distance)
     busMpk=MPK+((revRat/100)*BRC)+((avgTrafficCof/100)*TCC)
-    print(f'getBusMinute : {round(busMpk,3)} for bus : {busRating} in roads : {round(avgTrafficCof,2)}')
+    # print(f'getBusMinute : {round(busMpk,3)} for bus : {busRating} in roads : {round(avgTrafficCof,2)} | Overal : {busMpk*timeCof} MPK')
     busMinute=math.ceil(busMpk*distance*timeCof)
     
     if busMinute<5:
@@ -240,6 +240,11 @@ def MinuteToTime(minute):
 
 
 def busFinder(request):
+    
+    # for creating log object
+    Log.objects.create(title=f'Viewed : Homepage.',type='view')
+    # ----- end  ------
+    
     if request.method == 'POST':
         form = BusFinderForm(request.POST)
         if form.is_valid():
@@ -269,6 +274,11 @@ def result(request,id1,id2):
     dept=get_object_or_404(Stand,id=id1)
     dest=get_object_or_404(Stand,id=id2)
     # print(dept)
+    
+    # for creating log object
+    Log.objects.create(title=f'Searched : {dept.s_name} to {dest.s_name}.',type='search')
+    # ----- end  ------
+    
     context={}
     
     currentHour=getHour()
@@ -423,6 +433,11 @@ def result(request,id1,id2):
 
 
 def about(request):
+    
+    # for creating log object
+    Log.objects.create(title=f'Viewed : About Page.',type='view')
+    # ----- end  ------
+    
     context={'name':'Mehrab Rabbi Ratin'}
     return render(request,'about.html',context)
 
@@ -435,6 +450,11 @@ def suggestResult(request,dept_id,dest_id,bus_id,dist,busTime):
     bus = Bus.objects.get(id=bus_id)
     
     if bus and dept and dest:
+        
+        
+        # for creating log object
+        Log.objects.create(title=f'Suggested : {dept.s_name} to {dest.s_name} with {bus.b_name}.',type='suggest')
+        # ----- end  ------
     
         bus_ordering=bus.orderingmodel_set.order_by('order')
         
@@ -475,6 +495,10 @@ def suggestFracResult(request,dept_id,first_bus,inter_id,second_bus,dest_id,dist
     inter=Stand.objects.get(id=inter_id)
     
     if firstBus and secondBus and inter and dept and dest:
+        
+        # for creating log object
+        Log.objects.create(title=f'Suggested : {dept.s_name} to {dest.s_name} with {firstBus.b_name} and {secondBus.b_name}.',type='suggest')
+        # ----- end  ------
 
         context = {'firstBus': firstBus,'secondBus':secondBus,'inter':inter,'dept':dept,'dest':dest,'dist':dist,'busTime':busTime}
         
@@ -490,7 +514,13 @@ def suggestFracResult(request,dept_id,first_bus,inter_id,second_bus,dest_id,dist
 
 def suggestCustom(request):
     
+     
     if request.method=="POST":
+        
+        # for creating log object
+        Log.objects.create(title=f'Suggested : Custom Suggestion.',type='suggest')
+        # ----- end  ------
+        
         form=SuggestionForm(data=request.POST)
         if form.is_valid():
             new_suggestion=form.save(commit=False)
@@ -503,6 +533,11 @@ def suggestCustom(request):
             msg="Error during the submission of Custom-suggestion !"
             return redirect('feedback_error',msg)
     else:
+        
+        # for creating log object
+        Log.objects.create(title=f'Viewed : Custom Suggestion Form.',type='view')
+        # ----- end  ------
+        
         form=SuggestionForm()
         context={'form':form}
     return render(request,'suggestion_custom.html',context)
@@ -515,6 +550,11 @@ def suggestBusStand(request,bus_id,stand_id):
     stand=get_object_or_404(Stand,id=stand_id)
     
     if bus and stand:
+        
+        # for creating log object
+        Log.objects.create(title=f'Suggested : {bus.b_name} and {stand.s_name}.',type='suggest')
+        # ----- end  ------
+        
         order=OrderingModel.objects.filter(bus=bus,stand=stand).first().order
         if order:
             context={'bus':bus,'stand':stand,'order':order}
@@ -533,6 +573,10 @@ def suggestBus(request,bus_id):
     bus=get_object_or_404(Bus,id=bus_id)
     
     if bus:
+        
+        # for creating log object
+        Log.objects.create(title=f'Suggested : Bus-> {bus.b_name}',type='suggest')
+        # ----- end  ------
     
         bus_ordering=bus.orderingmodel_set.order_by('order')
         
@@ -557,6 +601,10 @@ def suggestArea(request,area_id):
     area=get_object_or_404(Area,id=area_id)
     
     if area:
+        
+        # for creating log object
+        Log.objects.create(title=f'Suggested : Area-> {area.a_name}.',type='suggest')
+        # ----- end  ------
     
         stands=area.stand_set.all()
         
@@ -577,6 +625,11 @@ def suggestStand(request,stand_id):
     
     
     if stand:
+        
+        # for creating log object
+        Log.objects.create(title=f'Suggested : Stand-> {stand.s_name}.',type='suggest')
+        # ----- end  ------
+        
         context = {'stand': stand}
         return render(request, 'suggest_stand.html', context)
         

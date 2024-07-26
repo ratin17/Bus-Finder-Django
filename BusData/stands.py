@@ -256,9 +256,23 @@ StandData={
     "256":{"standName":"Zirani Bazar","lati":23.99374,"longi":90.255747,"areas":[39,13],"traffic":50},
     "257":{"standName":"Palashi","lati":23.727328,"longi":90.389656,"areas":[35,34,49,2],"traffic":60},
     "258":{"standName":"Meghna Ghat","lati":23.618430,"longi":90.609239,"areas":[33,32],"traffic":20},
-    #259 exists
+    
+    #  Added Later
+    
     "259":{"standName":"Tongi College Gate","lati":23.908622,"longi":90.397928,"areas":[45,13],"traffic":60},
     "260":{"standName":"Konabari(Mirpur)","lati":23.795101,"longi":90.348572,"areas":[12,28],"traffic":40},
+    
+    
+    
+    "261":{"standName":"Noyarhat","lati":23.911292,"longi":90.231248,"areas":[39],"traffic":10},
+    "262":{"standName":"Baniajuri","lati":23.850556,"longi":89.940826,"areas":[27],"traffic":5},
+    "263":{"standName":"Mohadebpur","lati":23.848995,"longi":89.883200,"areas":[27],"traffic":5},
+    "264":{"standName":"Borongail","lati":23.851653,"longi":89.872255,"areas":[27],"traffic":10},
+    "265":{"standName":"Tepra","lati":23.845923,"longi":89.829696,"areas":[27],"traffic":5},
+    "266":{"standName":"Uthali","lati":23.845376,"longi":89.818026,"areas":[27],"traffic":5},
+    "267":{"standName":"Nayadingi(Saturia)","lati":23.907225,"longi":90.053856,"areas":[27],"traffic":5},
+    
+   
 }
 
 

@@ -1,0 +1,326 @@
+{% extends "base.html" %}
+
+{% block page_header %}
+
+  <h1>{{type}} Logs</h1>
+
+  <a class="btn bg-parent p-3 shadow border border-light d-flex justify-content-center align-items-center" href="{% url 'findBus' %}">Find Bus</a>
+
+
+{% endblock page_header %}
+
+<!-- Block Section -->
+{% block content %}
+
+<div>
+    <h2>Logs Count : {{logCount}}</h2>
+</div>
+
+
+<hr>
+
+<div class="container">
+
+    <a href="{% url 'manage:all-logs' %}">
+      <button type="button" class="btn btn-outline-success">All Logs</button>
+    </a>
+
+    <a href="{% url 'manage:type-logs' 'search' %}">
+      <button type="button" class="btn btn-outline-success">Search Logs</button>
+    </a>
+
+    
+    <a href="{% url 'manage:type-logs' 'try' %}">
+        <button type="button" class="btn btn-outline-success">Try Logs</button>
+    </a>
+  
+      
+    <a href="{% url 'manage:type-logs' 'view' %}">
+        <button type="button" class="btn btn-outline-success">View Logs</button>
+    </a>
+  
+    <a href="{% url 'manage:type-logs' 'suggest' %}">
+        <button type="button" class="btn btn-outline-success">Suggestion Logs</button>
+    </a>
+
+
+</div>
+
+
+
+<hr>
+
+
+<!-- Only Keep Logs of Last  N days/Hours/Minutes -->
+
+
+<div class="container">
+
+    <a>
+        <button type="button" class="btn btn-outline-danger">Only Keep Logs of Last </button>
+    </a>
+
+    <a href="{% url 'manage:keep-last-logs' 30 'days' %}">
+      <button type="button" class="btn btn-outline-danger">30 Days</button>
+    </a>
+
+    <a href="{% url 'manage:keep-last-logs' 10 'days' %}">
+      <button type="button" class="btn btn-outline-danger">10 Days</button>
+    </a>
+
+    <a href="{% url 'manage:keep-last-logs' 5 'days' %}">
+        <button type="button" class="btn btn-outline-danger">5 Days</button>
+    </a>
+  
+    <a href="{% url 'manage:keep-last-logs' 2 'days' %}">
+        <button type="button" class="btn btn-outline-danger">2 Days</button>
+    </a>
+  
+    <a href="{% url 'manage:keep-last-logs' 1 'days' %}">
+        <button type="button" class="btn btn-outline-danger">1 Day</button>
+    </a>
+
+</div>
+
+
+
+<div class="container">
+
+    <a>
+        <button type="button" class="btn btn-outline-danger">Only Keep Logs of Last </button>
+    </a>
+
+    <a href="{% url 'manage:keep-last-logs' 24 'hours' %}">
+      <button type="button" class="btn btn-outline-danger">24 Hours</button>
+    </a>
+
+    <a href="{% url 'manage:keep-last-logs' 10 'hours' %}">
+      <button type="button" class="btn btn-outline-danger">10 Hours</button>
+    </a>
+
+    <a href="{% url 'manage:keep-last-logs' 5 'hours' %}">
+        <button type="button" class="btn btn-outline-danger">5 Hours</button>
+    </a>
+  
+    <a href="{% url 'manage:keep-last-logs' 2 'hours' %}">
+        <button type="button" class="btn btn-outline-danger">2 Hours</button>
+    </a>
+  
+    <a href="{% url 'manage:keep-last-logs' 1 'hours' %}">
+        <button type="button" class="btn btn-outline-danger">1 Hour</button>
+    </a>
+
+</div>
+
+
+
+<div class="container">
+
+    <a>
+        <button type="button" class="btn btn-outline-danger">Only Keep Logs of Last </button>
+    </a>
+
+
+    <a href="{% url 'manage:keep-last-logs' 30 'minutes' %}">
+      <button type="button" class="btn btn-outline-danger">30 Minutes</button>
+    </a>
+
+    <a href="{% url 'manage:keep-last-logs' 10 'minutes' %}">
+        <button type="button" class="btn btn-outline-danger">10 Minutes</button>
+    </a>
+  
+    <a href="{% url 'manage:keep-last-logs' 5 'minutes' %}">
+        <button type="button" class="btn btn-outline-danger">5 Minutes</button>
+    </a>
+  
+    <a href="{% url 'manage:keep-last-logs' 2 'minutes' %}">
+        <button type="button" class="btn btn-outline-danger">1 Minutes</button>
+    </a>
+
+</div>
+
+<hr>
+
+
+<!-- delete last N  starts-->
+
+
+<div class="container">
+
+    <a>
+        <button type="button" class="btn btn-outline-danger">Delete Logs of Last </button>
+    </a>
+
+    <a href="{% url 'manage:delete-last-logs' 30 'days' %}">
+      <button type="button" class="btn btn-outline-danger">30 Days</button>
+    </a>
+
+    <a href="{% url 'manage:delete-last-logs' 10 'days' %}">
+      <button type="button" class="btn btn-outline-danger">10 Days</button>
+    </a>
+
+    <a href="{% url 'manage:delete-last-logs' 5 'days' %}">
+        <button type="button" class="btn btn-outline-danger">5 Days</button>
+    </a>
+  
+    <a href="{% url 'manage:delete-last-logs' 2 'days' %}">
+        <button type="button" class="btn btn-outline-danger">2 Days</button>
+    </a>
+  
+    <a href="{% url 'manage:delete-last-logs' 1 'days' %}">
+        <button type="button" class="btn btn-outline-danger">1 Day</button>
+    </a>
+
+</div>
+
+
+
+<div class="container">
+
+    <a>
+        <button type="button" class="btn btn-outline-danger">Delete Logs of Last </button>
+    </a>
+
+    <a href="{% url 'manage:delete-last-logs' 24 'hours' %}">
+      <button type="button" class="btn btn-outline-danger">24 Hours</button>
+    </a>
+
+    <a href="{% url 'manage:delete-last-logs' 10 'hours' %}">
+      <button type="button" class="btn btn-outline-danger">10 Hours</button>
+    </a>
+
+    <a href="{% url 'manage:delete-last-logs' 5 'hours' %}">
+        <button type="button" class="btn btn-outline-danger">5 Hours</button>
+    </a>
+  
+    <a href="{% url 'manage:delete-last-logs' 2 'hours' %}">
+        <button type="button" class="btn btn-outline-danger">2 Hours</button>
+    </a>
+  
+    <a href="{% url 'manage:delete-last-logs' 1 'hours' %}">
+        <button type="button" class="btn btn-outline-danger">1 Hour</button>
+    </a>
+
+</div>
+
+
+
+<div class="container">
+
+    <a>
+        <button type="button" class="btn btn-outline-danger">Delete Logs of Last </button>
+    </a>
+
+
+    <a href="{% url 'manage:delete-last-logs' 30 'minutes' %}">
+      <button type="button" class="btn btn-outline-danger">30 Minutes</button>
+    </a>
+
+    <a href="{% url 'manage:delete-last-logs' 10 'minutes' %}">
+        <button type="button" class="btn btn-outline-danger">10 Minutes</button>
+    </a>
+  
+    <a href="{% url 'manage:delete-last-logs' 5 'minutes' %}">
+        <button type="button" class="btn btn-outline-danger">5 Minutes</button>
+    </a>
+  
+    <a href="{% url 'manage:delete-last-logs' 2 'minutes' %}">
+        <button type="button" class="btn btn-outline-danger">1 Minutes</button>
+    </a>
+
+</div>
+
+
+<!-- delete last N days/hours/minutes ends-->
+
+<hr>
+
+<!-- Keep Latest N Logs only starts -->
+
+
+<div class="container">
+
+    <a>
+        <button type="button" class="btn btn-outline-danger">Only Keep Latest </button>
+    </a>
+
+
+    <a href="{% url 'manage:keep-last-n-logs' 500  %}">
+      <button type="button" class="btn btn-outline-danger">500 Logs</button>
+    </a>
+
+    <a href="{% url 'manage:keep-last-n-logs' 100  %}">
+        <button type="button" class="btn btn-outline-danger">100 Logs</button>
+    </a>
+  
+    <a href="{% url 'manage:keep-last-n-logs' 10 %}">
+        <button type="button" class="btn btn-outline-danger">10 Logs</button>
+    </a>
+  
+    <a href="{% url 'manage:keep-last-n-logs' 5 %}">
+        <button type="button" class="btn btn-outline-danger">5 Logs</button>
+    </a>
+
+    <a href="{% url 'manage:keep-last-n-logs' 1 %}">
+        <button type="button" class="btn btn-outline-danger">1 Log</button>
+    </a>
+
+</div>
+
+
+<!-- Keep Latest N Logs only ends -->
+
+
+<hr>
+
+
+<!-- Delete Logs of Type -->
+
+
+<div class="container">
+
+    <a href="{% url 'manage:delete-logs-type' 'view' %}">
+      <button type="button" class="btn btn-outline-danger">Delete View Logs</button>
+    </a>
+
+    <a href="{% url 'manage:delete-logs-type' 'search' %}">
+      <button type="button" class="btn btn-outline-danger">Delete Search Logs</button>
+    </a>
+
+    <a href="{% url 'manage:delete-logs-type' 'try' %}">
+        <button type="button" class="btn btn-outline-danger">Delete Try Logs</button>
+    </a>
+  
+    <a href="{% url 'manage:delete-logs-type' 'suggest' %}">
+        <button type="button" class="btn btn-outline-danger">Delete Suggest Logs</button>
+    </a>
+  
+    <a href="{% url 'manage:delete-all-logs' %}">
+        <button type="button" class="btn btn-outline-danger">Delete All Logs</button>
+    </a>
+
+</div>
+
+
+<hr>
+  
+
+
+
+<div class="container col-12 col-sm-12 col-md-12 col-lg-10 mt-5">
+
+
+    <ul>
+        {% for log in logs %}
+            <li>{{ log.title }} <small><i>at GMT+6 : {{ log.time }}</i></small></li>
+        {% empty %}
+            <h3>No Logs Found !</h3>
+        {% endfor %}
+    </ul>
+    
+
+
+</div>
+
+
+{% endblock content %}

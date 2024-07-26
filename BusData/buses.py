@@ -111,7 +111,7 @@ BusData={
     "110":{"stands":[47,234,158,153,154,191,114,66,136,218,134,99,32,169,180,31,215,248,17,138,149,197,196,88,141],"name":"Nur-E-Makka","Rating":65,"isActive":True,"service":"Semi-Sitting"},
     "111":{"stands":[47,152,9,244,113,230,224,50,11,59,229,60,131,213,121,214,90,71,173,16,125],"name":"Nabakali Bus","Rating":40,"isActive":True,"service":"Semi-Sitting"},
     "112":{"stands":[47,152,9,244,113,230,224,50,11,126,70,122,26,214,90,189,184,51,165],"name":"New Vision Bus","Rating":35,"isActive":True,"service":"Semi-Sitting"},
-    "113":{"stands":[48,231,147,200,227,104,211,81,45,21,15,176,174,49,131,60,59,11,50,224,230,113,52,244,73,8,89,209,178,144,186],"name":"Nilachol","Rating":50,"isActive":True,"service":"Semi-Sitting"},
+    "113":{"stands":[48,231,147,200,227,104,211,81,45,21,15,176,174,49,131,60,59,11,50,224,230,113,52,244,73,8,89,209,178,261,57,112,267,144,262,263,264,265,266,186],"name":"Nilachol","Rating":50,"isActive":True,"service":"Semi-Sitting"},
     "114":{"stands":[157,153,123,219,242,6,11,230,164,216,58,105,213,55,174,176,67,15],"name":"Nishorgo","Rating":35,"isActive":True,"service":"Semi-Sitting"},
     "115":{"stands":[165,51,184,189,146,90,214,26,122,70,95,163,42,204,23,110,237,136,218,134,130,7],"name":"Omama International","Rating":25,"isActive":True,"service":"Semi-Sitting"},
     "116":{"stands":[170,256,19,178,209,89,8,73,244,113,230,224,50,11,126,70,122,26,214,90,189,184,72,81,165],"name":"One Transport","Rating":35,"isActive":True,"service":"Semi-Sitting"},
@@ -146,7 +146,7 @@ BusData={
     "145":{"stands":[155,182,191,154,153,123,219,242,6,35,70,122,26,214,146,90,189,184,72,81,100,104],"name":"Shikhor Paribahan-1","Rating":50,"isActive":True,"service":"Semi-Sitting"},
     "146":{"stands":[104,211,81,72,184,189,90,146,214,26,122,70,35,6,93,242,219,123,153,154,182,191,155],"name":"Shikhor Paribahan-2","Rating":50,"isActive":True,"service":"Semi-Sitting"},
     "147":{"stands":[48,231,147,200,227,104,211,81,45,21,56,15,176,174,49,131,60,59,11,50,224,230,113,52,244,73,8,89,209,178,19,256,170,44],"name":"Shuveccha Bus","Rating":40,"isActive":True,"service":"Semi-Sitting"},
-    "148":{"stands":[71,79,72,184,189,90,146,214,33,213,131,60,59,11,224,230,113,52,244,73,8,89,144],"name":"Shuvojatra","Rating":50,"isActive":True,"service":"Semi-Sitting"},
+    "148":{"stands":[71,79,72,184,189,90,146,214,33,213,131,60,59,11,224,230,113,52,244,73,8,89,209,178,261,57,112,267,144],"name":"Shuvojatra","Rating":50,"isActive":True,"service":"Semi-Sitting"},
     "149":{"stands":[24,197,149,17,215,31,180,169,32,99,134,130,7,103,195,14,91,2,116,62,34,12,255,69,98,223,19,183,210,178],"name":"Siam Transport","Rating":55,"isActive":True,"service":"Semi-Sitting"},
     "150":{"stands":[203,198,173,79,72,184,111,217,140,166,168,163,42,204,23,110,237,136,218,134,130,7,103,195,14,91,2,247,238,151,37,77],"name":"Skyline","Rating":55,"isActive":True,"service":"Semi-Sitting"},
     "151":{"stands":[48,231,147,200,227,104,211,81,45,21,56,15,176,174,49,131,60,59,11,50,224,230,113,52,244,9,152,192,47],"name":"Shomota Paribahan","Rating":35,"isActive":True,"service":"Semi-Sitting"},
@@ -181,5 +181,13 @@ BusData={
     "180":{"stands":[104,100,211,165,51,184,189,146,90,214,26,122,70,126,11,50,224,230,113,244,73],"name":"8 No Bus","Rating":50,"isActive":True,"service":"Semi-Sitting"},
     "181":{"stands":[50,224,230,113,52,244,25,246,9,152,234,158,190,182,155],"name":"9 No Bus","Rating":50,"isActive":True,"service":"Semi-Sitting"},
     "182":{"stands":[164,216,58,105,49,213,214,146,184,81,165,10],"name":"FTCL Bus-2","Rating":50,"isActive":True,"service":"Semi-Sitting"},
+    
+    # Added Later
+    
+    "182":{"stands":[186,266,265,264,263,262,144,267,112,57,261,178,209,89,8,73,244],"name":"Selfie Paribahan","Rating":90,"isActive":True,"service":"Semi-Sitting"},
+    "183":{"stands":[46,222,97,231,147,200,227,104,211,81],"name":"Utshob Paribahan","Rating":90,"isActive":True,"service":"Semi-Sitting"},
+    "184":{"stands":[46,222,97,231,147,200,227,104,211,81],"name":"Bondhon Paribahan","Rating":85,"isActive":True,"service":"Semi-Sitting"},
+    "185":{"stands":[46,222,97,231,147,200,227,104,211,81],"name":"Sheetal Paribahan","Rating":95,"isActive":True,"service":"Semi-Sitting"},
+    
     
 }

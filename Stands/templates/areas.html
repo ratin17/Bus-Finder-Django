@@ -40,9 +40,9 @@
 
         <a href="{% url 'suggest_area' area.id %}" class="col gy-3 col-8 col-sm-8 col-md-4 col-lg-4 btn bg-warning text-white rounded-pill shadow d-flex justify-content-center align-items-center">Suggest Correction</a>
 
-        <a href="{% url 'stands:edit_stand' stand.id %}" class="col gy-3 col-2 col-sm-2 col-md-2 col-lg-2 btn bg-warning text-white rounded-pill shadow d-flex justify-content-center align-items-center">!_Edit</a>
+        <a href="{% url 'stands:edit_stand' area.id %}" class="col gy-3 col-2 col-sm-2 col-md-2 col-lg-2 btn bg-warning text-white rounded-pill shadow d-flex justify-content-center align-items-center">!_Edit</a>
 
-        <a href="{% url 'stands:edit_stand' stand.id %}" class="col gy-3 col-2 col-sm-2 col-md-2 col-lg-2 btn bg-danger text-white rounded-pill shadow d-flex justify-content-center align-items-center">!_Delete</a>
+        <a href="{% url 'stands:edit_stand' area.id %}" class="col gy-3 col-2 col-sm-2 col-md-2 col-lg-2 btn bg-danger text-white rounded-pill shadow d-flex justify-content-center align-items-center">!_Delete</a>
 
       {% else %}
         <a style="background-color: rgb(204, 174, 243);" href="{% url 'suggest_area' area.id %}" class="col gy-3 col-8 col-sm-8 col-md-4 col-lg-4 btn text-black rounded-pill shadow d-flex justify-content-center align-items-center">Suggest Correction</a>

@@ -1,0 +1,43 @@
+
+
+{% extends "base.html" %}
+
+{% block page_header %}
+  <h1>Logs</h1>
+{% endblock page_header %}
+
+{% block content %}
+
+<div>
+    <h2>Logs : {{logCount}}</h2>
+</div>
+  
+<div class="container mt-5">
+
+
+    <a href="{% url 'manage:all-logs' %}">
+      <button type="button" class="btn btn-outline-danger">All Logs</button>
+    </a>
+
+    <a href="{% url 'manage:type-logs' 'search' %}">
+      <button type="button" class="btn btn-outline-danger">Search Logs</button>
+    </a>
+
+    
+    <a href="{% url 'manage:type-logs' 'try' %}">
+        <button type="button" class="btn btn-outline-danger">Try Logs</button>
+    </a>
+  
+      
+    <a href="{% url 'manage:type-logs' 'view' %}">
+        <button type="button" class="btn btn-outline-danger">View Logs</button>
+    </a>
+  
+    <a href="{% url 'manage:type-logs' 'suggest' %}">
+        <button type="button" class="btn btn-outline-danger">Suggestion Logs</button>
+    </a>
+
+</div>
+
+
+{% endblock content %}

@@ -4,6 +4,7 @@ from django.contrib import messages
 from Buses.models import OrderingModel,Bus
 from Stands.models import Stand,Area
 from FindBus.models import Suggestion
+from .models import Log,LogCount
 
 from BusData.areas import AreaData
 from BusData.stands import StandData
@@ -12,6 +13,10 @@ from BusData.buses import BusData
 
 
 from django.contrib.auth.decorators import login_required
+
+
+from datetime import datetime
+from datetime import timedelta
 
 
 # Create your views here.
@@ -63,6 +68,120 @@ def deleteSuggestion(request,id):
     if suggestion:
         suggestion.delete()
     return redirect('manage:all-suggestions')
+
+
+
+
+
+@login_required
+def logs(request):
+    logCount=LogCount.objects.get(id=1).count
+    context = {'logCount': logCount}
+    return render(request,'logs.html',context)
+    
+
+
+@login_required
+def allLogs(request):
+    logs=Log.objects.all()
+    # print(logs)
+    logCount=LogCount.objects.get(id=1).count
+    context = {'logs': logs,'logCount': logCount}
+    return render(request, 'show-logs.html', context)
+
+
+
+@login_required
+def typeLogs(request,type,):
+    
+    logs=Log.objects.filter(type=type)
+    # print(type,logs)
+    logCount=LogCount.objects.get(id=1).count
+    context = {'logs': logs,'type':type,'logCount': logCount}
+    return render(request, 'show-logs.html', context)
+
+
+@login_required
+def keepLogsOfLast_X_DaysOrHoursOrMinutes(request,n,choice):
+    
+    now=datetime.now()
+    
+    if choice=='days':
+        deleteBefore=now-timedelta(days=n)
+    elif choice=='hours':
+        deleteBefore=now-timedelta(hours=n)
+    elif choice=='minutes':
+        deleteBefore=now-timedelta(minutes=n)
+        
+    logs=Log.objects.filter(time__lte=deleteBefore)
+    if logs:
+        logs.delete()
+    
+    return redirect('manage:all-logs')
+
+
+@login_required
+def deleteLogsOfLast_X_DaysOrHoursOrMinutes(request,n,choice):
+    now=datetime.now()
+    
+    if choice=='days':
+        deleteBefore=now-timedelta(days=n)
+    elif choice=='hours':
+        deleteBefore=now-timedelta(hours=n)
+    elif choice=='minutes':
+        deleteBefore=now-timedelta(minutes=n)
+        
+    logs=Log.objects.filter(time__gte=deleteBefore)
+    if logs:
+        logs.delete()
+    
+    return redirect('manage:all-logs')
+
+
+@login_required
+def keepLatest_X_Logs(request,n):
+    
+    logs=Log.objects.all()
+    
+    if len(logs)>n:
+        logs=logs[n:]
+        
+        for log in logs:
+            log.delete()
+        
+    return redirect('manage:all-logs')
+
+
+@login_required
+def deleteLogsOfType_X(request,type):
+    
+    logs=Log.objects.filter(type=type)
+    # print(type,logs)
+    if logs:
+        logs.delete()
+    
+    return redirect('manage:all-logs')
+
+
+
+@login_required
+def deleteAll(request):
+    logs=Log.objects.all()
+    if logs:
+        logs.delete()
+    
+    return redirect('manage:all-logs')
+
+
+
+
+
+
+
+
+
+# ------------ Danger Zone Starts -----------------
+
 
 
 @login_required

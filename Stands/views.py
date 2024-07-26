@@ -1,5 +1,6 @@
 from django.shortcuts import render,redirect
 from .models import Stand,Area
+from ManageBusFinder.models import Log
 from .forms import StandForm,AreaForm
 from django.contrib import messages
 
@@ -26,6 +27,10 @@ def haversine(lat1, lon1, lat2, lon2):
 
 def stands(request):
     
+    # for creating log object
+    Log.objects.create(title=f'Viewed : Stand List.',type='view')
+    # ----- end  ------
+    
     stands = Stand.objects.all()
     # print('##### ### ',stands)
     
@@ -38,6 +43,10 @@ def stand(request,stand_id):
     stand= Stand.objects.get(id=stand_id)
     buses=stand.bus_set.all()
     
+    # for creating log object
+    Log.objects.create(title=f'Viewed : Stand -> {stand.s_name}.',type='view')
+    # ----- end  ------
+    
     context = {'stand': stand, 'buses': buses}
     
     return render(request, 'stand.html', context)
@@ -45,6 +54,10 @@ def stand(request,stand_id):
 
 
 def areas(request):
+    
+    # for creating log object
+    Log.objects.create(title=f'Viewed : Area List.',type='view')
+    # ----- end  ------
     
     areas = Area.objects.all()
     # print('##### ### ',stands)
@@ -57,6 +70,10 @@ def areas(request):
 def area(request,area_id):
     area= Area.objects.get(id=area_id)
     stands=area.stand_set.all()
+    
+    # for creating log object
+    Log.objects.create(title=f'Viewed : Area -> {area.a_name}.',type='view')
+    # ----- end  ------
     
     context = {'area': area, 'stands': stands}
     
@@ -130,28 +147,28 @@ def new_area(request):
     return render(request, 'new_area.html', context)
 
 @login_required
-def edit_stand(request,stand_id):
-    stand=Stand.objects.get(id=stand_id)
+def edit_area(request,area_id):
+    area=Area.objects.get(id=area_id)
     
     if request.method != 'POST':
-        form = StandForm(instance=stand)
+        form = AreaForm(instance=area)
     
     else:
         
         # orderingIns=get_object_or_404(OrderingModel,id=orderingmodel_id)
         
-        form = StandForm(instance=stand,data=request.POST)
+        form = AreaForm(instance=area,data=request.POST)
         if form.is_valid():
             form.save()
-            return redirect('stands:stands')
+            return redirect('stands:areas')
     
-    context = {'form': form,'stand':stand}
+    context = {'form': form,'area':area}
     return render(request, 'edit_stand.html', context)
 
 
 @login_required
-def edit_area(request,area_id):
-    stand=Stand.objects.get(id=area_id)
+def edit_stand(request,stand_id):
+    stand=Stand.objects.get(id=stand_id)
     
     if request.method != 'POST':
         form = StandForm(instance=stand)

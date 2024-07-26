@@ -2,7 +2,7 @@ from django.shortcuts import render,redirect
 from .models import Bus,OrderingModel
 from Stands.models import Stand
 from .forms import BusForm,OrderingForm,EditBusStandForm
-
+from ManageBusFinder.models import Log
 from django.shortcuts import get_object_or_404
 from django.contrib import messages
 
@@ -11,6 +11,13 @@ from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 def buses(request):
+    
+    
+    # for creating log object
+    Log.objects.create(title=f'Viewed : Bus List.',type='view')
+    # ----- end  ------
+    
+    
     
     buses = Bus.objects.all()
     data=[]
@@ -28,7 +35,15 @@ def buses(request):
 
 def bus(request, bus_id):
     
+    
+    
     bus = Bus.objects.get(id=bus_id)
+    
+    
+    # for creating log object
+    Log.objects.create(title=f'Viewed : Bus -> {bus.b_name}.',type='view')
+    # ----- end  ------
+    
     
     # stands = bus.stands.all()
     # stands_ordered=bus.orderingmodel_set.order_by('-order').values_list('stand', flat=True)
