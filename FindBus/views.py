@@ -10,6 +10,11 @@ from ManageBusFinder.models import Log
 import math
 from django.utils import timezone
 
+from django.http import JsonResponse
+
+from django.db.models import Q
+from collections import Counter
+from django.http import Http404
 
 BRC=2 # Can be changed if want to change bus rating priority
 TCC=2 # Can be changed if want to change traffic co-efficient priority
@@ -236,44 +241,81 @@ def MinuteToTime(minute):
         return f'{busHour} Hour, {busMinute} Minutes'
     else:
         return f'{busHour} Hours, {busMinute} Minutes'
+
+
+
+
+def search_stands(request):
     
+    query = request.GET.get('q', '')
+
+    if query:
+        stands = Stand.objects.all()  # Retrieve all stands initially
+        filtered_stands = []
+        
+        query_chars = query.lower()
+        query_counter = Counter(query_chars)
+
+        for stand in stands:
+            
+            stand_name = stand.s_name.lower()
+            stand_counter = Counter(stand_name)
+
+            matching_chars = sum(min(query_counter[char], stand_counter[char]) for char in query_counter)
+
+            char_per = (matching_chars / len(query_chars)) * 100
+            
+            length_per= (min(len(stand_name),len(query_chars))/max(len(stand_name),len(query_chars)))*100
+            
+            
+            if char_per >= 60:
+                length_per= (min(len(stand_name),len(query_chars))/max(len(stand_name),len(query_chars)))*100
+                match_per=70*(char_per/100)+30*(length_per/100)
+                filtered_stands.append({'id': stand.id, 'name': stand.s_name, 'par':match_per})
+
+        stand_list = sorted(filtered_stands, key=lambda x: x['par'], reverse=True)
+        
+    else:
+        stand_list = [{'id': stand.id, 'name': stand.s_name} for stand in Stand.objects.all()]
+
+    return JsonResponse(stand_list, safe=False)
+ 
+
+
 
 
 def busFinder(request):
     
-    # for creating log object
     Log.objects.create(title=f'Viewed : Homepage.',type='view')
-    # ----- end  ------
     
     if request.method == 'POST':
-        form = BusFinderForm(request.POST)
-        if form.is_valid():
-            dept=form.cleaned_data['dept']
-            dest=form.cleaned_data['dest']
-            # print("!!!!!!!!!! Form is valid !!!!!!!!!!!!")
-            if dept == dest:
-                messages.success(request,"Departure and Destination Can't be Same !")
-                return render(request,'result.html')
-            
-            # print(dept)
-            # print(dest)
-            
-            return redirect('result', dept.id, dest.id)
-            
-    
-    else:
-        form = BusFinderForm()
         
-
-    return render(request, 'bus_finder.html', {'form': form})
+        deptId=int(request.POST.get('departure_id'))
+        destId=int(request.POST.get('destination_id'))
+        
+        
+        if deptId == destId:
+            messages.success(request,"Departure and Destination Can't be Same !")
+            return render(request,'result.html')
+        
+        return redirect('result', deptId,destId)
+            
+    else:
+        return render(request, 'bus_finder.html')
 
 
 
 def result(request,id1,id2):
     
-    dept=get_object_or_404(Stand,id=id1)
-    dest=get_object_or_404(Stand,id=id2)
-    # print(dept)
+    try:
+        dept=get_object_or_404(Stand,id=id1)
+        dest=get_object_or_404(Stand,id=id2)
+        
+    except Http404:
+        error_message = "One or both of the selected bus stands could not be found."
+        context = {'error_message': error_message}
+        return render(request,'result.html',context)
+    
     
     # for creating log object
     Log.objects.create(title=f'Searched : {dept.s_name} to {dest.s_name}.',type='search')

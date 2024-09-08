@@ -6,13 +6,20 @@
 
 {% block content %}
 
+{% if error_message %}
+  <div class="alert alert-danger alert-dismissible fade show" role="alert">
+      {{ error_message }}
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+{% endif %}
+
   <div class="container mb-3 col-12">
     <div class="row justify-content-center">
       {% if buses|length > 1 %}
         <a style="background-color:rgb(7, 160, 20)" href="#res" class="col col col-12 col-sm-12 col-md-9 col-lg-6 py-2 btn shadow text-white d-flex justify-content-center align-items-center"><b class="mx-2">{{ buses|length }} </b>Buses Found</a>
       {% elif buses|length == 1 %}
       <a style="background-color:rgb(4, 107, 133)" href="#res" class="col col col-12 col-sm-12 col-md-9 col-lg-6 py-2 btn shadow text-white d-flex justify-content-center align-items-center"><b class="mx-2">{{ buses|length }} </b>Bus Found</a>
-      {% else %}
+      {% elif not error_message %}
       <a style="background-color:rgb(238, 187, 20)" class="col col col-12 col-sm-12 col-md-9 col-lg-6 py-2 btn shadow text-white d-flex justify-content-center align-items-center">No Bus goes to {{dest.s_name}} from {{dept.s_name}} !</a>
       {% endif %}
     </div>
@@ -271,7 +278,7 @@
         </div>
       {% endfor %}
       
-    {% else %}
+    {% elif not error_message and buses|length < 1 %}
 
       <div class="container mb-5 col-6 shadow rounded border border-info">
         <div class="row justify-content-center">

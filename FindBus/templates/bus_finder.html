@@ -1,13 +1,15 @@
-{% extends "base.html" %} {% block page_header %}
+{% extends "base.html" %}{% block page_header %}
 <h1>Find Bus</h1>
 {% endblock page_header %}
+
+
 {% block content %}
 
 
-  <div class="bg-gradient bg-white">
+  <div class="bg-white btn-hover">
 
-    <form method="post"  action="{% url 'findBus' %}">
-
+    <form action="{% url 'findBus' %}" method="POST">
+      
       {% csrf_token %}
 
       <div class="d-grid justify-content-center align-item-center text-center">
@@ -16,29 +18,148 @@
           <span class="spinner-grow text-success spinner-grow-sm mx-2" aria-hidden="true"></span>
           Select Bus Stands to Find Bus
         </button>
+      
+        <div class="mb-3 position-relative bg-secondary py-2 px-1">
+          <label class="mb-1 text-white" for="departure-stand">From : </label>
+          <input type="text" id="departure-stand" class="form-control" placeholder="Search Departure Stand" autocomplete="off">
+          <ul id="departure-results" 
+              class="position-absolute w-100 overflow-auto bg-white list-unstyled p-0" 
+              style="max-height: 50vh; z-index: 10;">
+          </ul>
+          <input type="hidden" name="departure_id" id="departure-id">
+      </div>
+  
+      <div class="mb-3 position-relative bg-secondary py-2 px-1">
+          <label class="mb-1 text-white" for="destination-stand">To : </label>
+          <input type="text" id="destination-stand" class="form-control" placeholder="Search Destination Stand" autocomplete="off">
+          <ul id="destination-results" 
+              class="position-absolute w-100 overflow-auto bg-white list-unstyled p-0" 
+              style="max-height: 50vh; z-index: 1000;">
+          </ul>
+          <input type="hidden" name="destination_id" id="destination-id">
+      </div>
+      
+          <button id="findBusButton" type="submit" class="text-white placeholder-glow" style="background-image: linear-gradient(rgb(221, 50, 144),rgb(78, 94, 235));" >Find Bus</button>
 
-        <div data-mdb-input-init class="form-outline mb-4">
-          <label style="width: 50px;" class="form-label" for="{{ form.dept.id_for_label }}">{{ form.dept.label }}</label>
-          {{ form.dept }}
-        </div>
-      
-        <div data-mdb-input-init class="form-outline mb-4">
-          <label style="width: 50px;" class="form-label" for="{{ form.dest.id_for_label }}">{{ form.dest.label }}</label>
-          {{ form.dest }}
-          
-        </div>
-      
-        <!-- Submit button -->
-        <button style="background-image: linear-gradient(rgb(221, 50, 144),rgb(78, 94, 235));" type="submit" class="btn btl-lg text-white btn-block"><b>Find Bus</b></button>
-        
-        
-        <marquee style="background-image: linear-gradient(rgb(223, 96, 22),rgb(189, 69, 236));" class="my-2 bg-danger text-white" >Sometimes it might take a few seconds to provide search results</marquee>
+          <marquee style="background-image: linear-gradient(rgb(223, 96, 22),rgb(189, 69, 236));" class="my-2 bg-danger text-white" >Sometimes it might take a few seconds to provide search results</marquee>
 
       </div>
       
     </form>
 
   </div>
+
+  <script>
+    
+    function fetchStands(query, resultsList, inputField, hiddenField) {
+      
+      const searchUrl = query ? "{% url 'search_stands' %}?q=" + query : "{% url 'search_stands' %}?q=";
+
+      fetch(searchUrl)
+          .then(response => response.json())
+          .then(data => {
+              resultsList.innerHTML = '';
+              data.forEach(stand => {
+                  const li = document.createElement('li');
+                  li.textContent = stand.name;
+                  li.setAttribute('data-id', stand.id);
+                  li.classList.add('stand-li','rounded','mt-1');
+                  li.setAttribute('style', 'background-color: #F0FFF0;');
+
+
+                  li.addEventListener('mouseenter',mouseEnter);
+                  li.addEventListener('mouseleave',mouseLeave);
+                  li.addEventListener('mousedown', function() {
+                      console.log('li clicked : ',stand.id);
+                      inputField.value = stand.name;
+                      hiddenField.value = stand.id;
+                      resultsList.innerHTML = '';
+                      checkButtonState();
+                  });
+                  resultsList.appendChild(li);
+              });
+      });
+    }
+
+
+    
+    const departureInput = document.getElementById('departure-stand');
+    const departureResults = document.getElementById('departure-results');
+    const departureHidden = document.getElementById('departure-id');
+    
+    const destinationInput = document.getElementById('destination-stand');
+    const destinationResults = document.getElementById('destination-results');
+    const destinationHidden = document.getElementById('destination-id');
+
+
+
+    function checkButtonState() {
+
+      if (departureHidden.value && destinationHidden.value) {
+        findBusButton.disabled = false;
+        findBusButton.classList.remove('disabled','text-secondary');
+        findBusButton.classList.add('text-white');
+        findBusButton.setAttribute('style', 'background-image: linear-gradient(rgb(221, 50, 144), rgb(78, 94, 235));');
+      }
+
+      else {
+        findBusButton.disabled = true;
+        findBusButton.classList.add('disabled','text-secondary');
+        findBusButton.classList.remove('text-white');
+        findBusButton.removeAttribute('style');
+      }
+
+    }
+
+
+
+    function mouseEnter(event) {
+      event.target.style.backgroundColor = '#90EE90';
+    }
+
+
+    function mouseLeave(event) {
+      
+      event.target.style.backgroundColor = '#F0FFF0';
+    }
+  
+
+
+    function setupStandSearch(inputField, resultsList, hiddenField) {
+
+      inputField.addEventListener('click', function() {
+          const query = inputField.value;
+          fetchStands(query, resultsList, inputField, hiddenField);
+      });
+
+      inputField.addEventListener('input', function() {
+          const query = inputField.value;
+          fetchStands(query, resultsList, inputField, hiddenField);
+      });
+
+      inputField.addEventListener('blur', function() {
+        setTimeout(function() {
+            resultsList.innerHTML = '';
+        }, 100);
+      });
+
+
+      inputField.addEventListener('keydown', function(event) {
+        if (event.key === "Enter") {
+            event.preventDefault();
+        }
+      });
+
+
+    }
+
+    
+    setupStandSearch(departureInput, departureResults, departureHidden);
+    setupStandSearch(destinationInput, destinationResults, destinationHidden);
+
+    checkButtonState();
+
+</script>
 
   
 

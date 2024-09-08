@@ -109,7 +109,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-LOGIN_REDIRECT_URL = 'manage:manage'
+LOGIN_REDIRECT_URL = 'manage:suggestions'
 LOGOUT_REDIRECT_URL = 'findBus'
 
 STATIC_URL = '/static/'
